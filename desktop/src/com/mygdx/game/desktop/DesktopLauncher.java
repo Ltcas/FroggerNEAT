@@ -9,8 +9,8 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
 		config.title = "Frogger";
-		config.width = 640;
-		config.height = 640;
+		config.width = 480;
+		config.height = 384;
 		new LwjglApplication(new Frogger(), config);
 	}
 }
