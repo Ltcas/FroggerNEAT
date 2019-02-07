@@ -31,9 +31,14 @@ public class Player extends Sprite implements InputProcessor{
         Gdx.input.setInputProcessor(this);
     }
 
+    public void testCollision(){
+        TiledMapTileLayer.Cell cell = waterCollison.getCell(this.x,this.y);
+        System.out.println(cell.getTile().getId());
+    }
     @Override
     public boolean keyDown (int keycode) {
         if(this.isAlive){
+            testCollision();
             switch (keycode){
                 case Input.Keys.UP:
                     if(this.y + 32 < this.height){
