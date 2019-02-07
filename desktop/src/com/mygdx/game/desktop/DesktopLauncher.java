@@ -12,7 +12,7 @@ public class DesktopLauncher {
 		config.title = "Kittener";
 		config.width = 480;
 		config.height = 384;
-		config.addIcon("core/assets/cat_front.png", Files.FileType.Internal7);
+		config.addIcon("core/assets/cat_front.png", Files.FileType.Internal);
 		new LwjglApplication(new Frogger(), config);
 	}
 }
