@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -36,7 +37,7 @@ public class Frogger extends ApplicationAdapter {
 		this.camera.position.set(this.width/2,this.height/2,0);
 		this.viewport = new FitViewport(this.width,this.height,camera);
 		this.player = new Player(new Sprite(
-				new Texture("core/assets/cat_back.png")),this.width,this.height);
+				new Texture("core/assets/cat_back.png")),this.width,this.height,(TiledMapTileLayer)this.map.getLayers().get("water"));
 		this.loader = new TmxMapLoader();
 		this.map = this.loader.load("core/Map/Map.tmx");
 		this.mapRenderer = new OrthoCachedTiledMapRenderer(this.map);

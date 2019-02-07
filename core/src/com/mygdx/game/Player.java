@@ -17,8 +17,9 @@ public class Player extends Sprite implements InputProcessor{
     private int width;
     private int height;
     private boolean isAlive;
+    private TiledMapTileLayer waterCollison;
 
-    public Player(Sprite sprite, int width, int height){
+    public Player(Sprite sprite, int width, int height,TiledMapTileLayer waterCollision){
         super(sprite);
         this.width = width;
         this.height = height;
@@ -26,6 +27,7 @@ public class Player extends Sprite implements InputProcessor{
         this.y = 0;
         this.isAlive = true;
         this.setPosition(this.x,this.y);
+        this.waterCollison = waterCollision;
         Gdx.input.setInputProcessor(this);
     }
 
