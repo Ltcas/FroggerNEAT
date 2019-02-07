@@ -36,10 +36,11 @@ public class Frogger extends ApplicationAdapter {
 		this.camera = new OrthographicCamera();
 		this.camera.position.set(this.width/2,this.height/2,0);
 		this.viewport = new FitViewport(this.width,this.height,camera);
-		this.player = new Player(new Sprite(
-				new Texture("core/assets/cat_back.png")),this.width,this.height,(TiledMapTileLayer)this.map.getLayers().get("water"));
 		this.loader = new TmxMapLoader();
 		this.map = this.loader.load("core/Map/Map.tmx");
+		this.player = new Player(new Sprite(
+				new Texture("core/assets/cat_back.png")),this.width,this.height,
+				(TiledMapTileLayer)this.map.getLayers().get("water"));
 		this.mapRenderer = new OrthoCachedTiledMapRenderer(this.map);
 	}
 
