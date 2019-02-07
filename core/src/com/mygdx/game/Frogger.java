@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -20,14 +21,26 @@ public class Frogger extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	private Player player;
 	private Viewport viewport;
+	private TmxMapLoader loader;
+	private int width;
+	private int height;
+
+	public Frogger(int width,int height){
+		this.width = width;
+		this.height = height;
+	}
 
 	@Override
 	public void create () {
 		this.batch = new SpriteBatch();
 		this.camera = new OrthographicCamera();
-		this.camera.position.set(480/2,384/2,0);
-		this.viewport = new FitViewport(480,384,camera);
-		this.player = new Player(new Sprite(new Texture("core/assets/cat_back.png")));
+		this.camera.position.set(this.width/2,this.height/2,0);
+		this.viewport = new FitViewport(this.width,this.height,camera);
+		this.player = new Player(new Sprite(
+				new Texture("core/assets/cat_back.png")),this.width,this.height,(TiledMapTileLayer)this.map.getLayers().get("water"));
+		this.loader = new TmxMapLoader();
+		this.map = this.loader.load("core/Map/Map.tmx");
+		this.mapRenderer = new OrthoCachedTiledMapRenderer(this.map);
 	}
 
 	@Override
@@ -39,10 +52,8 @@ public class Frogger extends ApplicationAdapter {
 	public void render () {
 		Gdx.gl.glClearColor(220/255,220/255,220/255, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		TmxMapLoader loader = new TmxMapLoader();
-		this.map = loader.load("core/Map/Map.tmx");
 
-		this.mapRenderer = new OrthoCachedTiledMapRenderer(this.map);
+
 		this.mapRenderer.setView(this.camera);
 		this.mapRenderer.render();
 		this.batch.begin();
@@ -52,6 +63,7 @@ public class Frogger extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
+		this.batch.dispose();
+		this.map.dispose();
 	}
 }
