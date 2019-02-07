@@ -1,10 +1,7 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2D;
 
 /**
  * Created by Chance on 2/7/2019.
@@ -12,16 +9,26 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 public class Car extends Sprite {
 
     private SpriteBatch batch;
+    private int startX;
+    private int startY;
+    private int direction;
+    private int speed;
 
-    public Car(Sprite sprite, SpriteBatch batch, int x, int y){
+    public Car(Sprite sprite, SpriteBatch batch, int x, int y,int direction,int speed){
         super(sprite);
         this.batch = batch;
-        this.setPosition(x, y);
+        this.startX = x;
+        this.startY = y;
+        this.direction = direction;
+        this.speed = speed;
+        this.setPosition(this.startX, this.startY);
     }
 
 
     public void update() {
-        float x = this.getX() + 1f * Gdx.graphics.getDeltaTime();
-        batch.draw(this, x, 0);
+        this.translateX(this.direction * this.speed);
+        if(this.getX() < -32 || this.getX() > 480+32){
+            this.setPosition(this.startX,this.startY);
+        }
     }
 }
