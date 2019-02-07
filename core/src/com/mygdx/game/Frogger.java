@@ -44,7 +44,7 @@ public class Frogger extends ApplicationAdapter {
 		Gdx.gl.glClearColor(220/255,220/255,220/255, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
+		
 		this.mapRenderer.setView(this.camera);
 		this.mapRenderer.render();
 		this.batch.begin();
