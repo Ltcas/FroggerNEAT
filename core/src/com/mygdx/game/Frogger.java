@@ -21,14 +21,22 @@ public class Frogger extends ApplicationAdapter {
 	private Player player;
 	private Viewport viewport;
 	private TmxMapLoader loader;
+	private int width;
+	private int height;
+
+	public Frogger(int width,int height){
+		this.width = width;
+		this.height = height;
+	}
 
 	@Override
 	public void create () {
 		this.batch = new SpriteBatch();
 		this.camera = new OrthographicCamera();
-		this.camera.position.set(480/2,384/2,0);
-		this.viewport = new FitViewport(480,384,camera);
-		this.player = new Player(new Sprite(new Texture("core/assets/cat_back.png")));
+		this.camera.position.set(this.width/2,this.height/2,0);
+		this.viewport = new FitViewport(this.width,this.height,camera);
+		this.player = new Player(new Sprite(
+				new Texture("core/assets/cat_back.png")),this.width,this.height);
 		this.loader = new TmxMapLoader();
 		this.map = this.loader.load("core/Map/Map.tmx");
 		this.mapRenderer = new OrthoCachedTiledMapRenderer(this.map);
@@ -44,7 +52,7 @@ public class Frogger extends ApplicationAdapter {
 		Gdx.gl.glClearColor(220/255,220/255,220/255, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		
+
 		this.mapRenderer.setView(this.camera);
 		this.mapRenderer.render();
 		this.batch.begin();
