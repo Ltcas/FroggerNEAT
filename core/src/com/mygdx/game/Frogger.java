@@ -20,10 +20,12 @@ public class Frogger extends ApplicationAdapter {
 	private OrthoCachedTiledMapRenderer mapRenderer;
 	private OrthographicCamera camera;
 	private Player player;
+	private Car car;
 	private Viewport viewport;
 	private TmxMapLoader loader;
 	private int width;
 	private int height;
+	private Car carTwo;
 
 	public Frogger(int width,int height){
 		this.width = width;
@@ -41,6 +43,8 @@ public class Frogger extends ApplicationAdapter {
 		this.player = new Player(new Sprite(
 				new Texture("core/assets/cat_back.png")),this.width,this.height,
 				(TiledMapTileLayer)this.map.getLayers().get("level"));
+		this.car = new Car(new Sprite(new Texture("core/assets/racecar.png")),this.batch,this.width,32,-1,5);
+		this.carTwo = new Car(new Sprite(new Texture("core/assets/yellow_car.png")),this.batch,0,64,1,2);
 		this.mapRenderer = new OrthoCachedTiledMapRenderer(this.map);
 	}
 
@@ -58,7 +62,11 @@ public class Frogger extends ApplicationAdapter {
 		this.mapRenderer.setView(this.camera);
 		this.mapRenderer.render();
 		this.batch.begin();
+		this.car.update();
+		this.carTwo.update();
 		this.player.draw(this.batch);
+		this.car.draw(this.batch);
+		this.carTwo.draw(this.batch);
 		this.batch.end();
 	}
 	
