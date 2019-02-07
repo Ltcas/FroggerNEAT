@@ -40,7 +40,7 @@ public class Frogger extends ApplicationAdapter {
 		this.map = this.loader.load("core/Map/Map.tmx");
 		this.player = new Player(new Sprite(
 				new Texture("core/assets/cat_back.png")),this.width,this.height,
-				(TiledMapTileLayer)this.map.getLayers().get("water"));
+				(TiledMapTileLayer)this.map.getLayers().get("level"));
 		this.mapRenderer = new OrthoCachedTiledMapRenderer(this.map);
 	}
 

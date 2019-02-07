@@ -17,9 +17,9 @@ public class Player extends Sprite implements InputProcessor{
     private int width;
     private int height;
     private boolean isAlive;
-    private TiledMapTileLayer waterCollison;
+    private TiledMapTileLayer collision;
 
-    public Player(Sprite sprite, int width, int height,TiledMapTileLayer waterCollision){
+    public Player(Sprite sprite, int width, int height,TiledMapTileLayer collision){
         super(sprite);
         this.width = width;
         this.height = height;
@@ -27,18 +27,22 @@ public class Player extends Sprite implements InputProcessor{
         this.y = 0;
         this.isAlive = true;
         this.setPosition(this.x,this.y);
-        this.waterCollison = waterCollision;
+        this.collision = collision;
         Gdx.input.setInputProcessor(this);
     }
 
-    public void testCollision(){
-        TiledMapTileLayer.Cell cell = waterCollison.getCell(this.x,this.y);
-        System.out.println(cell.getTile().getId());
+    public boolean testCollision(){
+        int tileID = this.collision.getCell(this.x/32,this.y/32).getTile().getId();
+        if(tileID == 3){
+            return true;
+        }else{
+            return false;
+        }
     }
+
     @Override
     public boolean keyDown (int keycode) {
         if(this.isAlive){
-            testCollision();
             switch (keycode){
                 case Input.Keys.UP:
                     if(this.y + 32 < this.height){
@@ -66,26 +70,18 @@ public class Player extends Sprite implements InputProcessor{
                     break;
             }
             this.setPosition(this.x,this.y);
+            if(testCollision()){
+                this.isAlive = false;
+                this.setTexture(new Texture("core/assets/death.png"));
+            }
         }
         return true;
     }
 
     @Override
     public boolean keyUp (int keycode) {
-        switch (keycode){
-            case Input.Keys.UP:
-                break;
-            case Input.Keys.DOWN:
-                break;
-            case Input.Keys.RIGHT:
-                break;
-            case Input.Keys.LEFT:
-                break;
-        }
         return true;
     }
-
-
 
     public boolean keyTyped (char character) {
         return false;
