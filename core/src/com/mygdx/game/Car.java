@@ -25,7 +25,7 @@ public class Car extends Sprite {
 
     public void update() {
         this.translateX(this.direction * this.speed);
-        if(this.getX() < -32 || this.getX() > 480+32){
+        if(this.getX() < -64|| this.getX() > 480+64){
             this.setPosition(this.startX,this.startY);
         }
     }

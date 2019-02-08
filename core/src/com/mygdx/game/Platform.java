@@ -21,7 +21,7 @@ public class Platform extends Sprite {
 
     public void update() {
         this.translateX(this.direction * this.speed);
-        if(this.getX() < -32 || this.getX() > 480+32){
+        if(this.getX() < -160 || this.getX() > 480+160){
             this.setPosition(this.startX,this.startY);
         }
     }

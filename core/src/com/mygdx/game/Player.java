@@ -6,6 +6,9 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Rectangle;
+
+import java.util.ArrayList;
 
 /**
  * Created by Chance on 2/6/2019.
@@ -18,8 +21,10 @@ public class Player extends Sprite implements InputProcessor{
     private int height;
     private boolean isAlive;
     private TiledMapTileLayer collision;
+    private ArrayList<Car> cars;
+    private ArrayList<Platform> platforms;
 
-    public Player(Sprite sprite, int width, int height,TiledMapTileLayer collision){
+    public Player(Sprite sprite, int width, int height,TiledMapTileLayer collision,ArrayList<Car> cars,ArrayList<Platform> platforms){
         super(sprite);
         this.width = width;
         this.height = height;
@@ -28,15 +33,19 @@ public class Player extends Sprite implements InputProcessor{
         this.isAlive = true;
         this.setPosition(this.x,this.y);
         this.collision = collision;
+        this.cars = cars;
+        this.platforms = platforms;
         Gdx.input.setInputProcessor(this);
     }
 
-    public boolean testCollision(){
+    public void testCollision(){
         int tileID = this.collision.getCell(this.x/32,this.y/32).getTile().getId();
-        if(tileID == 3){
-            return true;
-        }else{
-            return false;
+        for(Car car:this.cars){
+            Rectangle carRectangle = car.getBoundingRectangle();
+            if(this.getBoundingRectangle().overlaps(carRectangle) || tileID == 3){
+                this.isAlive = false;
+                this.setTexture(new Texture("core/assets/death.png"));
+            }
         }
     }
 
@@ -70,14 +79,13 @@ public class Player extends Sprite implements InputProcessor{
                     break;
             }
             this.setPosition(this.x,this.y);
-            if(testCollision()){
-                this.isAlive = false;
-                this.setTexture(new Texture("core/assets/death.png"));
-            }
         }
         return true;
     }
 
+    public void update(){
+        testCollision();
+    }
     @Override
     public boolean keyUp (int keycode) {
         return true;
