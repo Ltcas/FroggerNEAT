@@ -6,7 +6,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
 
@@ -20,6 +19,7 @@ public class Player extends Sprite implements InputProcessor{
     private int width;
     private int height;
     private boolean isAlive;
+    private int score;
     private TiledMapTileLayer collision;
     private ArrayList<Car> cars;
     private ArrayList<Platform> platforms;
@@ -35,6 +35,7 @@ public class Player extends Sprite implements InputProcessor{
         this.collision = collision;
         this.cars = cars;
         this.platforms = platforms;
+        this.score = 0;
         Gdx.input.setInputProcessor(this);
     }
 
@@ -68,6 +69,7 @@ public class Player extends Sprite implements InputProcessor{
                     if(this.y + 32 < this.height){
                         this.setTexture(new Texture("core/assets/cat_back.png"));
                         this.y += 32;
+                        this.score += 10;
                     }else{
                         this.reset();
                     }
@@ -76,6 +78,7 @@ public class Player extends Sprite implements InputProcessor{
                     if(this.y - 32 >= 0){
                         this.setTexture(new Texture("core/assets/cat_front.png"));
                         this.y -= 32;
+                        this.score -= 10;
                     }
                     break;
                 case Input.Keys.RIGHT:
@@ -96,6 +99,10 @@ public class Player extends Sprite implements InputProcessor{
            this.reset();
         }
         return true;
+    }
+
+    public int getScore(){
+        return this.score;
     }
 
     private void reset(){

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -30,6 +31,7 @@ public class Frogger extends ApplicationAdapter {
 	private TmxMapLoader loader;
 	private int width;
 	private int height;
+	private BitmapFont scoreDisplay;
 
 
 	public Frogger(int width,int height){
@@ -38,6 +40,7 @@ public class Frogger extends ApplicationAdapter {
 		this.players = new ArrayList<Player>();
 		this.platforms = new ArrayList<Platform>();
 		this.cars = new ArrayList<Car>();
+		this.scoreDisplay = new BitmapFont();
 	}
 
 	@Override
@@ -67,6 +70,7 @@ public class Frogger extends ApplicationAdapter {
 		this.cars.add(new Car(new Sprite(new Texture("core/assets/bus.png")),this.width,128,-1,2));
 
 	}
+
 	private void addPlatforms(){
 		this.platforms.add(new Platform(new Sprite(new Texture("core/assets/turtle.png")), this.width, 192, -1, 2));
 		this.platforms.add(new Platform(new Sprite(new Texture("core/assets/log5.png")), -160, 224, 1, 2));
@@ -75,6 +79,7 @@ public class Frogger extends ApplicationAdapter {
 		this.platforms.add(new Platform(new Sprite(new Texture("core/assets/log3.png")), this.width, 320, -1, 4));
 
 	}
+
 	@Override
 	public void resize(int width, int height){
 		this.viewport.update(width,height);
@@ -84,7 +89,6 @@ public class Frogger extends ApplicationAdapter {
 	public void render () {
 		Gdx.gl.glClearColor(220/255,220/255,220/255, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 
 		this.mapRenderer.setView(this.camera);
 		this.mapRenderer.render();
@@ -103,12 +107,18 @@ public class Frogger extends ApplicationAdapter {
 			car.update();
 			car.draw(this.batch);
 		}
-
+		int maxScore = 0;
 		for (Player player: this.players){
 			player.update();
+			if(player.getScore() > maxScore){
+				maxScore = player.getScore();
+			}
 			player.draw(this.batch);
 		}
+		this.scoreDisplay.setColor(1.0f,1.0f,1.0f,1.0f);
+		this.scoreDisplay.draw(this.batch,"Max Score" + maxScore,0,0);
 	}
+
 	@Override
 	public void dispose () {
 		this.batch.dispose();
