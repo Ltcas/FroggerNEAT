@@ -44,7 +44,7 @@ public class Player extends Sprite implements InputProcessor{
         for(Platform platform:this.platforms){
             if(platform.getBoundingRectangle().overlaps(this.getBoundingRectangle())){
                 int futureX = this.x + platform.getSpeed() * platform.getDirection();
-                if(futureX < this.width && futureX > 0){
+                if(futureX + 32 < this.width && futureX > 0){
                     this.x = futureX;
                     this.translateX(platform.getSpeed() * platform.getDirection());
                     onPlatform = true;
