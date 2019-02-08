@@ -1,19 +1,15 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-/**
- * Created by Chance on 2/7/2019.
- */
-public class Car extends Sprite {
+public class Platform extends Sprite {
 
     private int startX;
     private int startY;
     private int direction;
     private int speed;
 
-    public Car(Sprite sprite, int x, int y,int direction,int speed){
+    public Platform(Sprite sprite, int x, int y,int direction,int speed){
         super(sprite);
         this.startX = x;
         this.startY = y;
