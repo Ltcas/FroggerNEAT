@@ -40,9 +40,20 @@ public class Player extends Sprite implements InputProcessor{
 
     public void testCollision(){
         int tileID = this.collision.getCell(this.x/32,this.y/32).getTile().getId();
+        boolean onPlatform = false;
+        for(Platform platform:this.platforms){
+            if(platform.getBoundingRectangle().overlaps(this.getBoundingRectangle())){
+                int futureX = this.x + platform.getSpeed() * platform.getDirection();
+                if(futureX < this.width && futureX > 0){
+                    this.x = futureX;
+                    this.translateX(platform.getSpeed() * platform.getDirection());
+                    onPlatform = true;
+                }
+            }
+        }
+
         for(Car car:this.cars){
-            Rectangle carRectangle = car.getBoundingRectangle();
-            if(this.getBoundingRectangle().overlaps(carRectangle) || tileID == 3){
+            if((this.getBoundingRectangle().overlaps(car.getBoundingRectangle()) || tileID == 3) && !onPlatform){
                 this.isAlive = false;
                 this.setTexture(new Texture("core/assets/death.png"));
             }
@@ -57,6 +68,8 @@ public class Player extends Sprite implements InputProcessor{
                     if(this.y + 32 < this.height){
                         this.setTexture(new Texture("core/assets/cat_back.png"));
                         this.y += 32;
+                    }else{
+                        this.reset();
                     }
                     break;
                 case Input.Keys.DOWN:
@@ -79,8 +92,18 @@ public class Player extends Sprite implements InputProcessor{
                     break;
             }
             this.setPosition(this.x,this.y);
+        }else if(keycode == Input.Keys.R){
+           this.reset();
         }
         return true;
+    }
+
+    private void reset(){
+        this.isAlive = true;
+        this.x = 32*8;
+        this.y = 0;
+        this.setPosition(this.x,this.y);
+        this.setTexture(new Texture("core/assets/cat_back.png"));
     }
 
     public void update(){

@@ -18,6 +18,13 @@ public class Platform extends Sprite {
         this.setPosition(this.startX, this.startY);
     }
 
+    public int getSpeed(){
+        return this.speed;
+    }
+
+    public int getDirection(){
+        return this.direction;
+    }
 
     public void update() {
         this.translateX(this.direction * this.speed);
