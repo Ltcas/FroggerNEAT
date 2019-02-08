@@ -15,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Frogger extends ApplicationAdapter {
@@ -40,7 +41,7 @@ public class Frogger extends ApplicationAdapter {
 		this.players = new ArrayList<Player>();
 		this.platforms = new ArrayList<Platform>();
 		this.cars = new ArrayList<Car>();
-		this.scoreDisplay = new BitmapFont();
+		this.scoreDisplay = new BitmapFont(new Fon);
 	}
 
 	@Override
