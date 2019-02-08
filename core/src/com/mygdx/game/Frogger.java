@@ -41,7 +41,7 @@ public class Frogger extends ApplicationAdapter {
 		this.players = new ArrayList<Player>();
 		this.platforms = new ArrayList<Platform>();
 		this.cars = new ArrayList<Car>();
-		this.scoreDisplay = new BitmapFont(new Fon);
+		this.scoreDisplay = new BitmapFont(Gdx.files.internal("core/Fonts/font.fnt"));
 	}
 
 	@Override
