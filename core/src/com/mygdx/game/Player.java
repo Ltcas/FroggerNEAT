@@ -13,7 +13,10 @@ import java.util.ArrayList;
  * Created by Chance on 2/6/2019.
  */
 public class Player extends Sprite implements InputProcessor{
-
+    private final static Texture BACK = new Texture("core/assets/cat_back.png");
+    private final static Texture FRONT = new Texture("core/assets/cat_front.png");
+    private final static Texture RIGHT = new Texture("core/assets/cat_right.png");
+    private final static Texture LEFT = new Texture("core/assets/cat_left.png");
     private int x;
     private int y;
     private int width;
@@ -57,6 +60,7 @@ public class Player extends Sprite implements InputProcessor{
             if((this.getBoundingRectangle().overlaps(car.getBoundingRectangle()) || tileID == 3) && !onPlatform){
                 this.isAlive = false;
                 this.setTexture(new Texture("core/assets/death.png"));
+                this.score = 0;
             }
         }
     }
@@ -67,29 +71,29 @@ public class Player extends Sprite implements InputProcessor{
             switch (keycode){
                 case Input.Keys.UP:
                     if(this.y + 32 < this.height){
-                        this.setTexture(new Texture("core/assets/cat_back.png"));
+                        this.setTexture(this.BACK);
                         this.y += 32;
-                        this.score += 10;
+                        this.score += 100;
                     }else{
                         this.reset();
                     }
                     break;
                 case Input.Keys.DOWN:
                     if(this.y - 32 >= 0){
-                        this.setTexture(new Texture("core/assets/cat_front.png"));
+                        this.setTexture(this.FRONT);
                         this.y -= 32;
-                        this.score -= 10;
+                        this.score -= 100;
                     }
                     break;
                 case Input.Keys.RIGHT:
                     if(this.x + 32 < this.width){
-                        this.setTexture(new Texture("core/assets/cat_right.png"));
+                        this.setTexture(this.RIGHT);
                         this.x += 32;
                     }
                     break;
                 case Input.Keys.LEFT:
                     if(this.x - 32 >= 0){
-                        this.setTexture(new Texture("core/assets/cat_left.png"));
+                        this.setTexture(this.LEFT);
                         this.x -= 32;
                     }
                     break;

@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,8 +15,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Frogger extends ApplicationAdapter {
@@ -41,7 +40,6 @@ public class Frogger extends ApplicationAdapter {
 		this.players = new ArrayList<Player>();
 		this.platforms = new ArrayList<Platform>();
 		this.cars = new ArrayList<Car>();
-		this.scoreDisplay = new BitmapFont(Gdx.files.internal("core/Fonts/font.fnt"));
 	}
 
 	@Override
@@ -56,6 +54,8 @@ public class Frogger extends ApplicationAdapter {
 		this.addCars();
 		this.addPlayers();
 		this.mapRenderer = new OrthoCachedTiledMapRenderer(this.map);
+		this.scoreDisplay = new BitmapFont(Gdx.files.local("core/Fonts/font.fnt"));
+		this.scoreDisplay.getData().setScale(.5f);
 	}
 
 	private void addPlayers(){
@@ -69,7 +69,6 @@ public class Frogger extends ApplicationAdapter {
 		this.cars.add(new Car(new Sprite(new Texture("core/assets/yellow_car.png")),0,32,1,3));
 		this.cars.add(new Car(new Sprite(new Texture("core/assets/yellow_car.png")),0,96,1,4));
 		this.cars.add(new Car(new Sprite(new Texture("core/assets/bus.png")),this.width,128,-1,2));
-
 	}
 
 	private void addPlatforms(){
@@ -116,8 +115,8 @@ public class Frogger extends ApplicationAdapter {
 			}
 			player.draw(this.batch);
 		}
-		this.scoreDisplay.setColor(1.0f,1.0f,1.0f,1.0f);
-		this.scoreDisplay.draw(this.batch,"Max Score" + maxScore,0,0);
+		this.scoreDisplay.setColor(Color.WHITE);
+		this.scoreDisplay.draw(this.batch,"Max Score: " + maxScore,0,this.scoreDisplay.getCapHeight() + 32);
 	}
 
 	@Override
