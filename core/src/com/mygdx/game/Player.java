@@ -54,6 +54,8 @@ public class Player extends Sprite{
     /**Random generator used for movements*/
     private Random randomGenerator;
 
+    private int frameCount;
+
     /**
      * Constructor that sets up a player.
      * @param width width of the screen
@@ -63,7 +65,8 @@ public class Player extends Sprite{
      * @param platforms the list of platforms
      */
     public Player(int width, int height,TiledMapTileLayer collision,ArrayList<Car> cars,ArrayList<Platform> platforms){
-        this.setTexture(this.BACK);
+        super();
+        this.set(new Sprite(this.BACK));
         this.width = width;
         this.height = height;
         this.x = 32*8;
@@ -74,6 +77,7 @@ public class Player extends Sprite{
         this.cars = cars;
         this.platforms = platforms;
         this.score = 0;
+        this.frameCount = 0;
         this.randomGenerator = new Random();
     }
 
@@ -126,9 +130,16 @@ public class Player extends Sprite{
      * Updates movement and then test for collision.
      */
     public void update(){
-        int random = this.randomGenerator.nextInt(4);
-        move(random);
-        testCollision();
+        if(!this.isAlive){
+            this.frameCount++;
+            if(this.frameCount == 1){
+                this.reset();
+                this.frameCount = 0;
+            }
+        }else{
+            move(this.randomGenerator.nextInt(4));
+            testCollision();
+        }
     }
 
     /**
