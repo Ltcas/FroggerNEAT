@@ -34,14 +34,25 @@ public class Player extends Sprite implements InputProcessor{
     private boolean isAlive;
     /**The score of the player*/
     private int score;
-
+    /**The collision map*/
     private TiledMapTileLayer collision;
+    /**List of cars*/
     private ArrayList<Car> cars;
+    /**List of platforms*/
     private ArrayList<Platform> platforms;
+    /**Random generator used for movements*/
     private Random randomGenerator;
 
-    public Player(Sprite sprite, int width, int height,TiledMapTileLayer collision,ArrayList<Car> cars,ArrayList<Platform> platforms){
-        super(sprite);
+    /**
+     * Constructor that sets up a player
+     * @param width
+     * @param height
+     * @param collision
+     * @param cars
+     * @param platforms
+     */
+    public Player(int width, int height,TiledMapTileLayer collision,ArrayList<Car> cars,ArrayList<Platform> platforms){
+        super(new Sprite(this.BACK));
         this.width = width;
         this.height = height;
         this.x = 32*8;
