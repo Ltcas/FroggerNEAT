@@ -34,11 +34,11 @@ public class Platform extends Sprite {
      */
     public Platform(Sprite sprite, int x, int y, int offset, int direction,int speed){
         super(sprite);
-        this.startX = x + offset;
-        this.startY = y;
-        this.offset = offset;
-        this.direction = direction;
-        this.speed = speed;
+        this.startX     = x + offset;
+        this.startY     = y;
+        this.offset     = offset;
+        this.direction  = direction;
+        this.speed      = speed;
         this.setPosition(this.startX, this.startY);
     }
 
@@ -63,8 +63,8 @@ public class Platform extends Sprite {
      */
     public void update() {
         this.translateX(this.direction * this.speed);
-        int boundLeft = -384 + this.offset;
-        int boundRight = 800 + this.offset;
+        int boundLeft   = -384 + this.offset;
+        int boundRight  = 800 + this.offset;
         if(this.getX() <boundLeft || this.getX() > boundRight){
             this.setPosition(this.startX,this.startY);
         }

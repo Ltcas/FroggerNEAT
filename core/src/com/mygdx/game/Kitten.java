@@ -67,12 +67,12 @@ public class Kitten extends ApplicationAdapter {
 	 * @param height The initial height of the game window.
 	 */
 	public Kitten(int width, int height){
-		this.width = width;
-		this.height = height;
-		this.players = new ArrayList<Player>();
-		this.platforms = new ArrayList<Platform>();
-		this.cars = new ArrayList<Car>();
-		this.numPlayers = 15;
+		this.width 		= width;
+		this.height 	= height;
+		this.players 	= new ArrayList<Player>();
+		this.platforms 	= new ArrayList<Platform>();
+		this.cars 		= new ArrayList<Car>();
+		this.numPlayers = 20;
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class Kitten extends ApplicationAdapter {
 	 */
 	@Override
 	public void create () {
-		this.batch = new SpriteBatch();
+		this.batch 	= new SpriteBatch();
 		this.camera = new OrthographicCamera();
 		this.camera.position.set(this.width/2,this.height/2,0);
 		this.viewport = new FitViewport(this.width,this.height,camera);
@@ -110,12 +110,12 @@ public class Kitten extends ApplicationAdapter {
 	 */
 	//todo fix spawns and add more cars
 	private void addCars(){
-		int initEdgeLeft = 0;
-		int initEdgeRight = this.width;
-		int offset = 32;
-		int directionLeft = -1;
-		int directionRight = 1;
-		int row = 32;
+		int initEdgeLeft 	= 0;
+		int initEdgeRight 	= this.width;
+		int offset 			= 32;
+		int directionLeft 	= -1;
+		int directionRight 	= 1;
+		int row 			= 32;
 
 		Sprite racecar = new Sprite(new Texture("core/assets/racecar.png"));
 		Sprite yellowCar = new Sprite(new Texture("core/assets/yellow_car.png"));
@@ -140,17 +140,17 @@ public class Kitten extends ApplicationAdapter {
 	 */
 	//todo fix spawns and add more platforms.
 	private void addPlatforms(){
-		int initEdgeLeft = 0;
-		int initEdgeRight = this.width;
-		int offset = 32;
-		int directionLeft = -1;
-		int directionRight = 1;
-		int row = 32;
+		int initEdgeLeft	= 0;
+		int initEdgeRight	= this.width;
+		int offset 			= 32;
+		int directionLeft 	= -1;
+		int directionRight 	= 1;
+		int row 			= 32;
 
-		Sprite turtle = new Sprite(new Texture("core/assets/turtle.png"));
-		Sprite log3 = new Sprite(new Texture("core/assets/log3.png"));
-		Sprite log4 = new Sprite(new Texture("core/assets/log4.png"));
-		Sprite log5 = new Sprite(new Texture("core/assets/log5.png"));
+		Sprite turtle	= new Sprite(new Texture("core/assets/turtle.png"));
+		Sprite log3		= new Sprite(new Texture("core/assets/log3.png"));
+		Sprite log4 	= new Sprite(new Texture("core/assets/log4.png"));
+		Sprite log5 	= new Sprite(new Texture("core/assets/log5.png"));
 
 		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset, directionLeft, 2));
 		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset*2, directionLeft, 2));
