@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.ArrayList;
 
-public class Frogger extends ApplicationAdapter {
+public class Kitten extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private TiledMap map;
 	private OrthoCachedTiledMapRenderer mapRenderer;
@@ -34,7 +34,7 @@ public class Frogger extends ApplicationAdapter {
 	private BitmapFont scoreDisplay;
 
 
-	public Frogger(int width,int height){
+	public Kitten(int width, int height){
 		this.width = width;
 		this.height = height;
 		this.players = new ArrayList<Player>();
