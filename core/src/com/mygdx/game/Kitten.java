@@ -17,6 +17,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.ArrayList;
 
+/**
+ * Contains the game logic for a game of "Kittener" which is based off of the classic arcade game
+ * of "Frogger".
+ */
 public class Kitten extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private TiledMap map;
