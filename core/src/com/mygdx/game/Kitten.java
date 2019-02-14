@@ -32,6 +32,7 @@ public class Kitten extends ApplicationAdapter {
 	private int width;
 	private int height;
 	private BitmapFont scoreDisplay;
+	private int numPlayers;
 
 
 	public Kitten(int width, int height){
@@ -40,6 +41,7 @@ public class Kitten extends ApplicationAdapter {
 		this.players = new ArrayList<Player>();
 		this.platforms = new ArrayList<Platform>();
 		this.cars = new ArrayList<Car>();
+		this.numPlayers = 15;
 	}
 
 	@Override
@@ -59,9 +61,11 @@ public class Kitten extends ApplicationAdapter {
 	}
 
 	private void addPlayers(){
-		this.players.add(new Player(new Sprite(new Texture("core/assets/cat_back.png")),
-				this.width,this.height,
-				(TiledMapTileLayer)this.map.getLayers().get("level"),this.cars,this.platforms));
+		for(int i = 0;i < this.numPlayers;i++){
+			this.players.add(new Player(new Sprite(new Texture("core/assets/cat_back.png")),
+					this.width,this.height,
+					(TiledMapTileLayer)this.map.getLayers().get("level"),this.cars,this.platforms));
+		}
 	}
 
 	private void addCars(){
