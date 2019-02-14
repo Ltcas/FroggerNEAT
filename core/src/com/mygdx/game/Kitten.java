@@ -62,8 +62,7 @@ public class Kitten extends ApplicationAdapter {
 
 	private void addPlayers(){
 		for(int i = 0;i < this.numPlayers;i++){
-			this.players.add(new Player(new Sprite(new Texture("core/assets/cat_back.png")),
-					this.width,this.height,
+			this.players.add(new Player(this.width,this.height,
 					(TiledMapTileLayer)this.map.getLayers().get("level"),this.cars,this.platforms));
 		}
 	}
