@@ -64,7 +64,7 @@ public class Platform extends Sprite {
     public void update() {
         this.translateX(this.direction * this.speed);
         int boundLeft = -384 + this.offset;
-        int boundRight = 672 + this.offset;
+        int boundRight = 800 + this.offset;
         if(this.getX() <boundLeft || this.getX() > boundRight){
             this.setPosition(this.startX,this.startY);
         }

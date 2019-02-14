@@ -164,8 +164,8 @@ public class Kitten extends ApplicationAdapter {
 		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset*8, directionLeft, 4));
 		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset*9, directionLeft, 4));
 
-		this.platforms.add(new Platform(log4, initEdgeLeft, row*9, offset*-4, directionLeft, 3));
-		this.platforms.add(new Platform(log4, initEdgeLeft, row*9, offset*-11, directionLeft, 3));
+		this.platforms.add(new Platform(log4, initEdgeLeft, row*9, offset*-4, directionRight, 3));
+		this.platforms.add(new Platform(log4, initEdgeLeft, row*9, offset*-10, directionRight, 3));
 
 		this.platforms.add(new Platform(log3, initEdgeRight, row*10, offset, directionLeft, 5));
 		this.platforms.add(new Platform(log3, initEdgeRight, row*10, offset*7, directionLeft, 5));
