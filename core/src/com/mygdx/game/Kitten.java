@@ -110,10 +110,29 @@ public class Kitten extends ApplicationAdapter {
 	 */
 	//todo fix spawns and add more cars
 	private void addCars(){
-		this.cars.add(new Car(new Sprite(new Texture("core/assets/racecar.png")),this.width,64,-1,5));
-		this.cars.add(new Car(new Sprite(new Texture("core/assets/yellow_car.png")),0,32,1,3));
-		this.cars.add(new Car(new Sprite(new Texture("core/assets/yellow_car.png")),0,96,1,4));
-		this.cars.add(new Car(new Sprite(new Texture("core/assets/bus.png")),this.width,128,-1,2));
+		int initEdgeLeft = 0;
+		int initEdgeRight = this.width;
+		int offset = 32;
+		int directionLeft = -1;
+		int directionRight = 1;
+		int row = 32;
+
+		Sprite racecar = new Sprite(new Texture("core/assets/racecar.png"));
+		Sprite yellowCar = new Sprite(new Texture("core/assets/yellow_car.png"));
+		Sprite bus = new Sprite(new Texture("core/assets/bus.png"));
+
+		this.cars.add(new Car(yellowCar, initEdgeLeft, row, offset*-1, directionRight, 3));
+		this.cars.add(new Car(yellowCar, initEdgeLeft, row, offset*-3, directionRight, 3));
+		this.cars.add(new Car(yellowCar, initEdgeLeft, row, offset*-5, directionRight, 3));
+
+		this.cars.add(new Car(racecar, initEdgeRight, row*2, offset, directionLeft, 6));
+
+		this.cars.add(new Car(yellowCar, initEdgeLeft, row*3, offset*-1, directionRight, 4));
+		this.cars.add(new Car(yellowCar, initEdgeLeft, row*3, offset*-3, directionRight, 4));
+		this.cars.add(new Car(yellowCar, initEdgeLeft, row*3, offset*-5, directionRight, 4));
+
+		this.cars.add(new Car(bus, initEdgeRight, row*4, offset, directionLeft,2));
+		this.cars.add(new Car(bus, initEdgeRight, row*4, offset*5, directionLeft,2));
 	}
 
 	/**
@@ -121,11 +140,35 @@ public class Kitten extends ApplicationAdapter {
 	 */
 	//todo fix spawns and add more platforms.
 	private void addPlatforms(){
-		this.platforms.add(new Platform(new Sprite(new Texture("core/assets/turtle.png")), this.width, 192, -1, 2));
-		this.platforms.add(new Platform(new Sprite(new Texture("core/assets/log5.png")), -160, 224, 1, 2));
-		this.platforms.add(new Platform(new Sprite(new Texture("core/assets/turtle.png")), this.width, 256, -1, 2));
-		this.platforms.add(new Platform(new Sprite(new Texture("core/assets/log4.png")), -128, 288, 1, 3));
-		this.platforms.add(new Platform(new Sprite(new Texture("core/assets/log3.png")), this.width, 320, -1, 4));
+		int initEdgeLeft = 0;
+		int initEdgeRight = this.width;
+		int offset = 32;
+		int directionLeft = -1;
+		int directionRight = 1;
+		int row = 32;
+
+		Sprite turtle = new Sprite(new Texture("core/assets/turtle.png"));
+		Sprite log3 = new Sprite(new Texture("core/assets/log3.png"));
+		Sprite log4 = new Sprite(new Texture("core/assets/log4.png"));
+		Sprite log5 = new Sprite(new Texture("core/assets/log5.png"));
+
+		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset, directionLeft, 2));
+		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset*2, directionLeft, 2));
+		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset*5, directionLeft, 2));
+		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset*6, directionLeft, 2));
+
+		this.platforms.add(new Platform(log5, initEdgeLeft, row*7, offset*-5, directionRight, 2));
+
+		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset, directionLeft, 4));
+		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset*2, directionLeft, 4));
+		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset*8, directionLeft, 4));
+		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset*9, directionLeft, 4));
+
+		this.platforms.add(new Platform(log4, initEdgeLeft, row*9, offset*-4, directionLeft, 3));
+		this.platforms.add(new Platform(log4, initEdgeLeft, row*9, offset*-11, directionLeft, 3));
+
+		this.platforms.add(new Platform(log3, initEdgeRight, row*10, offset, directionLeft, 5));
+		this.platforms.add(new Platform(log3, initEdgeRight, row*10, offset*7, directionLeft, 5));
 	}
 
 	/**

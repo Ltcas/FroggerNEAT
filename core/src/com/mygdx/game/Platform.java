@@ -15,6 +15,9 @@ public class Platform extends Sprite {
     /** The representation of the starting y position of a platform. */
     private int startY;
 
+    /** Used to calculate the 'respawn' of a car. */
+    private int offset;
+
     /** The representation of the starting direction of a platform. */
     private int direction;
 
@@ -29,10 +32,11 @@ public class Platform extends Sprite {
      * @param direction The starting direction that a platform will be traveling.
      * @param speed The starting speed that a platform will be traveling.
      */
-    public Platform(Sprite sprite, int x, int y,int direction,int speed){
+    public Platform(Sprite sprite, int x, int y, int offset, int direction,int speed){
         super(sprite);
-        this.startX = x;
+        this.startX = x + offset;
         this.startY = y;
+        this.offset = offset;
         this.direction = direction;
         this.speed = speed;
         this.setPosition(this.startX, this.startY);
@@ -59,7 +63,9 @@ public class Platform extends Sprite {
      */
     public void update() {
         this.translateX(this.direction * this.speed);
-        if(this.getX() < -160 || this.getX() > 480+160){
+        int boundLeft = -384 + this.offset;
+        int boundRight = 672 + this.offset;
+        if(this.getX() <boundLeft || this.getX() > boundRight){
             this.setPosition(this.startX,this.startY);
         }
     }

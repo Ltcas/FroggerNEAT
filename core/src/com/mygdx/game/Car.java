@@ -9,16 +9,19 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public class Car extends Sprite {
 
-    /** The representation of the starting x position of a platform. */
+    /** The representation of the starting x position of a car. */
     private int startX;
 
-    /** The representation of the starting y position of a platform. */
+    /** The representation of the starting y position of a car. */
     private int startY;
 
-    /** The representation of the starting direction of a platform. */
+    /** Used to calculate the 'respawn' of a car. */
+    private int offset;
+
+    /** The representation of the starting direction of a car. */
     private int direction;
 
-    /** The representation of the starting speed of a platform. */
+    /** The representation of the starting speed of a car. */
     private int speed;
 
     /**
@@ -29,10 +32,11 @@ public class Car extends Sprite {
      * @param direction The starting direction that a car will be traveling.
      * @param speed The starting speed that a car will be traveling.
      */
-    public Car(Sprite sprite, int x, int y,int direction,int speed){
+    public Car(Sprite sprite, int x, int y, int offset, int direction, int speed){
         super(sprite);
-        this.startX = x;
+        this.startX = x + offset;
         this.startY = y;
+        this.offset = offset;
         this.direction = direction;
         this.speed = speed;
         this.setPosition(this.startX, this.startY);
@@ -43,8 +47,10 @@ public class Car extends Sprite {
      */
     public void update() {
         this.translateX(this.direction * this.speed);
-        if(this.getX() < -64 || this.getX() > 480){
-            this.setPosition(this.startX,this.startY);
+        int boundLeft = -192 + this.offset;
+        int boundRight = 672 + this.offset;
+        if(this.getX() < boundLeft || this.getX() > boundRight){
+            this.setPosition(this.startX, this.startY);
         }
     }
 }

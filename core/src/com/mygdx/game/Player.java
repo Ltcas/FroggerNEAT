@@ -52,7 +52,8 @@ public class Player extends Sprite implements InputProcessor{
      * @param platforms
      */
     public Player(int width, int height,TiledMapTileLayer collision,ArrayList<Car> cars,ArrayList<Platform> platforms){
-        super(new Sprite(this.BACK));
+        super();
+        this.set(new Sprite(this.BACK));
         this.width = width;
         this.height = height;
         this.x = 32*8;
