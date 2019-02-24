@@ -115,9 +115,9 @@ public class Player extends Sprite{
      * @return the score that the player has
      */
     public double getScore(){
-        double time = 1 / this.frameCount;
+        double time = 1.0 / this.frameCount;
         System.out.println(time);
-        return this.score * time;
+        return (int) Math.round(this.score * time * 100);
     }
 
     /**

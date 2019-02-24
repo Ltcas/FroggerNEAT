@@ -14,7 +14,10 @@ public class Node {
         OUTPUT
     }
 
+    /** The layer our node will be residing 'on'. */
     private nodeLayer layer;
+
+    /** The bias our node will have. */
     private double bias;
 
     public Node() {
