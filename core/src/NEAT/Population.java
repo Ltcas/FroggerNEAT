@@ -8,13 +8,13 @@ import java.util.ArrayList;
  */
 public class Population {
     /** List of organisms in the population */
-    ArrayList<Organism> organisms;
+    private ArrayList<Organism> organisms;
 
     /** List of species in the population */
-    ArrayList<Species> species;
+    private ArrayList<Species> species;
 
     /** List of innovations that have occurred in the population */
-    ArrayList<Innovation> innovations;
+    private ArrayList<Innovation> innovations;
 
     /** The number of organisms in the population */
     private int populationSize;
@@ -35,8 +35,8 @@ public class Population {
      * Populates the list of organism based off of the population size
      */
     private void initializePopulation(){
-        for(int i = 0;i < this.populationSize;i++){
-            this.organisms.add(new Organism("Test"));
+        for(int i = 0; i < this.populationSize; i++){
+            this.organisms.add(new Organism(String.format("Organism #%d", i)));
         }
     }
 }

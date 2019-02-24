@@ -71,22 +71,12 @@ public class Network {
 
         // Counting up the number of nodes in each list, if any
         if(!inNodes.isEmpty() || !outNodes.isEmpty() || !hiddenNodes.isEmpty()) {
-            for(Node n : this.inNodes) {
-                nodeCount++;
-            }
-            for(Node n : this.outNodes) {
-                nodeCount++;
-            }
-            for(Node n : this.hiddenNodes) {
-                nodeCount++;
-            }
+            nodeCount = inNodes.size() + outNodes.size() + hiddenNodes.size();
         }
 
         // Counting up the number of links, if any
         if(!this.links.isEmpty()) {
-            for(Link l : this.links) {
-                linkCount++;
-            }
+            linkCount = this.links.size();
         }
 
         this.numNodes = nodeCount;

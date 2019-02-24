@@ -8,22 +8,22 @@ package NEAT;
  */
 public class Organism {
 
-    /**  */
+    /** Used to assign an organism a specified id number. */
     private static int id = 0;
 
-    /**  */
+    /** Keeps track of this organisms fitness. */
     private double fitness;
 
-    /**  */
+    /** The string representation of this organisms name. */
     private String name;
 
-    /**  */
+    /** Keeps track of this organisms generation. */
     private int generation;
 
-    /**  */
+    /** The neural network related to this organism. */
     private Network network;
 
-    /**  */
+    /** The genome of this organism. */
     private Genome genome;
 
     /**
