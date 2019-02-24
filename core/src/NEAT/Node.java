@@ -1,11 +1,15 @@
 package NEAT;
 
+import java.util.Random;
+
 /**
  * Models a neural node that exists in our neural network.
  * @author Chance Simmons and Brandon Townsend
  * @version 25 February 2019
  */
 public class Node {
+
+    private final Random random = new Random();
 
     /** The layer our node will be residing 'on'. */
     private NodeLayer layer;
@@ -17,7 +21,7 @@ public class Node {
      * Default constructor for a Node. Will create a node on the hidden layer with a bias of 0.
      */
     public Node() {
-        this(NodeLayer.HIDDEN, 0);
+        this(NodeLayer.HIDDEN);
     }
 
     /**
@@ -25,9 +29,9 @@ public class Node {
      * @param layer The layer to place this node on.
      * @param bias The bias to place upon this node.
      */
-    public Node(NodeLayer layer, double bias) {
+    public Node(NodeLayer layer) {
         this.layer  = layer;
-        this.bias   = bias;
+        this.bias   = random.nextDouble();
     }
 
     /**
