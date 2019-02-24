@@ -41,7 +41,7 @@ public class Network {
 
     public Network(int id,int inCount,int outCount){
         this.inNodes = new ArrayList<Node>();
-        this.outNodes = new ArrayList<Node>();
+        this.hiddenNodes = new ArrayList<Node>();
         this.outNodes = new ArrayList<Node>();
         this.id = id;
         this.createNetwork(inCount,outCount);
