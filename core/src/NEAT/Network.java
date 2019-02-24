@@ -39,6 +39,24 @@ public class Network {
                 new ArrayList<Link>());
     }
 
+    public Network(int id,int inCount,int outCount){
+        this.inNodes = new ArrayList<Node>();
+        this.outNodes = new ArrayList<Node>();
+        this.outNodes = new ArrayList<Node>();
+        this.id = id;
+        this.createNetwork(inCount,outCount);
+    }
+
+    private void createNetwork(int inCount,int outCount){
+        for(int i = 0;i < inCount;i++){
+            this.inNodes.add(new Node());
+        }
+
+        for(int i = 0;i < outCount;i++){
+            this.outNodes.add(new Node());
+        }
+    }
+
     /**
      * Constructor that builds a network based on passed nodes, but no links between those nodes.
      * @param id The identification number of the new network.

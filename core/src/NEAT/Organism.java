@@ -34,7 +34,7 @@ public class Organism {
         this.fitness    = 0;
         this.generation = 0;
         this.name       = name;
-        this.network    = new Network(id);
+        this.network    = new Network(id,25,4);
         id++;
         this.genome     = new Genome();
     }
