@@ -49,11 +49,11 @@ public class Network {
 
     private void createNetwork(int inCount,int outCount){
         for(int i = 0;i < inCount;i++){
-            this.inNodes.add(new Node());
+            this.inNodes.add(new Node(NodeLayer.INPUT, 0));
         }
 
         for(int i = 0;i < outCount;i++){
-            this.outNodes.add(new Node());
+            this.outNodes.add(new Node(NodeLayer.OUTPUT, 0));
         }
     }
 
