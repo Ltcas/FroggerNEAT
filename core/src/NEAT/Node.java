@@ -62,7 +62,7 @@ public class Node {
         this.bias = bias;
     }
 
-    public void activationFunction() {
-        //todo
+    public double activationFunction(double input) {
+        return (1 /(1 + Math.pow(Math.E,(-1 * input))));
     }
 }
