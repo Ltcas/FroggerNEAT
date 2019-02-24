@@ -20,11 +20,19 @@ public class Node {
     /** The bias our node will have. */
     private double bias;
 
+    /**
+     * Default constructor for a Node. Will create a node on the hidden layer with a bias of 0.
+     */
     public Node() {
         this.layer  = nodeLayer.HIDDEN;
         this.bias   = 0;
     }
 
+    /**
+     * Creates a Node that is located on a specified layer with a specified bias.
+     * @param layer The layer to place this node on.
+     * @param bias The bias to place upon this node.
+     */
     public Node(nodeLayer layer, double bias) {
         this.layer  = layer;
         this.bias   = bias;
@@ -60,5 +68,9 @@ public class Node {
      */
     public void setBias(double bias) {
         this.bias = bias;
+    }
+
+    public void activationFunction() {
+        //todo
     }
 }
