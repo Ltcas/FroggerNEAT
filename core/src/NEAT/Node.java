@@ -7,15 +7,8 @@ package NEAT;
  */
 public class Node {
 
-    /** Enum that represents what layer our Node will be on. */
-    public enum nodeLayer {
-        HIDDEN,
-        INPUT,
-        OUTPUT
-    }
-
     /** The layer our node will be residing 'on'. */
-    private nodeLayer layer;
+    private NodeLayer layer;
 
     /** The bias our node will have. */
     private double bias;
@@ -24,8 +17,7 @@ public class Node {
      * Default constructor for a Node. Will create a node on the hidden layer with a bias of 0.
      */
     public Node() {
-        this.layer  = nodeLayer.HIDDEN;
-        this.bias   = 0;
+        this(NodeLayer.HIDDEN, 0);
     }
 
     /**
@@ -33,7 +25,7 @@ public class Node {
      * @param layer The layer to place this node on.
      * @param bias The bias to place upon this node.
      */
-    public Node(nodeLayer layer, double bias) {
+    public Node(NodeLayer layer, double bias) {
         this.layer  = layer;
         this.bias   = bias;
     }
@@ -42,7 +34,7 @@ public class Node {
      * Returns the layer that our node is 'on'.
      * @return The layer that our node is 'on'.
      */
-    public nodeLayer getLayer() {
+    public NodeLayer getLayer() {
         return layer;
     }
 
@@ -50,7 +42,7 @@ public class Node {
      * Modifies what layer our node is 'on'.
      * @param layer The new layer our node will reside 'on'.
      */
-    public void setLayer(nodeLayer layer) {
+    public void setLayer(NodeLayer layer) {
         this.layer = layer;
     }
 
