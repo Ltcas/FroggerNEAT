@@ -39,7 +39,7 @@ public class Player extends Sprite{
     private boolean isAlive;
 
     /**The score of the player*/
-    private int score;
+    private double score;
 
     /**The collision map*/
     private TiledMapTileLayer collision;
@@ -52,6 +52,9 @@ public class Player extends Sprite{
 
     /**Random generator used for movements*/
     private Random randomGenerator;
+
+    /** */
+    private int deathFrameCount;
 
     private int frameCount;
 
@@ -76,6 +79,7 @@ public class Player extends Sprite{
         this.cars = cars;
         this.platforms = platforms;
         this.score = 0;
+        this.deathFrameCount = 0;
         this.frameCount = 0;
         this.randomGenerator = new Random();
     }
@@ -110,8 +114,10 @@ public class Player extends Sprite{
      * Gets the score of the player.
      * @return the score that the player has
      */
-    public int getScore(){
-        return this.score;
+    public double getScore(){
+        double time = 1 / this.frameCount;
+        System.out.println(time);
+        return this.score * time;
     }
 
     /**
@@ -119,6 +125,7 @@ public class Player extends Sprite{
      */
     private void reset(){
         this.isAlive = true;
+        this.frameCount = 1;
         this.x = 32*8;
         this.y = 0;
         this.setPosition(this.x,this.y);
@@ -129,14 +136,17 @@ public class Player extends Sprite{
      * Updates movement and then test for collision.
      */
     public void update(){
+        this.frameCount += 1;
         if(!this.isAlive){
-            this.frameCount++;
-            if(this.frameCount == 1){
+            this.deathFrameCount++;
+            if(this.deathFrameCount % 60 == 0){
                 this.reset();
-                this.frameCount = 0;
+                this.deathFrameCount = 0;
             }
         }else{
-            move(this.randomGenerator.nextInt(4));
+            if(this.frameCount % 60 == 0){
+                move(this.randomGenerator.nextInt(4));
+            }
             testCollision();
         }
     }
