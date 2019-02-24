@@ -1,11 +1,29 @@
 package NEAT;
 
+/**
+ * Models an organism that will be building and modifying its own network to get the highest
+ * fitness score it can.
+ * @author Chance Simmons and Brandon Townsend
+ * @version 25 February 2019
+ */
 public class Organism {
+
+    /**  */
     private static int id = 0;
+
+    /**  */
     private double fitness;
+
+    /**  */
     private String name;
+
+    /**  */
     private int generation;
+
+    /**  */
     private Network network;
+
+    /**  */
     private Genome genome;
 
     /**
@@ -31,6 +49,7 @@ public class Organism {
      */
     @Override
     public String toString() {
-        return this.name + " " + this.generation + " " + this.fitness;
+        return "\nName: " + this.name + "\nID: " + this.network.getId()+ "\nGen: "
+                + this.generation + "\nFitness: " + this.fitness;
     }
 }

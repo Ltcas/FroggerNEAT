@@ -36,7 +36,7 @@ public class Population {
      */
     private void initializePopulation(){
         for(int i = 0;i < this.populationSize;i++){
-            this.organisms.add(new Organism(100,1));
+            this.organisms.add(new Organism("Test"));
         }
     }
 }
