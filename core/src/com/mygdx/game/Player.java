@@ -135,18 +135,10 @@ public class Player extends Sprite{
      */
     public void update(){
         this.frameCount += 1;
-        if(!this.isAlive){
-            this.deathFrameCount++;
-            if(this.deathFrameCount % 60 == 0){
-                this.reset();
-                this.deathFrameCount = 0;
-            }
-        }else{
-            if(this.frameCount % 60 == 0){
-                move(this.randomGenerator.nextInt(4));
-            }
-            testCollision();
+        if(this.frameCount % 60 == 0){
+            move(this.randomGenerator.nextInt(4));
         }
+        testCollision();
     }
 
     /**

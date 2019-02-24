@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import NEAT.Population;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -61,6 +62,9 @@ public class Kitten extends ApplicationAdapter {
 	/** Representation of the number of players. */
 	private int numPlayers;
 
+	/** Population for the NEAT algorithm. */
+	private Population population;
+
 	/**
 	 * Constructs a new Kitten game object.
 	 * @param width The initial width of the game window.
@@ -90,6 +94,7 @@ public class Kitten extends ApplicationAdapter {
 		this.addPlatforms();
 		this.addCars();
 		this.addPlayers();
+		this.population = new Population(this.numPlayers);
 		this.mapRenderer = new OrthoCachedTiledMapRenderer(this.map);
 		this.scoreDisplay = new BitmapFont(Gdx.files.local("core/Fonts/font.fnt"));
 		this.scoreDisplay.getData().setScale(.5f);
