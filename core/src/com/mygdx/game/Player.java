@@ -180,4 +180,12 @@ public class Player extends Sprite{
             this.setPosition(this.x,this.y);
         }
     }
+
+    /**
+     * Gets the status of the player
+     * @return true if the player is alive, false otherwise
+     */
+    public boolean isAlive(){
+        return this.isAlive;
+    }
 }
