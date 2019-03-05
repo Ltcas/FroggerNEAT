@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Created by Chance on 2/6/2019.
+ * Sprite that models a kitten player.
+ * @author Chance Simmons and Brandon Townsend
+ * @version 5 March 2019
  */
 public class Player extends Sprite{
 
