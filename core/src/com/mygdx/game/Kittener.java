@@ -73,7 +73,7 @@ public class Kittener extends ApplicationAdapter {
 	 * @param height The initial height of the game window.
 	 */
 	public Kittener(int width, int height){
-		this.mapVision = new int[15][12];
+		this.mapVision = new int[12][15];
 		this.width 		= width;
 		this.height 	= height;
 		this.players 	= new ArrayList<Player>();
@@ -86,7 +86,7 @@ public class Kittener extends ApplicationAdapter {
 	public void initMapVision(){
 		for(int i = 0; i < this.mapVision.length;i++){
 			for(int j = 0;j < this.mapVision[i].length;j++){
-				if(j < 1 || j > 5){
+				if(i < 1 || i > 5){
 					this.mapVision[i][j] = 0;
 				}else{
 					this.mapVision[i][j] = 1;
