@@ -53,6 +53,7 @@ public class Network {
     private void createNetwork(int inCount,int outCount){
         for(int i = 0;i < inCount;i++){
             this.inNodes.add(new Node(NodeLayer.INPUT));
+            this.inNodes.get(i).setBias(0);
         }
 
         for(int i = 0;i < outCount;i++){

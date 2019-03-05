@@ -9,8 +9,6 @@ import java.util.Random;
  */
 public class Node {
 
-    private final Random random = new Random();
-
     /** The layer our node will be residing 'on'. */
     private NodeLayer layer;
 
@@ -27,9 +25,9 @@ public class Node {
     /**
      * Creates a Node that is located on a specified layer with a specified bias.
      * @param layer The layer to place this node on.
-     * @param bias The bias to place upon this node.
      */
     public Node(NodeLayer layer) {
+        Random random = new Random();
         this.layer  = layer;
         this.bias   = random.nextDouble();
     }
