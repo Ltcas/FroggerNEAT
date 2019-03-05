@@ -74,6 +74,7 @@ public class Kittener extends ApplicationAdapter {
 	/** Population for the NEAT algorithm. */
 	private Population population;
 
+	/** 2D array that is used to show hazards and tiles that can be moved on */
 	private int[][] mapVision;
 
 	/**
@@ -92,6 +93,10 @@ public class Kittener extends ApplicationAdapter {
 		this.initMapVision();
 	}
 
+	/**
+	 * Initializes the map vision array with 1's and 0's. The 1's are for hazards and the 0's
+	 * are for tiles that can be moved on.
+	 */
 	public void initMapVision(){
 		for(int i = 0; i < this.mapVision.length;i++){
 			for(int j = 0;j < this.mapVision[i].length;j++){
