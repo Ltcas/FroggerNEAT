@@ -22,9 +22,18 @@ import java.util.ArrayList;
  * Contains the game logic for a game of "Kittener" which is based off of the classic arcade game
  * of "Frogger".
  * @author Chance Simmons and Brandon Townsend
- * @version 14 February 2019
+ * @version 5 March 2019
  */
 public class Kittener extends ApplicationAdapter {
+
+    /** Number of pixels for the height and width of a tile. */
+    private final static int TILE_PIX = 32;
+
+    /** Represents how a sprite will move to the left direction. */
+    private final static int DIR_LEFT = -1;
+
+    /** Represents how a sprite will move to the right direction. */
+    private final static int DIR_RIGHT = 1;
 
 	/** Contains every single sprite that we are going to render. */
 	private SpriteBatch batch;
@@ -87,7 +96,7 @@ public class Kittener extends ApplicationAdapter {
 	public void create () {
 		this.batch 	= new SpriteBatch();
 		this.camera = new OrthographicCamera();
-		this.camera.position.set(this.width/2,this.height/2,0);
+		this.camera.position.set((float) this.width/2,(float) this.height/2,0);
 		this.viewport = new FitViewport(this.width,this.height,camera);
 		TmxMapLoader loader = new TmxMapLoader();
 		this.map = loader.load("core/Map/Map.tmx");
@@ -104,7 +113,7 @@ public class Kittener extends ApplicationAdapter {
 	 * Adds a the number of players specified by numPlayers.
 	 */
 	private void addPlayers(){
-		for(int i = 0;i < this.numPlayers;i++){
+		for(int i = 0; i < this.numPlayers; i++){
 			this.players.add(new Player(this.width,this.height,
 					(TiledMapTileLayer)this.map.getLayers().get("level"),this.cars,this.platforms));
 		}
@@ -113,67 +122,61 @@ public class Kittener extends ApplicationAdapter {
 	/**
 	 * Adds the cars that will be moving across the game.
 	 */
-	//todo fix spawns and add more cars
 	private void addCars(){
 		int initEdgeLeft 	= 0;
 		int initEdgeRight 	= this.width;
-		int offset 			= 32;
-		int directionLeft 	= -1;
-		int directionRight 	= 1;
-		int row 			= 32;
+		int offset 			= TILE_PIX;
+		int row 			= TILE_PIX;
 
 		Sprite racecar = new Sprite(new Texture("core/assets/racecar.png"));
 		Sprite yellowCar = new Sprite(new Texture("core/assets/yellow_car.png"));
 		Sprite bus = new Sprite(new Texture("core/assets/bus.png"));
 
-		this.cars.add(new Car(yellowCar, initEdgeLeft, row, offset*-1, directionRight, 3));
-		this.cars.add(new Car(yellowCar, initEdgeLeft, row, offset*-3, directionRight, 3));
-		this.cars.add(new Car(yellowCar, initEdgeLeft, row, offset*-5, directionRight, 3));
+		this.cars.add(new Car(yellowCar, initEdgeLeft, row, offset*-1, DIR_RIGHT, 3));
+		this.cars.add(new Car(yellowCar, initEdgeLeft, row, offset*-3, DIR_RIGHT, 3));
+		this.cars.add(new Car(yellowCar, initEdgeLeft, row, offset*-5, DIR_RIGHT, 3));
 
-		this.cars.add(new Car(racecar, initEdgeRight, row*2, offset, directionLeft, 6));
+		this.cars.add(new Car(racecar, initEdgeRight, row*2, offset, DIR_LEFT, 6));
 
-		this.cars.add(new Car(yellowCar, initEdgeLeft, row*3, offset*-1, directionRight, 4));
-		this.cars.add(new Car(yellowCar, initEdgeLeft, row*3, offset*-3, directionRight, 4));
-		this.cars.add(new Car(yellowCar, initEdgeLeft, row*3, offset*-5, directionRight, 4));
+		this.cars.add(new Car(yellowCar, initEdgeLeft, row*3, offset*-1, DIR_RIGHT, 4));
+		this.cars.add(new Car(yellowCar, initEdgeLeft, row*3, offset*-3, DIR_RIGHT, 4));
+		this.cars.add(new Car(yellowCar, initEdgeLeft, row*3, offset*-5, DIR_RIGHT, 4));
 
-		this.cars.add(new Car(bus, initEdgeRight, row*4, offset, directionLeft,2));
-		this.cars.add(new Car(bus, initEdgeRight, row*4, offset*5, directionLeft,2));
+		this.cars.add(new Car(bus, initEdgeRight, row*4, offset, DIR_LEFT,2));
+		this.cars.add(new Car(bus, initEdgeRight, row*4, offset*5, DIR_LEFT,2));
 	}
 
 	/**
 	 * Adds the platforms that will be moving across the game.
 	 */
-	//todo fix spawns and add more platforms.
 	private void addPlatforms(){
 		int initEdgeLeft	= 0;
 		int initEdgeRight	= this.width;
-		int offset 			= 32;
-		int directionLeft 	= -1;
-		int directionRight 	= 1;
-		int row 			= 32;
+		int offset 			= TILE_PIX;
+		int row 			= TILE_PIX;
 
 		Sprite turtle	= new Sprite(new Texture("core/assets/turtle.png"));
 		Sprite log3		= new Sprite(new Texture("core/assets/log3.png"));
 		Sprite log4 	= new Sprite(new Texture("core/assets/log4.png"));
 		Sprite log5 	= new Sprite(new Texture("core/assets/log5.png"));
 
-		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset, directionLeft, 2));
-		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset*2, directionLeft, 2));
-		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset*5, directionLeft, 2));
-		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset*6, directionLeft, 2));
+		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset, DIR_LEFT, 2));
+		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset*2, DIR_LEFT, 2));
+		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset*5, DIR_LEFT, 2));
+		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset*6, DIR_LEFT, 2));
 
-		this.platforms.add(new Platform(log5, initEdgeLeft, row*7, offset*-5, directionRight, 2));
+		this.platforms.add(new Platform(log5, initEdgeLeft, row*7, offset*-5, DIR_RIGHT, 2));
 
-		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset, directionLeft, 4));
-		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset*2, directionLeft, 4));
-		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset*8, directionLeft, 4));
-		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset*9, directionLeft, 4));
+		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset, DIR_LEFT, 4));
+		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset*2, DIR_LEFT, 4));
+		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset*8, DIR_LEFT, 4));
+		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset*9, DIR_LEFT, 4));
 
-		this.platforms.add(new Platform(log4, initEdgeLeft, row*9, offset*-4, directionRight, 3));
-		this.platforms.add(new Platform(log4, initEdgeLeft, row*9, offset*-10, directionRight, 3));
+		this.platforms.add(new Platform(log4, initEdgeLeft, row*9, offset*-4, DIR_RIGHT, 3));
+		this.platforms.add(new Platform(log4, initEdgeLeft, row*9, offset*-10, DIR_RIGHT, 3));
 
-		this.platforms.add(new Platform(log3, initEdgeRight, row*10, offset, directionLeft, 5));
-		this.platforms.add(new Platform(log3, initEdgeRight, row*10, offset*7, directionLeft, 5));
+		this.platforms.add(new Platform(log3, initEdgeRight, row*10, offset, DIR_LEFT, 5));
+		this.platforms.add(new Platform(log3, initEdgeRight, row*10, offset*7, DIR_LEFT, 5));
 	}
 
 	/**
@@ -191,7 +194,7 @@ public class Kittener extends ApplicationAdapter {
 	 */
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(220/255,220/255,220/255, 1);
+		Gdx.gl.glClearColor((float) 220/255,(float) 220/255,(float) 220/255, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		this.mapRenderer.setView(this.camera);
@@ -227,7 +230,7 @@ public class Kittener extends ApplicationAdapter {
 		}
 		this.scoreDisplay.setColor(Color.WHITE);
 		this.scoreDisplay.draw(this.batch,"Max Fitness: " + maxScore,0,this.scoreDisplay
-				.getCapHeight() + 32);
+				.getCapHeight() + TILE_PIX);
 	}
 
 	/**
