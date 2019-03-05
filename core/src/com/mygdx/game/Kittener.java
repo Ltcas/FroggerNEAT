@@ -65,18 +65,34 @@ public class Kittener extends ApplicationAdapter {
 	/** Population for the NEAT algorithm. */
 	private Population population;
 
+	private int[][] mapVision;
+
 	/**
 	 * Constructs a new Kittener game object.
 	 * @param width The initial width of the game window.
 	 * @param height The initial height of the game window.
 	 */
 	public Kittener(int width, int height){
+		this.mapVision = new int[15][12];
 		this.width 		= width;
 		this.height 	= height;
 		this.players 	= new ArrayList<Player>();
 		this.platforms 	= new ArrayList<Platform>();
 		this.cars 		= new ArrayList<Car>();
 		this.numPlayers = 20;
+		this.initMapVision();
+	}
+
+	public void initMapVision(){
+		for(int i = 0; i < this.mapVision.length;i++){
+			for(int j = 0;j < this.mapVision[i].length;j++){
+				if(j < 1 || j > 5){
+					this.mapVision[i][j] = 0;
+				}else{
+					this.mapVision[i][j] = 1;
+				}
+			}
+		}
 	}
 
 	/**
