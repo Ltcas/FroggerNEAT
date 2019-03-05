@@ -217,14 +217,17 @@ public class Kitten extends ApplicationAdapter {
 		}
 		double maxScore = 0;
 		for (Player player: this.players){
-			player.update();
+			if(player.isAlive()){
+				player.update();
+			}
 			if(player.getScore() > maxScore){
 				maxScore = player.getScore();
 			}
 			player.draw(this.batch);
 		}
 		this.scoreDisplay.setColor(Color.WHITE);
-		this.scoreDisplay.draw(this.batch,"Max Score: " + maxScore,0,this.scoreDisplay.getCapHeight() + 32);
+		this.scoreDisplay.draw(this.batch,"Max Fitness: " + maxScore,0,this.scoreDisplay
+				.getCapHeight() + 32);
 	}
 
 	/**

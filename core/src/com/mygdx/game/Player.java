@@ -105,7 +105,6 @@ public class Player extends Sprite{
             if ((this.getBoundingRectangle().overlaps(car.getBoundingRectangle()) || tileID == 3) && !onPlatform) {
                 this.isAlive = false;
                 this.setTexture(new Texture("core/assets/death.png"));
-                this.score = 0;
             }
         }
     }
@@ -115,7 +114,7 @@ public class Player extends Sprite{
      * @return the score that the player has
      */
     public double getScore(){
-        return (int) Math.round(this.score * (1.0 / this.frameCount) * 100);
+        return (int) Math.round(this.score * (1.0 / this.frameCount) * 1000);
     }
 
     /**
@@ -126,6 +125,7 @@ public class Player extends Sprite{
         this.frameCount = 1;
         this.x = 32*8;
         this.y = 0;
+        this.score = 0;
         this.setPosition(this.x,this.y);
         this.setTexture(new Texture("core/assets/cat_back.png"));
     }
@@ -179,5 +179,13 @@ public class Player extends Sprite{
             }
             this.setPosition(this.x,this.y);
         }
+    }
+
+    /**
+     * Gets the status of the player
+     * @return true if the player is alive, false otherwise
+     */
+    public boolean isAlive(){
+        return this.isAlive;
     }
 }
