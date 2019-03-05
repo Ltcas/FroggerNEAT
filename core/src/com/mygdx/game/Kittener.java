@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * @author Chance Simmons and Brandon Townsend
  * @version 14 February 2019
  */
-public class Kitten extends ApplicationAdapter {
+public class Kittener extends ApplicationAdapter {
 
 	/** Contains every single sprite that we are going to render. */
 	private SpriteBatch batch;
@@ -66,11 +66,11 @@ public class Kitten extends ApplicationAdapter {
 	private Population population;
 
 	/**
-	 * Constructs a new Kitten game object.
+	 * Constructs a new Kittener game object.
 	 * @param width The initial width of the game window.
 	 * @param height The initial height of the game window.
 	 */
-	public Kitten(int width, int height){
+	public Kittener(int width, int height){
 		this.width 		= width;
 		this.height 	= height;
 		this.players 	= new ArrayList<Player>();
