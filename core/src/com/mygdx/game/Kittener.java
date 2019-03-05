@@ -239,19 +239,34 @@ public class Kittener extends ApplicationAdapter {
 			car.update();
 			car.draw(this.batch);
 		}
+
+		int deadCount = 0;
 		double maxScore = 0;
 		for (Player player: this.players){
 			if(player.isAlive()){
 				player.update();
+			}else{
+				deadCount++;
 			}
 			if(player.getScore() > maxScore){
 				maxScore = player.getScore();
 			}
 			player.draw(this.batch);
 		}
+
+		if(deadCount == this.numPlayers){
+			this.resetPlayers();
+		}
+
 		this.scoreDisplay.setColor(Color.WHITE);
 		this.scoreDisplay.draw(this.batch,"Max Fitness: " + maxScore,0,this.scoreDisplay
 				.getCapHeight() + TILE_PIX);
+	}
+
+	public void resetPlayers(){
+		for(Player player: this.players){
+			player.reset();
+		}
 	}
 
 	/**

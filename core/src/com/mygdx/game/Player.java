@@ -126,7 +126,7 @@ public class Player extends Sprite{
     /**
      * Resets player and score back to the starting point.
      */
-    private void reset(){
+    public void reset(){
         this.isAlive = true;
         this.frameCount = 1;
         this.x = TILE_PIX*8;
