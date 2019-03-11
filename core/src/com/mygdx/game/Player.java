@@ -147,8 +147,10 @@ public class Player extends Sprite{
     public void update(){
         this.frameCount += 1;
         if(this.frameCount % 60 == 0){
-            for(int i = 0;i < VISION_SIZE * VISION_SIZE;i++){
-
+            for(int row = 0; row < VISION_SIZE; row++){
+                for(int col = 0; col < VISION_SIZE; col++) {
+                    this.playerVision[row][col] =
+                }
             }
             move(this.randomGenerator.nextInt(4));
         }
