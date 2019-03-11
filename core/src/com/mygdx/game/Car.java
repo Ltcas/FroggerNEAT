@@ -62,6 +62,13 @@ public class Car extends Sprite {
         this.translateX(this.direction * this.speed);
         int boundLeft   = -192 + this.offset;
         int boundRight  = 672 + this.offset;
+        int y = 11 - (int)this.getY() / 32;
+        int x = (int)this.getX() / 32;
+        for (int i = 0; i < tileSize + 1; i++) {
+            if(x + i > 0 && x + i < mapVision[0].length) {
+                mapVision[y][x + i] = 1;
+            }
+        }
         if(this.getX() < boundLeft || this.getX() > boundRight){
             this.setPosition(this.startX, this.startY);
         }
