@@ -8,5 +8,9 @@ public class Trial {
         //System.out.println(org2);
 
         Population pop1 = new Population(2);
+        for(Organism o : pop1.getOrganisms()) {
+            System.out.println(o);
+            System.out.println(o.getNetwork());
+        }
     }
 }

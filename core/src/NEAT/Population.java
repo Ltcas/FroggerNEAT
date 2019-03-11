@@ -39,4 +39,8 @@ public class Population {
             this.organisms.add(new Organism(String.format("Organism #%d", i)));
         }
     }
+
+    public ArrayList<Organism> getOrganisms() {
+        return organisms;
+    }
 }

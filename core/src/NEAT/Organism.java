@@ -52,4 +52,8 @@ public class Organism {
         return "\nName: " + this.name + "\nID: " + this.network.getId()+ "\nGen: "
                 + this.generation + "\nFitness: " + this.fitness;
     }
+
+    public Network getNetwork() {
+        return network;
+    }
 }
