@@ -140,22 +140,20 @@ public class Player extends Sprite{
     /**
      * Updates movement and then test for collision.
      */
-    public void update(int[][] mapVision) {
-        this.frameCount++;
-        if (this.frameCount % 60 == 0) {
-            int xPositon = this.x / 32 - 2;
-            int yPostion = (this.height/32 - 1) - (this.y / 32) - 2;
-            System.out.println();
-            for(int i = 0; i < VISION_SIZE; i++){
-                for(int j = 0; j < VISION_SIZE; j++){
-                    if(xPositon+j < 0 || xPositon+j >= 15 || yPostion+i < 0 || yPostion+i >= 12){
+    public void update(int[][] mapVision){
+        this.frameCount += 1;
+        if(this.frameCount % 60 == 0){
+            int xPositon = this.x / this.TILE_PIX - 2;
+            int yPostion = (this.height/ this.TILE_PIX - 1) - (this.y / this.TILE_PIX) - 2;
+            for(int i = 0;i < VISION_SIZE;i++){
+                for(int j = 0;j < VISION_SIZE;j++){
+                    if(xPositon+j < 0 || xPositon+j >= this.width / TILE_PIX || yPostion+i < 0 || yPostion+i >=
+                            this.height / TILE_PIX){
                         this.playerVision[i][j] = 1;
                     }else{
-                        this.playerVision[i][j] = mapVision[yPostion+i][xPositon + j];
+                        this.playerVision[i][j] = mapVision[yPostion + i][xPositon + j];
                     }
-                    System.out.print(this.playerVision[i][j]);
                 }
-                System.out.println("");
             }
             move(this.randomGenerator.nextInt(4));
         }
