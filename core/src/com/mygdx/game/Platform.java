@@ -15,6 +15,10 @@ public class Platform extends Sprite {
     /** The representation of the starting y position of a platform. */
     private int startY;
 
+
+    /** Integer representation of the size of the platform. */
+    private int tileSize;
+
     /** Used to calculate the 'respawn' of a car. */
     private int offset;
 
@@ -27,19 +31,29 @@ public class Platform extends Sprite {
     /**
      * Constructor for a platform object.
      * @param sprite The png representation of the platform sprite.
+     * @param tileSize The representation of the size of the platform.
      * @param x The starting x position of a platform.
      * @param y The starting y position of a platform.
      * @param direction The starting direction that a platform will be traveling.
      * @param speed The starting speed that a platform will be traveling.
      */
-    public Platform(Sprite sprite, int x, int y, int offset, int direction,int speed){
+    public Platform(Sprite sprite, int tileSize, int x, int y, int offset, int direction,int speed){
         super(sprite);
+        this.tileSize = tileSize;
         this.startX     = x + offset;
         this.startY     = y;
         this.offset     = offset;
         this.direction  = direction;
         this.speed      = speed;
         this.setPosition(this.startX, this.startY);
+    }
+
+    /**
+     * Returns the size of this platform.
+     * @return The size of this platform.
+     */
+    public int getTileSize() {
+        return this.tileSize;
     }
 
     /**

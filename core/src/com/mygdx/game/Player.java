@@ -96,7 +96,7 @@ public class Player extends Sprite{
     }
 
     /**
-     * Test to see if the player has collided with a car,platform, or water.
+     * Test to see if the player has collided with a car, platform, or water.
      */
     public void testCollision() {
         int tileID = this.collision.getCell(this.x / TILE_PIX, this.y / TILE_PIX).getTile().getId();
