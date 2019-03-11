@@ -1,5 +1,7 @@
 package NEAT;
 
+import java.util.Random;
+
 /**
  * Class that models the links between nodes in our network.
  * @author Chance Simmons and Brandon Townsend
@@ -19,12 +21,12 @@ public class Link {
     /**
      * Constructor for a Link object. Creates it based on a passed in weight, input, and output
      * node.
-     * @param weight The given weight for this connection.
      * @param in The specified input node for this connection.
      * @param out The specified output node for this connection.
      */
-    public Link(double weight, Node in, Node out) {
-        this.weight = weight;
+    public Link(Node in, Node out) {
+        Random weightGenerator = new Random();
+        this.weight = weightGenerator.nextDouble();
         this.input  = in;
         this.output = out;
     }

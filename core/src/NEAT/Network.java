@@ -1,6 +1,7 @@
 package NEAT;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Class that models our neural network.
@@ -58,6 +59,16 @@ public class Network {
 
         for(int i = 0;i < outCount;i++){
             this.outNodes.add(new Node(NodeLayer.OUTPUT));
+        }
+
+        Random r = new Random();
+        for(Node i : inNodes) {
+            int val = r.nextInt(this.outNodes.size()+1);
+            for(int o = 0; o < this.outNodes.size(); o++) {
+                if(o == val) {
+                    this.links.add(new Link(i, this.outNodes.get(o)));
+                }
+            }
         }
     }
 
@@ -139,11 +150,11 @@ public class Network {
 
         // Adding the node based on what layer it should be added to.
         if(n.getLayer() == NodeLayer.INPUT) {
-            this.inNodes.add(n);
+            result = this.inNodes.add(n);
         } else if(n.getLayer() == NodeLayer.OUTPUT) {
-            this.outNodes.add(n);
+            result = this.outNodes.add(n);
         } else {
-            this.hiddenNodes.add(n);
+            result = this.hiddenNodes.add(n);
         }
         if(result) {
             this.numNodes++;
@@ -190,7 +201,7 @@ public class Network {
      */
     public boolean addLink(Link l) {
         boolean result = true;
-        this.links.add(l);
+        result = this.links.add(l);
         if(result) {
             this.numLinks++;
         }
