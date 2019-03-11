@@ -64,8 +64,6 @@ public class Player extends Sprite{
     /**Used to count number of frames to limit movement */
     private int frameCount;
 
-    private int[][] mapVision;
-
     private int[][] playerVision;
     /**
      * Constructor that sets up a player.
@@ -75,8 +73,7 @@ public class Player extends Sprite{
      * @param cars the list of cars
      * @param platforms the list of platforms
      */
-    public Player(int width, int height,TiledMapTileLayer collision,ArrayList<Car> cars,ArrayList<Platform> platforms,
-                  int[][] mapVision){
+    public Player(int width, int height,TiledMapTileLayer collision,ArrayList<Car> cars,ArrayList<Platform> platforms){
         super();
         this.set(new Sprite(Player.BACK));
         this.width = width;
@@ -92,7 +89,6 @@ public class Player extends Sprite{
         this.frameCount = 0;
         this.randomGenerator = new Random();
         this.playerVision = new int[VISION_SIZE][VISION_SIZE];
-        this.mapVision = mapVision;
     }
 
     /**
@@ -144,18 +140,18 @@ public class Player extends Sprite{
     /**
      * Updates movement and then test for collision.
      */
-    public void update(){
+    public void update(int[][] mapVision){
         this.frameCount += 1;
         if(this.frameCount % 60 == 0){
-            int xPositon = this.x / 32 - (int)(VISION_SIZE / 2);
-            int yPostion = this.y / 32 + (int)(VISION_SIZE / 2);
-            System.out.println(yPostion);
+            int xPositon = this.x / this.TILE_PIX - 2;
+            int yPostion = (this.height/ this.TILE_PIX - 1) - (this.y / this.TILE_PIX) - 2;
             for(int i = 0;i < VISION_SIZE;i++){
                 for(int j = 0;j < VISION_SIZE;j++){
-                    if(xPositon < 0 || xPositon > mapVision.length || yPostion < 0 || yPostion > this.mapVision[0].length){
+                    if(xPositon+j < 0 || xPositon+j >= this.width / TILE_PIX || yPostion+i < 0 || yPostion+i >=
+                            this.height / TILE_PIX){
                         this.playerVision[i][j] = 1;
                     }else{
-                        this.playerVision[i][j] = this.mapVision[xPositon][yPostion];
+                        this.playerVision[i][j] = mapVision[yPostion + i][xPositon + j];
                     }
                 }
             }
