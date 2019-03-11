@@ -268,9 +268,9 @@ public class Kittener extends ApplicationAdapter {
 	 * Helper method that prints out the map vision
 	 */
 	private void printMap(){
-		for(int i = 0;i < this.mapVision.length;i++){
-			for(int j = 0;j < this.mapVision[i].length;j++){
-				System.out.print(this.mapVision[i][j]);
+		for(int i = 0;i < Kittener.mapVision.length;i++){
+			for(int j = 0;j < Kittener.mapVision[i].length;j++){
+				System.out.print(Kittener.mapVision[i][j]);
 			}
 			System.out.println();
 		}
