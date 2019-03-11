@@ -58,7 +58,7 @@ public class Car extends Sprite {
     /**
      * Updates a car object every render.
      */
-    public void update() {
+    public void update(int[][] mapVision) {
         this.translateX(this.direction * this.speed);
         int boundLeft   = -192 + this.offset;
         int boundRight  = 672 + this.offset;

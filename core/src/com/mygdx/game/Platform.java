@@ -75,7 +75,7 @@ public class Platform extends Sprite {
     /**
      * Updates a platform object every render.
      */
-    public void update() {
+    public void update(int[][] mapVision) {
         this.translateX(this.direction * this.speed);
         int boundLeft   = -384 + this.offset;
         int boundRight  = 800 + this.offset;

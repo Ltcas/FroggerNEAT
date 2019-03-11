@@ -64,8 +64,6 @@ public class Player extends Sprite{
     /**Used to count number of frames to limit movement */
     private int frameCount;
 
-    private int[][] mapVision;
-
     private int[][] playerVision;
     /**
      * Constructor that sets up a player.
@@ -75,8 +73,7 @@ public class Player extends Sprite{
      * @param cars the list of cars
      * @param platforms the list of platforms
      */
-    public Player(int width, int height,TiledMapTileLayer collision,ArrayList<Car> cars,ArrayList<Platform> platforms,
-                  int[][] mapVision){
+    public Player(int width, int height,TiledMapTileLayer collision,ArrayList<Car> cars,ArrayList<Platform> platforms){
         super();
         this.set(new Sprite(Player.BACK));
         this.width = width;
@@ -92,7 +89,6 @@ public class Player extends Sprite{
         this.frameCount = 0;
         this.randomGenerator = new Random();
         this.playerVision = new int[VISION_SIZE][VISION_SIZE];
-        this.mapVision = mapVision;
     }
 
     /**
@@ -144,20 +140,22 @@ public class Player extends Sprite{
     /**
      * Updates movement and then test for collision.
      */
-    public void update(){
-        this.frameCount += 1;
-        if(this.frameCount % 60 == 0){
-            int xPositon = this.x / 32 - (int)(VISION_SIZE / 2);
-            int yPostion = this.y / 32 + (int)(VISION_SIZE / 2);
-            System.out.println(yPostion);
-            for(int i = 0;i < VISION_SIZE;i++){
-                for(int j = 0;j < VISION_SIZE;j++){
-                    if(xPositon < 0 || xPositon > mapVision.length || yPostion < 0 || yPostion > this.mapVision[0].length){
+    public void update(int[][] mapVision) {
+        this.frameCount++;
+        if (this.frameCount % 60 == 0) {
+            int xPositon = this.x / 32 - 2;
+            int yPostion = (this.height/32 - 1) - (this.y / 32) - 2;
+            System.out.println();
+            for(int i = 0; i < VISION_SIZE; i++){
+                for(int j = 0; j < VISION_SIZE; j++){
+                    if(xPositon+j < 0 || xPositon+j >= 15 || yPostion+i < 0 || yPostion+i >= 12){
                         this.playerVision[i][j] = 1;
                     }else{
-                        this.playerVision[i][j] = this.mapVision[xPositon][yPostion];
+                        this.playerVision[i][j] = mapVision[yPostion+i][xPositon + j];
                     }
+                    System.out.print(this.playerVision[i][j]);
                 }
+                System.out.println("");
             }
             move(this.randomGenerator.nextInt(4));
         }

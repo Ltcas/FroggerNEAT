@@ -89,7 +89,7 @@ public class Kittener extends ApplicationAdapter {
 		this.players 		= new ArrayList<Player>();
 		this.platforms 		= new ArrayList<Platform>();
 		this.cars 			= new ArrayList<Car>();
-		this.numPlayers 	= 20;
+		this.numPlayers 	= 1;
 		this.initMapVision();
 	}
 
@@ -136,7 +136,7 @@ public class Kittener extends ApplicationAdapter {
 	private void addPlayers(){
 		for(int i = 0; i < this.numPlayers; i++){
 			this.players.add(new Player(this.width,this.height,
-					(TiledMapTileLayer)this.map.getLayers().get("level"),this.cars,this.platforms,this.mapVision));
+					(TiledMapTileLayer)this.map.getLayers().get("level"),this.cars,this.platforms));
 		}
 	}
 
@@ -232,12 +232,12 @@ public class Kittener extends ApplicationAdapter {
 	private void updateAll(){
 		this.initMapVision();
 		for(Platform platform:this.platforms){
-			platform.update();
+			platform.update(Kittener.mapVision);
 			platform.draw(this.batch);
 		}
 
 		for(Car car:this.cars){
-			car.update();
+			car.update(Kittener.mapVision);
 			car.draw(this.batch);
 		}
 
@@ -245,7 +245,7 @@ public class Kittener extends ApplicationAdapter {
 		double maxScore = 0;
 		for (Player player: this.players){
 			if(player.isAlive()){
-				player.update();
+				player.update(Kittener.mapVision);
 			}else{
 				deadCount++;
 			}
