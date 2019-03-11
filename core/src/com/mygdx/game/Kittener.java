@@ -245,7 +245,6 @@ public class Kittener extends ApplicationAdapter {
 		double maxScore = 0;
 		for (Player player: this.players){
 			if(player.isAlive()){
-				player.update(Kittener.mapVision);
 				player.update();
 			}else{
 				deadCount++;
