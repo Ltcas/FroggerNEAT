@@ -147,11 +147,16 @@ public class Player extends Sprite{
     public void update(){
         this.frameCount += 1;
         if(this.frameCount % 60 == 0){
-            int xPositon = this.x / 32;
-            int yPostion = this.y / 32;
+            int xPositon = this.x / 32 - (int)(VISION_SIZE / 2);
+            int yPostion = this.y / 32 + (int)(VISION_SIZE / 2);
+            System.out.println(yPostion);
             for(int i = 0;i < VISION_SIZE;i++){
                 for(int j = 0;j < VISION_SIZE;j++){
-                    this.playerVision[i][j] = this.mapVision[xPositon][yPostion];
+                    if(xPositon < 0 || xPositon > mapVision.length || yPostion < 0 || yPostion > this.mapVision[0].length){
+                        this.playerVision[i][j] = 1;
+                    }else{
+                        this.playerVision[i][j] = this.mapVision[xPositon][yPostion];
+                    }
                 }
             }
             move(this.randomGenerator.nextInt(4));
