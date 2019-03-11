@@ -16,6 +16,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
 import java.util.ArrayList;
 
 /**
@@ -34,6 +35,9 @@ public class Kittener extends ApplicationAdapter {
 
     /** Represents how a sprite will move to the right direction. */
     private final static int DIR_RIGHT = 1;
+
+	/** 2D array that is used to show hazards and tiles that can be moved on */
+	private static int[][] mapVision;
 
 	/** Contains every single sprite that we are going to render. */
 	private SpriteBatch batch;
@@ -74,22 +78,19 @@ public class Kittener extends ApplicationAdapter {
 	/** Population for the NEAT algorithm. */
 	private Population population;
 
-	/** 2D array that is used to show hazards and tiles that can be moved on */
-	private int[][] mapVision;
-
 	/**
 	 * Constructs a new Kittener game object.
 	 * @param width The initial width of the game window.
 	 * @param height The initial height of the game window.
 	 */
 	public Kittener(int width, int height){
-		this.mapVision = new int[12][15];
-		this.width 		= width;
-		this.height 	= height;
-		this.players 	= new ArrayList<Player>();
-		this.platforms 	= new ArrayList<Platform>();
-		this.cars 		= new ArrayList<Car>();
-		this.numPlayers = 20;
+		Kittener.mapVision 	= new int[12][15];
+		this.width 			= width;
+		this.height 		= height;
+		this.players 		= new ArrayList<Player>();
+		this.platforms 		= new ArrayList<Platform>();
+		this.cars 			= new ArrayList<Car>();
+		this.numPlayers 	= 20;
 		this.initMapVision();
 	}
 
@@ -98,12 +99,12 @@ public class Kittener extends ApplicationAdapter {
 	 * are for tiles that can be moved on.
 	 */
 	public void initMapVision(){
-		for(int i = 0; i < this.mapVision.length;i++){
-			for(int j = 0;j < this.mapVision[i].length;j++){
+		for(int i = 0; i < Kittener.mapVision.length; i++){
+			for(int j = 0; j < Kittener.mapVision[i].length; j++){
 				if(i < 1 || i > 5){
-					this.mapVision[i][j] = 0;
+					Kittener.mapVision[i][j] = MapObjects.FLOOR.getValue();
 				}else{
-					this.mapVision[i][j] = 1;
+					Kittener.mapVision[i][j] = MapObjects.HAZARD.getValue();
 				}
 			}
 		}
@@ -153,18 +154,18 @@ public class Kittener extends ApplicationAdapter {
 		Sprite yellowCar = new Sprite(new Texture("core/assets/yellow_car.png"));
 		Sprite bus = new Sprite(new Texture("core/assets/bus.png"));
 
-		this.cars.add(new Car(yellowCar, initEdgeLeft, row, offset*-1, DIR_RIGHT, 3));
-		this.cars.add(new Car(yellowCar, initEdgeLeft, row, offset*-3, DIR_RIGHT, 3));
-		this.cars.add(new Car(yellowCar, initEdgeLeft, row, offset*-5, DIR_RIGHT, 3));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset*-1, DIR_RIGHT, 3));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset*-3, DIR_RIGHT, 3));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset*-5, DIR_RIGHT, 3));
 
-		this.cars.add(new Car(racecar, initEdgeRight, row*2, offset, DIR_LEFT, 6));
+		this.cars.add(new Car(racecar, 1, initEdgeRight, row*2, offset, DIR_LEFT, 6));
 
-		this.cars.add(new Car(yellowCar, initEdgeLeft, row*3, offset*-1, DIR_RIGHT, 4));
-		this.cars.add(new Car(yellowCar, initEdgeLeft, row*3, offset*-3, DIR_RIGHT, 4));
-		this.cars.add(new Car(yellowCar, initEdgeLeft, row*3, offset*-5, DIR_RIGHT, 4));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-1, DIR_RIGHT, 4));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-3, DIR_RIGHT, 4));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-5, DIR_RIGHT, 4));
 
-		this.cars.add(new Car(bus, initEdgeRight, row*4, offset, DIR_LEFT,2));
-		this.cars.add(new Car(bus, initEdgeRight, row*4, offset*5, DIR_LEFT,2));
+		this.cars.add(new Car(bus, 2, initEdgeRight, row*4, offset, DIR_LEFT,2));
+		this.cars.add(new Car(bus, 2, initEdgeRight, row*4, offset*5, DIR_LEFT,2));
 	}
 
 	/**
@@ -181,23 +182,23 @@ public class Kittener extends ApplicationAdapter {
 		Sprite log4 	= new Sprite(new Texture("core/assets/log4.png"));
 		Sprite log5 	= new Sprite(new Texture("core/assets/log5.png"));
 
-		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset, DIR_LEFT, 2));
-		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset*2, DIR_LEFT, 2));
-		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset*5, DIR_LEFT, 2));
-		this.platforms.add(new Platform(turtle, initEdgeRight, row*6, offset*6, DIR_LEFT, 2));
+		this.platforms.add(new Platform(turtle, 1, initEdgeRight, row*6, offset, DIR_LEFT, 2));
+		this.platforms.add(new Platform(turtle, 1, initEdgeRight, row*6, offset*2, DIR_LEFT, 2));
+		this.platforms.add(new Platform(turtle, 1, initEdgeRight, row*6, offset*5, DIR_LEFT, 2));
+		this.platforms.add(new Platform(turtle, 1, initEdgeRight, row*6, offset*6, DIR_LEFT, 2));
 
-		this.platforms.add(new Platform(log5, initEdgeLeft, row*7, offset*-5, DIR_RIGHT, 2));
+		this.platforms.add(new Platform(log5, 5, initEdgeLeft, row*7, offset*-5, DIR_RIGHT, 2));
 
-		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset, DIR_LEFT, 4));
-		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset*2, DIR_LEFT, 4));
-		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset*8, DIR_LEFT, 4));
-		this.platforms.add(new Platform(turtle, initEdgeRight, row*8, offset*9, DIR_LEFT, 4));
+		this.platforms.add(new Platform(turtle, 1, initEdgeRight, row*8, offset, DIR_LEFT, 4));
+		this.platforms.add(new Platform(turtle, 1, initEdgeRight, row*8, offset*2, DIR_LEFT, 4));
+		this.platforms.add(new Platform(turtle, 1, initEdgeRight, row*8, offset*8, DIR_LEFT, 4));
+		this.platforms.add(new Platform(turtle, 1, initEdgeRight, row*8, offset*9, DIR_LEFT, 4));
 
-		this.platforms.add(new Platform(log4, initEdgeLeft, row*9, offset*-4, DIR_RIGHT, 3));
-		this.platforms.add(new Platform(log4, initEdgeLeft, row*9, offset*-10, DIR_RIGHT, 3));
+		this.platforms.add(new Platform(log4, 4, initEdgeLeft, row*9, offset*-4, DIR_RIGHT, 3));
+		this.platforms.add(new Platform(log4, 4, initEdgeLeft, row*9, offset*-10, DIR_RIGHT, 3));
 
-		this.platforms.add(new Platform(log3, initEdgeRight, row*10, offset, DIR_LEFT, 5));
-		this.platforms.add(new Platform(log3, initEdgeRight, row*10, offset*7, DIR_LEFT, 5));
+		this.platforms.add(new Platform(log3, 3, initEdgeRight, row*10, offset, DIR_LEFT, 5));
+		this.platforms.add(new Platform(log3, 3, initEdgeRight, row*10, offset*7, DIR_LEFT, 5));
 	}
 
 	/**
@@ -215,7 +216,7 @@ public class Kittener extends ApplicationAdapter {
 	 */
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor((float) 220/255,(float) 220/255,(float) 220/255, 1);
+		Gdx.gl.glClearColor(220/255, 220/255, 220/255, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		this.mapRenderer.setView(this.camera);
@@ -242,7 +243,7 @@ public class Kittener extends ApplicationAdapter {
 		double maxScore = 0;
 		for (Player player: this.players){
 			if(player.isAlive()){
-				player.update();
+				player.update(Kittener.mapVision);
 			}
 			if(player.getScore() > maxScore){
 				maxScore = player.getScore();

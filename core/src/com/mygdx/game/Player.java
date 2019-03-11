@@ -91,7 +91,7 @@ public class Player extends Sprite{
     }
 
     /**
-     * Test to see if the player has collided with a car,platform, or water.
+     * Test to see if the player has collided with a car, platform, or water.
      */
     public void testCollision() {
         int tileID = this.collision.getCell(this.x / TILE_PIX, this.y / TILE_PIX).getTile().getId();
@@ -139,10 +139,20 @@ public class Player extends Sprite{
     /**
      * Updates movement and then test for collision.
      */
-    public void update(){
+    public void update(int[][] map){
         this.frameCount += 1;
-        if(this.frameCount % 60 == 0){
+        if (this.frameCount % 60 == 0) {
             move(this.randomGenerator.nextInt(4));
+
+            // Test print for the player's "map vision".
+            System.out.println("###############");
+            for(int row = 0; row < map.length; row++) {
+                for(int col = 0; col < map[row].length; col++) {
+                    System.out.print(map[row][col] + " ");
+                }
+                System.out.println();
+            }
+            System.out.println("###############");
         }
         testCollision();
     }
