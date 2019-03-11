@@ -136,7 +136,7 @@ public class Kittener extends ApplicationAdapter {
 	private void addPlayers(){
 		for(int i = 0; i < this.numPlayers; i++){
 			this.players.add(new Player(this.width,this.height,
-					(TiledMapTileLayer)this.map.getLayers().get("level"),this.cars,this.platforms));
+					(TiledMapTileLayer)this.map.getLayers().get("level"),this.cars,this.platforms,this.mapVision));
 		}
 	}
 
@@ -230,6 +230,7 @@ public class Kittener extends ApplicationAdapter {
 	 * appearing. Also updates the score the player currently has.
 	 */
 	private void updateAll(){
+		this.initMapVision();
 		for(Platform platform:this.platforms){
 			platform.update();
 			platform.draw(this.batch);

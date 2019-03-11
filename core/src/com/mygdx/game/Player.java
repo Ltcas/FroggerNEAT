@@ -29,6 +29,8 @@ public class Player extends Sprite{
     /** Constant to represent the number of pixels for the width and height of a tile. */
     private final static int TILE_PIX = 32;
 
+    private final int VISION_SIZE = 5;
+
     /**The x position of the player*/
     private int x;
 
@@ -59,11 +61,12 @@ public class Player extends Sprite{
     /**Random generator used for movements*/
     private Random randomGenerator;
 
-    /** */
-    private int deathFrameCount;
-
+    /**Used to count number of frames to limit movement */
     private int frameCount;
 
+    private int[][] mapVision;
+
+    private int[][] playerVision;
     /**
      * Constructor that sets up a player.
      * @param width width of the screen
@@ -72,7 +75,8 @@ public class Player extends Sprite{
      * @param cars the list of cars
      * @param platforms the list of platforms
      */
-    public Player(int width, int height,TiledMapTileLayer collision,ArrayList<Car> cars,ArrayList<Platform> platforms){
+    public Player(int width, int height,TiledMapTileLayer collision,ArrayList<Car> cars,ArrayList<Platform> platforms,
+                  int[][] mapVision){
         super();
         this.set(new Sprite(Player.BACK));
         this.width = width;
@@ -85,9 +89,10 @@ public class Player extends Sprite{
         this.cars = cars;
         this.platforms = platforms;
         this.score = 0;
-        this.deathFrameCount = 0;
         this.frameCount = 0;
         this.randomGenerator = new Random();
+        this.playerVision = new int[VISION_SIZE][VISION_SIZE];
+        this.mapVision = mapVision;
     }
 
     /**
@@ -142,6 +147,9 @@ public class Player extends Sprite{
     public void update(){
         this.frameCount += 1;
         if(this.frameCount % 60 == 0){
+            for(int i = 0;i < VISION_SIZE * VISION_SIZE;i++){
+
+            }
             move(this.randomGenerator.nextInt(4));
         }
         testCollision();
@@ -185,6 +193,10 @@ public class Player extends Sprite{
             }
             this.setPosition(this.x,this.y);
         }
+    }
+
+    public int[][] getPlayerVision(){
+        return this.playerVision;
     }
 
     /**
