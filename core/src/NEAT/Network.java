@@ -270,7 +270,8 @@ public class Network {
         return true;
     }
     
-    public boolean feedForward(int[][] playerVision) {
+    public double[] feedForward(int[][] playerVision) {
+        double[] result = new double[outNodes.size()];
         int count = 0;
 
         // Setting up input nodes based on what the player can see.
@@ -281,7 +282,21 @@ public class Network {
                 count++;
             }
         }
-        return true;
+
+        // activating all the nodes.
+        for(Node i : inNodes) {
+            i.activate();
+        }
+        for(Node h : hiddenNodes) {
+            h.activate();
+        }
+        count = 0;
+        for(Node o : outNodes) {
+            o.activate();
+            result[count++] = o.getOutput();
+        }
+
+        return result;
     }
 
     /**

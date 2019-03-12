@@ -94,6 +94,10 @@ public class Node {
         this.output = output;
     }
 
+    public double getOutput() {
+        return this.output;
+    }
+
     public void addLink(){
 
     }
