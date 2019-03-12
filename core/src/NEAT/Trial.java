@@ -7,6 +7,7 @@ public class Trial {
         //System.out.println(org1);
         //System.out.println(org2);
 
+        // Test print to make sure our population gets setup correctly.
         Population pop1 = new Population(2);
         for(Organism o : pop1.getOrganisms()) {
             System.out.println(o);

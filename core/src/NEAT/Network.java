@@ -310,17 +310,20 @@ public class Network {
         str.append("\nInput Nodes:");
         int count = 0;
         for(Node i : inNodes) {
-            str.append(String.format("\n\tNode %d: %f", count++, i.getBias()));
+            str.append(String.format("\n\tNode %d - Bias: %f - Output: %f", count++, i.getBias(),
+             i.getOutput()));
         }
         str.append("\nHidden Nodes:");
         count = 0;
         for(Node h : hiddenNodes) {
-            str.append(String.format("\n\tNode %d: %f", count++, h.getBias()));
+            str.append(String.format("\n\tNode %d - Bias: %f - Output: %f", count++, h.getBias(),
+             h.getOutput()));
         }
         str.append("\nOutput Nodes:");
         count = 0;
         for(Node o : outNodes) {
-            str.append(String.format("\n\tNode %d: %f", count++, o.getBias()));
+            str.append(String.format("\n\tNode %d - Bias: %f - Output: %f", count++, o.getBias(),
+             o.getOutput()));
         }
         return str.toString();
     }
