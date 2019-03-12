@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import NEAT.Network;
+import NEAT.Organism;
 import NEAT.Population;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -243,9 +245,18 @@ public class Kittener extends ApplicationAdapter {
 
 		int deadCount = 0;
 		double maxScore = 0;
-		for (Player player: this.players){
+		for (int i = 0;i < players.size();i++){
+			Player player = this.players.get(i);
 			if(player.isAlive()){
 				player.update(Kittener.mapVision);
+				int[][] vision = player.getPlayerVision();
+				double[] output = this.population.getOrganisms().get(i).getNetwork().feedForward(vision);
+				for(int j = 0;j < output.length;j++){
+					if(output[j] == (double)1){
+						player.move(j);
+						break;
+					}
+				}
 			}else{
 				deadCount++;
 			}

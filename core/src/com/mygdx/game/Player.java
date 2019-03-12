@@ -155,7 +155,6 @@ public class Player extends Sprite{
                     }
                 }
             }
-            move(this.randomGenerator.nextInt(4));
         }
         testCollision();
     }
