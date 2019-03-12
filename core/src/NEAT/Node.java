@@ -1,5 +1,6 @@
 package NEAT;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -15,6 +16,19 @@ public class Node {
     /** The bias our node will have. */
     private double bias;
 
+    /** Sum of the inputs being passed into the node */
+    private double inputSum;
+
+    /** Output of the node */
+    private double output;
+
+    /** List of links that feed into this node*/
+    private ArrayList<Link> incomingLinks;
+
+    /** List that holds the outgoing links to other nodes */
+    private ArrayList<Link> outgoingLinks;
+
+
     /**
      * Default constructor for a Node. Will create a node on the hidden layer with a bias of 0.
      */
@@ -29,6 +43,10 @@ public class Node {
     public Node(NodeLayer layer) {
         Random random = new Random();
         this.layer  = layer;
+        this.inputSum = 0;
+        this.output = 0;
+        this.incomingLinks = new ArrayList<Link>();
+        this.outgoingLinks = new ArrayList<Link>();
         this.bias   = random.nextDouble();
     }
 
@@ -64,7 +82,34 @@ public class Node {
         this.bias = bias;
     }
 
-    public double activationFunction(double input) {
-        return (1 /(1 + Math.pow(Math.E,(-1 * input))));
+    /**
+     * Adds the incoming sums to the input sum
+     * @param sum the sum to be added to the input some
+     */
+    public void addInput(double sum){
+        this.inputSum += sum;
+    }
+
+    /**
+     * Sets the output of this node
+     * @param output the new value of output
+     */
+    public void setOutput(double output){
+        this.output = output;
+    }
+
+    /**
+     * Sigmoid activation function used to activate the node
+     */
+    public void activate() {
+        if(this.layer != NodeLayer.INPUT){
+            this.output = (1 /(1 + Math.pow(Math.E,(-1 * this.inputSum))));
+        }
+        for(int i = 0;i < this.outgoingLinks.size();i++){
+            Link connection = outgoingLinks.get(i);
+            if(connection.isEnabled()){
+                connection.getOutput().addInput(connection.getWeight() * this.output);
+            }
+        }
     }
 }
