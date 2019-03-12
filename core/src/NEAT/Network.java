@@ -217,6 +217,7 @@ public class Network {
         boolean result = true;
         result = this.links.add(l);
         if(result) {
+            l.getInput().getOutgoingLinks().add(l);
             this.numLinks++;
         }
         return result;
