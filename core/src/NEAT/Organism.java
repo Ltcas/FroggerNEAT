@@ -20,10 +20,13 @@ public class Organism {
     /** Keeps track of this organisms generation. */
     private int generation;
 
-    /** The neural network related to this organism. */
+    /** Used as a marker for whether this organism should be eliminated. */
+    private boolean toElim;
+
+    /** The neural network related to this organism. Used to represent phenotype. */
     private Network network;
 
-    /** The genome of this organism. */
+    /** The genome of this organism. Used to represent genotype. */
     private Genome genome;
 
     /**
@@ -34,6 +37,7 @@ public class Organism {
         this.fitness    = 0;
         this.generation = 0;
         this.name       = name;
+        this.toElim      = false;
         this.network    = new Network(id,25,4);
         id++;
         this.genome     = new Genome();
@@ -53,7 +57,27 @@ public class Organism {
                 + this.generation + "\nFitness: " + this.fitness;
     }
 
+    /**
+     * Returns this organism's neural network aka. phenotype.
+     * @return
+     */
     public Network getNetwork() {
         return network;
+    }
+
+    /**
+     * Returns whether or not this organism should be eliminated.
+     * @return True if it should be eliminated, false otherwise.
+     */
+    public boolean getToElim() {
+        return toElim;
+    }
+
+    /**
+     * Sets whether this organism should be eliminated.
+     * @param toElim Should be true if setting this organism to be eliminated, false otherwise.
+     */
+    public void setToElim(boolean toElim) {
+        this.toElim = toElim;
     }
 }

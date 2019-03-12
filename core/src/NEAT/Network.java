@@ -40,6 +40,13 @@ public class Network {
                 new ArrayList<Link>());
     }
 
+    /**
+     * Constructor that initializes a network based upon the number of nodes we would like to 
+     * create for our input and output layers.
+     * @param id The identification number of the new network.
+     * @param inCount The number of input nodes.
+     * @param outCount The number of output nodes.
+     */
     public Network(int id, int inCount, int outCount){
         this.inNodes        = new ArrayList<Node>();
         this.hiddenNodes    = new ArrayList<Node>();
@@ -51,6 +58,11 @@ public class Network {
         this.createNetwork(inCount,outCount);
     }
 
+    /**
+     * Initializes a network by creating and adding nodes to this network's list of nodes.
+     * @param inCount Number of input nodes.
+     * @param outCount Number of output nodes.
+     */
     private void createNetwork(int inCount,int outCount){
         for(int i = 0;i < inCount;i++){
             this.inNodes.add(new Node(NodeLayer.INPUT));
@@ -61,6 +73,8 @@ public class Network {
             this.outNodes.add(new Node(NodeLayer.OUTPUT));
         }
 
+        // Used as testing for the moment.
+        // FIXME: 3/12/2019 Add stuff with the new nodes.
         Random r = new Random();
         for(Node i : inNodes) {
             int val = r.nextInt(this.outNodes.size()+1);
@@ -236,6 +250,34 @@ public class Network {
         return result;
     }
 
+    /**
+     * Effectively destroys this network by removing all of its nodes and links.
+     * @return True when it has finished removing everything.
+     */
+    public boolean destroy() {
+        for(Node i : inNodes) {
+            removeNode(i);
+        }
+        for(Node h : hiddenNodes) {
+            removeNode(h);
+        }
+        for(Node o : outNodes) {
+            removeNode(o);
+        }
+        for(Link l : links) {
+            removeLink(l);
+        }
+        return true;
+    }
+    
+    public boolean activate() {
+        return true;
+    }
+
+    /**
+     * Returns a string representation of this network.
+     * @return A String representation of this network.
+     */
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
