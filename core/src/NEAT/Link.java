@@ -18,6 +18,8 @@ public class Link {
     /** The node our connection is going to. */
     private Node output;
 
+    /**Used to show if the link is enabled or not */
+    private boolean enabled;
     /**
      * Constructor for a Link object. Creates it based on a passed in weight, input, and output
      * node.
@@ -29,6 +31,7 @@ public class Link {
         this.weight = weightGenerator.nextDouble();
         this.input  = in;
         this.output = out;
+        this.enabled = false;
     }
 
     /**
@@ -69,6 +72,14 @@ public class Link {
      */
     public Node getOutput() {
         return output;
+    }
+
+    /**
+     * Returns the value of enabled
+     * @return true if the link is enabled
+     */
+    public boolean isEnabled(){
+        return enabled;
     }
 
     /**
