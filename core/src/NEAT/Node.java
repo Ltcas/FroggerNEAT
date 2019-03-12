@@ -98,8 +98,8 @@ public class Node {
         return this.output;
     }
 
-    public void addLink(){
-
+    public ArrayList<Link> getOutgoingLinks(){
+        return this.outgoingLinks;
     }
 
     /**
@@ -110,10 +110,11 @@ public class Node {
             this.output = (1 /(1 + Math.pow(Math.E,(-1 * this.inputSum))));
         }
         for(int i = 0;i < this.outgoingLinks.size();i++){
-            Link connection = outgoingLinks.get(i);
+            Link connection = this.outgoingLinks.get(i);
             if(connection.isEnabled()){
                 connection.getOutput().addInput(connection.getWeight() * this.output);
             }
         }
+        this.inputSum = 0;
     }
 }
