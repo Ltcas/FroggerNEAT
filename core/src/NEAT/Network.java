@@ -1,7 +1,6 @@
 package NEAT;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Class that models our neural network.
@@ -65,23 +64,17 @@ public class Network {
      */
     private void createNetwork(int inCount,int outCount){
         for(int i = 0;i < inCount;i++){
-            this.inNodes.add(new Node(NodeLayer.INPUT));
+            addNode(new Node(NodeLayer.INPUT));
             this.inNodes.get(i).setBias(0);
         }
 
         for(int i = 0;i < outCount;i++){
-            this.outNodes.add(new Node(NodeLayer.OUTPUT));
+            addNode(new Node(NodeLayer.OUTPUT));
         }
 
-        // Used as testing for the moment.
-        // FIXME: 3/12/2019 Add stuff with the new nodes.
-        Random r = new Random();
         for(Node i : inNodes) {
-            int val = r.nextInt(this.outNodes.size()+1);
-            for(int o = 0; o < this.outNodes.size(); o++) {
-                if(o == val) {
-                    this.links.add(new Link(i, this.outNodes.get(o)));
-                }
+            for(Node o : outNodes) {
+                addLink(new Link(i, o));
             }
         }
     }
@@ -312,18 +305,27 @@ public class Network {
         for(Node i : inNodes) {
             str.append(String.format("\n\tNode %d - Bias: %f - Output: %f", count++, i.getBias(),
              i.getOutput()));
+            for(Link l : i.getOutgoingLinks()) {
+                str.append(String.format("\n\t\tLink Weight: %f", l.getWeight()));
+            }
         }
         str.append("\nHidden Nodes:");
         count = 0;
         for(Node h : hiddenNodes) {
             str.append(String.format("\n\tNode %d - Bias: %f - Output: %f", count++, h.getBias(),
              h.getOutput()));
+            for(Link l : h.getOutgoingLinks()) {
+                str.append(String.format("\n\t\tLink Weight: %f", l.getWeight()));
+            }
         }
         str.append("\nOutput Nodes:");
         count = 0;
         for(Node o : outNodes) {
             str.append(String.format("\n\tNode %d - Bias: %f - Output: %f", count++, o.getBias(),
              o.getOutput()));
+            for(Link l : o.getOutgoingLinks()) {
+                str.append(String.format("\n\t\tLink Weight: %f", l.getWeight()));
+            }
         }
         return str.toString();
     }

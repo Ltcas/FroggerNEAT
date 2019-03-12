@@ -31,7 +31,7 @@ public class Link {
         this.weight = weightGenerator.nextDouble();
         this.input  = in;
         this.output = out;
-        this.enabled = false;
+        this.enabled = true;
     }
 
     /**
