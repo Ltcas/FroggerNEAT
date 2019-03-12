@@ -72,9 +72,19 @@ public class Network {
             addNode(new Node(NodeLayer.OUTPUT));
         }
 
+        // TESTING BELOW
+        for(int i = 0; i < 3; i++) {
+            addNode(new Node());
+        }
         for(Node i : inNodes) {
+            for(Node h : hiddenNodes) {
+                addLink(new Link(i, h));
+            }
+        }
+
+        for(Node h: hiddenNodes) {
             for(Node o : outNodes) {
-                addLink(new Link(i, o));
+                addLink(new Link(h, o));
             }
         }
     }
