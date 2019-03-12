@@ -142,17 +142,15 @@ public class Player extends Sprite{
      */
     public void update(int[][] mapVision){
         this.frameCount += 1;
-        if(this.frameCount % 60 == 0){
-            int xPositon = this.x / Player.TILE_PIX - 2;
-            int yPostion = (this.height/ Player.TILE_PIX - 1) - (this.y / Player.TILE_PIX) - 2;
-            for(int i = 0;i < VISION_SIZE;i++){
-                for(int j = 0;j < VISION_SIZE;j++){
-                    if(xPositon+j < 0 || xPositon+j >= this.width / Player.TILE_PIX || yPostion+i < 0 || yPostion+i >=
-                            this.height / Player.TILE_PIX){
-                        this.playerVision[i][j] = MapObjects.HAZARD.getValue();
-                    }else{
-                        this.playerVision[i][j] = mapVision[yPostion + i][xPositon + j];
-                    }
+        int xPositon = this.x / Player.TILE_PIX - 2;
+        int yPostion = (this.height/ Player.TILE_PIX - 1) - (this.y / Player.TILE_PIX) - 2;
+        for(int i = 0;i < VISION_SIZE;i++){
+            for(int j = 0;j < VISION_SIZE;j++){
+                if(xPositon+j < 0 || xPositon+j >= this.width / Player.TILE_PIX || yPostion+i < 0 || yPostion+i >=
+                        this.height / Player.TILE_PIX){
+                    this.playerVision[i][j] = MapObjects.HAZARD.getValue();
+                }else{
+                    this.playerVision[i][j] = mapVision[yPostion + i][xPositon + j];
                 }
             }
         }
@@ -164,7 +162,7 @@ public class Player extends Sprite{
      * @param direction int that is used to pick the direction the player will move
      */
     public void move(int direction){
-        if(this.isAlive){
+        if(this.isAlive && this.frameCount % 60 == 0){
             switch (direction){
                 case 0:
                     if(this.y + TILE_PIX < this.height){
