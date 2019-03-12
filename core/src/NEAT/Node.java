@@ -107,7 +107,7 @@ public class Node {
      */
     public void activate() {
         if(this.layer != NodeLayer.INPUT){
-            this.output = (1 /(1 + Math.pow(Math.E,(-1 * this.inputSum))));
+            this.output = (1 /(1 + Math.pow(Math.E,(-4.9 * this.inputSum))));
         }
         for(int i = 0;i < this.outgoingLinks.size();i++){
             Link connection = this.outgoingLinks.get(i);
