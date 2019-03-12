@@ -22,9 +22,6 @@ public class Node {
     /** Output of the node */
     private double output;
 
-    /** List of links that feed into this node*/
-    private ArrayList<Link> incomingLinks;
-
     /** List that holds the outgoing links to other nodes */
     private ArrayList<Link> outgoingLinks;
 
@@ -45,7 +42,6 @@ public class Node {
         this.layer  = layer;
         this.inputSum = 0;
         this.output = 0;
-        this.incomingLinks = new ArrayList<Link>();
         this.outgoingLinks = new ArrayList<Link>();
         this.bias   = random.nextDouble();
     }
@@ -96,6 +92,10 @@ public class Node {
      */
     public void setOutput(double output){
         this.output = output;
+    }
+
+    public void addLink(){
+
     }
 
     /**
