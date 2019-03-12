@@ -270,7 +270,17 @@ public class Network {
         return true;
     }
     
-    public boolean activate() {
+    public boolean feedForward(int[][] playerVision) {
+        int count = 0;
+
+        // Setting up input nodes based on what the player can see.
+        for(int row = 0; row < playerVision.length; row++) {
+            for(int col = 0; col < playerVision[row].length; col++) {
+                Node i = this.inNodes.get(count);
+                i.setOutput(playerVision[row][col]);
+                count++;
+            }
+        }
         return true;
     }
 
