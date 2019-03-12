@@ -323,9 +323,9 @@ public class Network {
         for(Node o : outNodes) {
             str.append(String.format("\n\tNode %d - Bias: %f - Output: %f", count++, o.getBias(),
              o.getOutput()));
-            for(Link l : o.getOutgoingLinks()) {
-                str.append(String.format("\n\t\tLink Weight: %f", l.getWeight()));
-            }
+//            for(Link l : o.getOutgoingLinks()) {
+//                str.append(String.format("\n\t\tLink Weight: %f", l.getWeight()));
+//            }
         }
         return str.toString();
     }
