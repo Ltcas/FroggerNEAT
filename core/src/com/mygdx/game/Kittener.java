@@ -269,6 +269,7 @@ public class Kittener extends ApplicationAdapter {
 				if (player.getFrameCount() % 60 == 0) {
 					player.hasMoved(prevX, prevY);
 				}
+				// ten seconds of not moving.
 				if(player.getFrameCount() - player.getFrameDiff() >= 10) {
 					player.kill();
 				}

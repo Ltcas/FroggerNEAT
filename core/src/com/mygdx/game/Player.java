@@ -201,14 +201,26 @@ public class Player extends Sprite{
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public int[][] getPlayerVision(){
         return this.playerVision;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getFrameCount() {
         return this.frameCount;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getFrameDiff() {
         return this.frameDiff;
     }
@@ -230,6 +242,9 @@ public class Player extends Sprite{
         return result;
     }
 
+    /**
+     *
+     */
     public void kill() {
         isAlive = false;
         this.setTexture(new Texture("core/assets/death.png"));
