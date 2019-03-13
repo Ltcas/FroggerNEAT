@@ -28,7 +28,7 @@ public class Link {
      */
     public Link(Node in, Node out) {
         Random weightGenerator = new Random();
-        this.weight = weightGenerator.nextDouble();
+        this.weight = weightGenerator.nextDouble() * 2 - 1;
         this.input  = in;
         this.output = out;
         this.enabled = true;

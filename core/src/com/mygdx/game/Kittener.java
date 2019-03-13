@@ -91,7 +91,7 @@ public class Kittener extends ApplicationAdapter {
 		this.players 		= new ArrayList<Player>();
 		this.platforms 		= new ArrayList<Platform>();
 		this.cars 			= new ArrayList<Car>();
-		this.numPlayers 	= 5;
+		this.numPlayers 	= 100;
 		this.initMapVision();
 	}
 
@@ -254,12 +254,14 @@ public class Kittener extends ApplicationAdapter {
 
 				System.out.println(this.population.getOrganisms().get(i).getNetwork());
 
-				for(int j = 0;j < output.length;j++){
-					if(output[j] == (double)1){
-						player.move(j);
-						break;
+				int max = 0;
+				for(int j = 1;j < output.length;j++){
+					//output[j] = (double)1
+					if(output[j] >  output[max]){
+						max = j;
 					}
 				}
+				player.move(max);
 			}else{
 				deadCount++;
 			}
