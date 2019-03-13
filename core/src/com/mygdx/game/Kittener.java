@@ -282,6 +282,10 @@ public class Kittener extends ApplicationAdapter {
 		}
 
 		if(deadCount == this.numPlayers){
+			for(int i = 0;i < this.players.size();i++){
+				this.population.setFitness(i,this.players.get(i).getScore());
+			}
+			this.population.naturalSelection();
 			this.resetPlayers();
 		}
 

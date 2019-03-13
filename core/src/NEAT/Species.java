@@ -56,4 +56,8 @@ public class Species {
     public void removeOrganism(Organism organism){
         this.organisms.remove(organism);
     }
+
+    public void shareFitness(){
+
+    }
 }
