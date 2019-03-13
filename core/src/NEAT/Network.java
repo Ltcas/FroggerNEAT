@@ -30,6 +30,8 @@ public class Network {
     /** List of the links of this network. */
     private ArrayList<Link> links;
 
+    private Node biasNode;
+
     /**
      * Constructor that only takes an identification number and initializes empty list.
      * @param id The identification number of the new network.
@@ -51,6 +53,8 @@ public class Network {
         this.hiddenNodes    = new ArrayList<Node>();
         this.outNodes       = new ArrayList<Node>();
         this.links          = new ArrayList<Link>();
+        this.biasNode = new Node(NodeLayer.BIAS);
+        this.biasNode.setOutput(1);
         this.numNodes       = inCount + outCount;
         this.numLinks       = 0;
         this.id             = id;
@@ -69,7 +73,9 @@ public class Network {
         }
 
         for(int i = 0;i < outCount;i++){
-            addNode(new Node(NodeLayer.OUTPUT));
+            Node outNode = new Node(NodeLayer.OUTPUT);
+            this.biasNode.getOutgoingLinks().add(new Link(this.biasNode,outNode));
+            addNode(outNode);
         }
 
         // TESTING BELOW
@@ -78,6 +84,7 @@ public class Network {
         }
         for(Node i : inNodes) {
             for(Node h : hiddenNodes) {
+                this.biasNode.getOutgoingLinks().add(new Link(this.biasNode,h));
                 addLink(new Link(i, h));
             }
         }
@@ -288,6 +295,7 @@ public class Network {
         }
 
         // activating all the nodes.
+        this.biasNode.activate();
         for(Node i : inNodes) {
             i.activate();
         }

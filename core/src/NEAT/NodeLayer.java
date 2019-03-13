@@ -8,5 +8,6 @@ package NEAT;
 public enum NodeLayer {
     HIDDEN,
     INPUT,
-    OUTPUT
+    OUTPUT,
+    BIAS
 }

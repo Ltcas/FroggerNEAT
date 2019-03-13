@@ -91,7 +91,7 @@ public class Kittener extends ApplicationAdapter {
 		this.players 		= new ArrayList<Player>();
 		this.platforms 		= new ArrayList<Platform>();
 		this.cars 			= new ArrayList<Car>();
-		this.numPlayers 	= 1;
+		this.numPlayers 	= 15;
 		this.initMapVision();
 	}
 
