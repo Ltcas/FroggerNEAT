@@ -293,7 +293,6 @@ public class Network {
                 count++;
             }
         }
-
         // activating all the nodes.
         this.biasNode.activate();
         for(Node i : inNodes) {

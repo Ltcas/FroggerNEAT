@@ -47,4 +47,21 @@ public class Population {
     public ArrayList<Organism> getOrganisms() {
         return organisms;
     }
+
+    /**
+     * Sets the fitness of a organism at a certain index in the organism list.
+     * @param index the index to get the organism
+     * @param fitness the fitness of the organism
+     */
+    public void setFitness(int index,double fitness){
+        this.organisms.get(index).setFitness(fitness);
+    }
+
+    public void naturalSelection(){
+        //Speciate
+        //Sort species maybe?
+        //Cull Species(kill bottom half of each species)
+        //Kill stale species(Haven't changed in a certain number of generations)
+        //Kill bad species(Ones that can't reproduce)
+    }
 }

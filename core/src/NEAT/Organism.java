@@ -43,8 +43,20 @@ public class Organism {
         this.genome     = new Genome();
     }
 
-    public void updateNetwork(){
+    /**
+     * Sets the fitness of this organism.
+     * @param fitness the new value of the fitness
+     */
+    public void setFitness(double fitness){
+        this.fitness = fitness;
+    }
 
+    /**
+     * Gets the fitness of this organism
+     * @return the fitness of the organism
+     */
+    public double getFitness(){
+        return this.fitness;
     }
 
     /**
