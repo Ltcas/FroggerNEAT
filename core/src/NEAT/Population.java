@@ -57,11 +57,14 @@ public class Population {
         this.organisms.get(index).setFitness(fitness);
     }
 
+    /**
+     * Performs natural selection on the species in this population
+     */
     public void naturalSelection(){
-        //Speciate
-        //Sort species maybe?
-        //Cull Species(kill bottom half of each species)
-        //Kill stale species(Haven't changed in a certain number of generations)
-        //Kill bad species(Ones that can't reproduce)
+        // TODO: 3/13/2019  Speciate
+        // TODO: 3/13/2019  sort species maybe?
+        // TODO: 3/13/2019  Cull Species(kill bottom half of each species)
+        // TODO: 3/13/2019  Kill stale species(Haven't changed in a certain number of generations)
+        // TODO: 3/13/2019  Kill bad species(Ones that can't reproduce)
     }
 }

@@ -2,6 +2,11 @@ package NEAT;
 
 import java.util.ArrayList;
 
+/**
+ * Models a species
+ * @author Chance Simmons and Brandon Townsend
+ * @version 13 March 2019
+ */
 public class Species {
     /** Excess Coefficient*/
     private final double EXCESS_COEFF = 2.0;
@@ -21,6 +26,9 @@ public class Species {
     /** Best fitness of any of the organisms in this speices */
     private double bestFitness;
 
+    /** Used to measure how many generations it has been since a useful change has been made */
+    private int staleness;
+
     /**
      * Constructor for a species.
      */
@@ -28,6 +36,7 @@ public class Species {
         this.organisms = new ArrayList<Organism>();
         this.avgFitness = 0;
         this.bestFitness = 0;
+        this.staleness = 0;
     }
 
     /**
@@ -57,7 +66,12 @@ public class Species {
         this.organisms.remove(organism);
     }
 
+    /**
+     * Shares the fitness of the species based off of the number of organisms in the
+     */
     public void shareFitness(){
-
+        for(Organism organism: this.organisms){
+            organism.setFitness(organism.getFitness() / this.organisms.size());
+        }
     }
 }
