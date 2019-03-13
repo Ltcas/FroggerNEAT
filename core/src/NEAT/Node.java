@@ -39,7 +39,7 @@ public class Node {
      */
     public Node(NodeLayer layer) {
         Random random = new Random();
-        this.layer  = layer;
+        this.layer = layer;
         this.inputSum = 0;
         this.output = 0;
         this.outgoingLinks = new ArrayList<Link>();

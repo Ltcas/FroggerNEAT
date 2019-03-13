@@ -40,6 +40,10 @@ public class Population {
         }
     }
 
+    /**
+     * Returns the list of this populations organisms.
+     * @return The list of this populations organisms.
+     */
     public ArrayList<Organism> getOrganisms() {
         return organisms;
     }

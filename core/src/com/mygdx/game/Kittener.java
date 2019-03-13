@@ -91,7 +91,7 @@ public class Kittener extends ApplicationAdapter {
 		this.players 		= new ArrayList<Player>();
 		this.platforms 		= new ArrayList<Platform>();
 		this.cars 			= new ArrayList<Car>();
-		this.numPlayers 	= 100;
+		this.numPlayers 	= 1;
 		this.initMapVision();
 	}
 
@@ -252,7 +252,8 @@ public class Kittener extends ApplicationAdapter {
 				int[][] vision = player.getPlayerVision();
 				double[] output = this.population.getOrganisms().get(i).getNetwork().feedForward(vision);
 
-				System.out.println(this.population.getOrganisms().get(i).getNetwork());
+				// Used for testing to see output.
+				//System.out.println(this.population.getOrganisms().get(i).getNetwork());
 
 				int max = 0;
 				for(int j = 1;j < output.length;j++){
