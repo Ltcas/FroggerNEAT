@@ -64,6 +64,8 @@ public class Player extends Sprite{
     /**Used to count number of frames to limit movement */
     private int frameCount;
 
+    private int frameDiff;
+
     private int[][] playerVision;
     /**
      * Constructor that sets up a player.
@@ -87,6 +89,7 @@ public class Player extends Sprite{
         this.platforms = platforms;
         this.score = 0;
         this.frameCount = 0;
+        this.frameDiff = 0;
         this.randomGenerator = new Random();
         this.playerVision = new int[VISION_SIZE][VISION_SIZE];
     }
@@ -141,7 +144,8 @@ public class Player extends Sprite{
      * Updates movement and then test for collision.
      */
     public void update(int[][] mapVision){
-        this.frameCount += 1;
+        this.frameCount++;
+        this.frameDiff++;
         int xPositon = this.x / Player.TILE_PIX - 2;
         int yPostion = (this.height/ Player.TILE_PIX - 1) - (this.y / Player.TILE_PIX) - 2;
         for(int i = 0;i < VISION_SIZE;i++){
@@ -201,6 +205,14 @@ public class Player extends Sprite{
         return this.playerVision;
     }
 
+    public int getFrameCount() {
+        return this.frameCount;
+    }
+
+    public int getFrameDiff() {
+        return this.frameDiff;
+    }
+
     /**
      * Gets the status of the player
      * @return true if the player is alive, false otherwise
@@ -208,4 +220,19 @@ public class Player extends Sprite{
     public boolean isAlive(){
         return this.isAlive;
     }
+
+    public boolean hasMoved(int prevX, int prevY) {
+        boolean result = true;
+        if((this.getX() - prevX == 0 && this.getY() - prevY == 0) || (this.score < 1 && frameCount >= 900)) {
+            this.frameDiff--;
+            result = false;
+        }
+        return result;
+    }
+
+    public void kill() {
+        isAlive = false;
+        this.setTexture(new Texture("core/assets/death.png"));
+    }
+
 }

@@ -248,6 +248,9 @@ public class Kittener extends ApplicationAdapter {
 		for (int i = 0;i < players.size();i++){
 			Player player = this.players.get(i);
 			if(player.isAlive()){
+				int prevX = (int)player.getX();
+				int prevY = (int)player.getY();
+
 				player.update(Kittener.mapVision);
 				int[][] vision = player.getPlayerVision();
 				double[] output = this.population.getOrganisms().get(i).getNetwork().feedForward(vision);
@@ -256,13 +259,19 @@ public class Kittener extends ApplicationAdapter {
 				//System.out.println(this.population.getOrganisms().get(i).getNetwork());
 
 				int max = 0;
-				for(int j = 1;j < output.length;j++){
+				for (int j = 1; j < output.length; j++) {
 					//output[j] = (double)1
-					if(output[j] >  output[max]){
+					if (output[j] > output[max]) {
 						max = j;
 					}
 				}
 				player.move(max);
+				if (player.getFrameCount() % 60 == 0) {
+					player.hasMoved(prevX, prevY);
+				}
+				if(player.getFrameCount() - player.getFrameDiff() >= 10) {
+					player.kill();
+				}
 			}else{
 				deadCount++;
 			}
