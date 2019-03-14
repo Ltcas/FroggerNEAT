@@ -67,7 +67,7 @@ public class Species {
     }
 
     /**
-     * Shares the fitness of the species based off of the number of organisms in the
+     * Shares the fitness of the species based off of the number of organisms in the species
      */
     public void shareFitness(){
         for(Organism organism: this.organisms){

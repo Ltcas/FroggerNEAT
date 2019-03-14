@@ -13,9 +13,6 @@ public class Population {
     /** List of species in the population */
     private ArrayList<Species> species;
 
-    /** List of innovations that have occurred in the population */
-    private ArrayList<Innovation> innovations;
-
     /** The number of organisms in the population */
     private int populationSize;
 
@@ -27,7 +24,6 @@ public class Population {
         this.organisms = new ArrayList<Organism>();
         this.populationSize = populationSize;
         this.species = new ArrayList<Species>();
-        this.innovations = new ArrayList<Innovation>();
         this.initializePopulation();
     }
 
