@@ -57,10 +57,20 @@ public class Population {
      * Performs natural selection on the species in this population
      */
     public void naturalSelection(){
-        // TODO: 3/13/2019  Speciate
+        this.speciate();
         // TODO: 3/13/2019  sort species maybe?
         // TODO: 3/13/2019  Cull Species(kill bottom half of each species)
         // TODO: 3/13/2019  Kill stale species(Haven't changed in a certain number of generations)
         // TODO: 3/13/2019  Kill bad species(Ones that can't reproduce)
+    }
+
+    /**
+     * Separates the organisms into species based on their compatibility.
+     */
+    public void speciate() {
+        // TODO: 3/17/2019 Add more than this, but this is just so we remember
+        for(Organism o : organisms) {
+            // o.setSpecies(); based on its compatibility to an existing or new species.
+        }
     }
 }

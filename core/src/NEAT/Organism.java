@@ -31,6 +31,9 @@ public class Organism {
     /** The neural network related to this organism. Used to represent phenotype. */
     private Network network;
 
+    /** The species this organism belongs to. */
+    private Species species;
+
     /** The genome of this organism. Used to represent genotype. */
     private Genome genome;
 
@@ -42,7 +45,8 @@ public class Organism {
         this.fitness    = 0;
         this.generation = 0;
         this.name       = name;
-        this.toElim      = false;
+        this.toElim     = false;
+        this.species    = null;
         this.network    = new Network(id,25,4);
         this.genome     = new Genome(this.network, id);
         id++;
@@ -62,6 +66,22 @@ public class Organism {
      */
     public double getFitness(){
         return this.fitness;
+    }
+
+    /**
+     * Returns the species of this organism.
+     * @return The species of this organism.
+     */
+    public Species getSpecies() {
+        return species;
+    }
+
+    /**
+     * Sets this organism's species to the specified one.
+     * @param species The specified species to set for this organism.
+     */
+    public void setSpecies(Species species) {
+        this.species = species;
     }
 
     /**
