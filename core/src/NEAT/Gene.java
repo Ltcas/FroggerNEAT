@@ -7,14 +7,14 @@ package NEAT;
  */
 public class Gene {
 
-    /** todo */
+    /** Used to specify the input node, output node, and weight of its connection. */
     private Link link;
 
-    /** todo */
+    /** Used during reproduction to 'line-up' genes for crossover.  */
     private int innovationNum;
 
-    /** todo */
-    private double mutationNum;
+    /** Keeps track of how many mutations this gene has received. */
+    private int mutationNum;
 
     /** Used to see whether this gene is enabled or not. */
     private boolean enabled;
@@ -28,8 +28,12 @@ public class Gene {
     /**
      * Constructor for this Gene object.
      */
-    public Gene() {
-
+    public Gene(Link link, int innovationNum, int mutationNum) {
+        this.link           = link;
+        this.innovationNum  = innovationNum;
+        this.mutationNum    = mutationNum;
+        this.enabled        = true;
+        this.frozen         = false;
     }
 
     /**
@@ -68,7 +72,7 @@ public class Gene {
      * Returns this genes mutation number.
      * @return This genes mutation number.
      */
-    public double getMutationNum() {
+    public int getMutationNum() {
         return mutationNum;
     }
 
@@ -76,7 +80,7 @@ public class Gene {
      * Sets this genes mutation number to the specified number.
      * @param mutationNum The specified number to be set.
      */
-    public void setMutationNum(double mutationNum) {
+    public void setMutationNum(int mutationNum) {
         this.mutationNum = mutationNum;
     }
 

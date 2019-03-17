@@ -1,5 +1,7 @@
 package NEAT;
 
+import java.util.ArrayList;
+
 /**
  * Models a Genotype that is used to add genes and mutations to the networks.
  * @author Chance Simmons and Brandon Townsend
@@ -12,18 +14,22 @@ public class Genome {
     /** Network of this Genome */
     Network network;
 
+    /** List of connection genes. */
+    private ArrayList<Gene> genes;
+
     /**
      * Constructor for a Genome
      */
-    public Genome(Network network,int id){
+    public Genome(Network network, int id){
         this.network = network;
+        this.genes = new ArrayList<Gene>();
         this.id = id;
     }
 
     /**
      * Mutation that enables a link in the network
      */
-    public void linkEnableMutaion(){
+    public void linkEnableMutation(){
 
     }
 
@@ -31,6 +37,13 @@ public class Genome {
      * Mutation that adjusts a weight of a link
      */
     public void linkWeightMutation(){
+
+    }
+
+    /**
+     * A new connection gene is added between two previously unconnected nodes.
+     */
+    public void addConnectionMutation() {
 
     }
 

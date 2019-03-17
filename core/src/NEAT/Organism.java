@@ -40,7 +40,7 @@ public class Organism {
         this.toElim      = false;
         this.network    = new Network(id,25,4);
         id++;
-        this.genome     = new Genome();
+        this.genome     = new Genome(this.network, id);
     }
 
     /**
