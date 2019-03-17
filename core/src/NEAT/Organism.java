@@ -1,5 +1,7 @@
 package NEAT;
 
+import java.util.HashMap;
+
 /**
  * Models an organism that will be building and modifying its own network to get the highest
  * fitness score it can.
@@ -7,6 +9,9 @@ package NEAT;
  * @version 25 February 2019
  */
 public class Organism {
+
+    /** Used to keep track of the innovation numbers of each gene. */
+    private static HashMap<Gene, Integer> innovation = new HashMap<Gene, Integer>();
 
     /** Used to assign an organism a specified id number. */
     private static int id = 0;
@@ -39,8 +44,8 @@ public class Organism {
         this.name       = name;
         this.toElim      = false;
         this.network    = new Network(id,25,4);
-        id++;
         this.genome     = new Genome(this.network, id);
+        id++;
     }
 
     /**

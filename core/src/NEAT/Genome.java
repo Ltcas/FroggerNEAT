@@ -60,5 +60,4 @@ public class Genome {
     public void reenableGeneMutation(){
 
     }
-
 }
