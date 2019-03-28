@@ -133,6 +133,7 @@ public class Player extends Sprite{
     public void reset(){
         this.isAlive = true;
         this.frameCount = 1;
+        this.frameDiff = 1;
         this.x = TILE_PIX*8;
         this.y = 0;
         this.score = 0;

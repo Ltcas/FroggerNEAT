@@ -29,6 +29,9 @@ public class Species {
     /** Used to measure how many generations it has been since a useful change has been made */
     private int staleness;
 
+    /** Cull species thresh */
+    private final static double CULL_THRESH = .5;
+
     /**
      * Constructor for a species.
      */
@@ -72,6 +75,41 @@ public class Species {
     public void shareFitness(){
         for(Organism organism: this.organisms){
             organism.setFitness(organism.getFitness() / this.organisms.size());
+        }
+    }
+
+    /**
+     * Gets the organisms of this list.
+     */
+    public ArrayList<Organism> getOrganisms(){
+        return this.organisms;
+    }
+
+    /**
+     * Sorts the organisms in this species.
+     */
+    public void sort(){
+        ArrayList<Organism> sortedOrganisms = new ArrayList<Organism>();
+        for(int i = 0; i < this.organisms.size(); i++) {
+            Organism maxOrganism = this.organisms.get(i);
+            for(Organism o : this.organisms) {
+                if(o.getFitness() > maxOrganism.getFitness()){
+                    maxOrganism = o;
+                }
+            }
+            this.organisms.remove(maxOrganism);
+            sortedOrganisms.add(maxOrganism);
+        }
+        this.organisms = sortedOrganisms;
+    }
+
+    /**
+     * Kill the low performing species.
+     */
+    public void cullSpecies(){
+        int cullNumber = (int)Math.round(this.organisms.size() * CULL_THRESH);
+        for(int i = cullNumber;i< this.organisms.size();i++){
+            this.organisms.remove(this.organisms.get(i));
         }
     }
 }

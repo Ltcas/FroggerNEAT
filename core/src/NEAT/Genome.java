@@ -27,6 +27,16 @@ public class Genome {
     }
 
     /**
+     * Checks to see if this genome is compatible with another genome.
+     * @return the compatibility value
+     */
+    public double compatible(Genome genome){
+
+
+        return 1;
+    }
+
+    /**
      * Mutation that enables a link in the network
      */
     public void linkEnableMutation(){

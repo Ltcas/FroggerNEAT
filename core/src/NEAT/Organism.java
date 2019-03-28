@@ -1,5 +1,6 @@
 package NEAT;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -66,6 +67,14 @@ public class Organism {
      */
     public double getFitness(){
         return this.fitness;
+    }
+
+    /**
+     * Returns the genome of this organism
+     * @return the genome of this organism
+     */
+    public Genome getGenome(){
+        return this.genome;
     }
 
     /**

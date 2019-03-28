@@ -10,6 +10,9 @@ public class Population {
     /** List of organisms in the population */
     private ArrayList<Organism> organisms;
 
+    /** Compatability threshold */
+    private final static double COMPAT_THRESH = 0.5;
+
     /** List of species in the population */
     private ArrayList<Species> species;
 
@@ -58,19 +61,51 @@ public class Population {
      */
     public void naturalSelection(){
         this.speciate();
-        // TODO: 3/13/2019  sort species maybe?
-        // TODO: 3/13/2019  Cull Species(kill bottom half of each species)
-        // TODO: 3/13/2019  Kill stale species(Haven't changed in a certain number of generations)
-        // TODO: 3/13/2019  Kill bad species(Ones that can't reproduce)
+        this.sortSpecies();
+        this.staleAndBadSpeices();
     }
 
     /**
      * Separates the organisms into species based on their compatibility.
      */
     public void speciate() {
-        // TODO: 3/17/2019 Add more than this, but this is just so we remember
         for(Organism o : organisms) {
-            // o.setSpecies(); based on its compatibility to an existing or new species.
+            if(this.species.isEmpty()){
+                this.species.add(new Species());
+                this.species.get(0).addOrganism(o);
+            }else{
+                boolean foundSpecies = false;
+                for(Species species:this.species){
+                    if(o.getGenome().compatible(species.getOrganisms().get(0).getGenome()) <
+                            COMPAT_THRESH && !foundSpecies){
+                        species.addOrganism(o);
+                        foundSpecies = true;
+                    }
+                }
+                if(!foundSpecies){
+                    Species species = new Species();
+                    species.addOrganism(o);
+                    this.species.add(species);
+                }
+            }
         }
+    }
+
+    /**
+     * Sorts each of the species by best performing agents.
+     */
+    public void sortSpecies(){
+        for(Species species: this.species){
+            species.shareFitness();
+            species.sort();
+            species.cullSpecies();
+        }
+    }
+
+    /**
+     * Kills off the stale and bad species.
+     */
+    public void staleAndBadSpeices(){
+
     }
 }
