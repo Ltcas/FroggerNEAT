@@ -1,5 +1,6 @@
 package NEAT;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 /**
  * Class that models the population of organisms and species.
@@ -9,9 +10,6 @@ import java.util.ArrayList;
 public class Population {
     /** List of organisms in the population */
     private ArrayList<Organism> organisms;
-
-    /** Compatability threshold */
-    private final static double COMPAT_THRESH = 0.5;
 
     /** List of species in the population */
     private ArrayList<Species> species;
@@ -63,6 +61,14 @@ public class Population {
         this.speciate();
         this.sortSpecies();
         this.staleAndBadSpeices();
+        ArrayList<Organism> organisms = new ArrayList<Organism>();
+        for(Species species: this.species){
+            int numBabies = (int)Math.round(species.getAvgFitness() / this.avgSum() * this
+                    .organisms.size()) - 1;
+            species.reproduce(numBabies);
+            organisms.addAll(species.getOrganisms());
+        }
+        this.organisms = organisms;
     }
 
     /**
@@ -77,7 +83,7 @@ public class Population {
                 boolean foundSpecies = false;
                 for(Species species:this.species){
                     if(o.getGenome().compatible(species.getOrganisms().get(0).getGenome()) <
-                            COMPAT_THRESH && !foundSpecies){
+                            Constant.COMPAT_THRESH.getValue() && !foundSpecies){
                         species.addOrganism(o);
                         foundSpecies = true;
                     }
@@ -103,9 +109,30 @@ public class Population {
     }
 
     /**
+     * Sums all the averages in the species. Used to determine how many times the
+     * @return the sum of all the species averages
+     */
+    public double avgSum(){
+        double sum = 0;
+        for(Species species:this.species){
+            species.calculateAverage();
+            sum += species.getAvgFitness();
+        }
+        return sum;
+    }
+
+    /**
      * Kills off the stale and bad species.
      */
     public void staleAndBadSpeices(){
-
+        ArrayList<Species> killSpecies = new ArrayList<Species>();
+        for(Species species: this.species){
+            if(species.getStaleness() == Constant.STALENESS_THRESH.getValue()){
+                killSpecies.add(species);
+            }else if(species.getAvgFitness() / this.avgSum() * this.organisms.size() < 1){
+                killSpecies.add(species);
+            }
+        }
+        this.species.removeAll(killSpecies);
     }
 }

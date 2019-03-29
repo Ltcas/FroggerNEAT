@@ -119,6 +119,14 @@ public class Organism {
         return toElim;
     }
 
+    public int getGeneration(){
+        return this.generation;
+    }
+
+    public void setGeneration(int generation){
+        this.generation = generation;
+    }
+
     /**
      * Sets whether this organism should be eliminated.
      * @param toElim Should be true if setting this organism to be eliminated, false otherwise.

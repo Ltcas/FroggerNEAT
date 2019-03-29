@@ -1,6 +1,9 @@
 package NEAT;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Models a species
@@ -8,22 +11,13 @@ import java.util.ArrayList;
  * @version 13 March 2019
  */
 public class Species {
-    /** Excess Coefficient*/
-    private final double EXCESS_COEFF = 2.0;
-
-    /** Disjoint Coefficient */
-    private final double DISJOINT_COEFF = 2.0;
-
-    /** Weight Difference*/
-    private final double WEIGHT_COEFF = 1;
-
     /** List of organisms in this speices */
     private ArrayList<Organism> organisms;
 
     /** Average fitness of the organisms in the species */
     private double avgFitness;
 
-    /** Best fitness of any of the organisms in this speices */
+    /** Best fitness of any of the organisms in this species */
     private double bestFitness;
 
     /** Used to measure how many generations it has been since a useful change has been made */
@@ -51,6 +45,14 @@ public class Species {
             sum += organism.getFitness();
         }
         this.avgFitness = sum / this.organisms.size();
+    }
+
+    /**
+     * Gets the average fitness of this speices
+     * @return average fitness
+     */
+    public double getAvgFitness(){
+        return this.avgFitness;
     }
 
     /**
@@ -86,6 +88,50 @@ public class Species {
     }
 
     /**
+     * Reproduce organisms
+     */
+    public void reproduce(int numBabies){
+        if(this.organisms.size() == 1){
+            this.mutate(this.organisms.get(0));
+        }else{
+            for(int i = 0;i < numBabies;i++){
+                Organism organism = this.crossOver();
+                this.mutate(organism);
+                this.organisms.add(organism);
+            }
+        }
+    }
+
+    public Organism crossOver(){
+        Random randomGen = new Random();
+        Organism parentOne = this.organisms.get();
+        Organism parentTwo = this.organisms.get();
+        return null;
+    }
+
+    /**
+     * Mutates a given organism
+     * @param organism the organism to mutate
+     */
+    public void mutate(Organism organism){
+        Random randomGen = new Random();
+        if(randomGen.nextDouble() < Constant.ADD_NODE_MUT.getValue()){
+
+        }else if(randomGen.nextDouble() < Constant.ADD_LINK_MUT.getValue()){
+
+        }else{
+            if(randomGen.nextDouble() < Constant.WEIGHT_MUT.getValue()){
+
+            }
+            if(randomGen.nextDouble() < Constant.ENABLE_MUT.getValue()){
+
+            }
+        }
+
+        organism.setGeneration(organism.getGeneration() + 1);
+    }
+
+    /**
      * Sorts the organisms in this species.
      */
     public void sort(){
@@ -111,5 +157,13 @@ public class Species {
         for(int i = cullNumber;i< this.organisms.size();i++){
             this.organisms.remove(this.organisms.get(i));
         }
+    }
+
+    /**
+     * Gets the staleness of this species
+     * @return the staleness of the species
+     */
+    public int getStaleness(){
+        return this.staleness;
     }
 }
