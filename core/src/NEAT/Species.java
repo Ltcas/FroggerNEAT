@@ -1,7 +1,5 @@
 package NEAT;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -23,8 +21,8 @@ public class Species {
     /** Used to measure how many generations it has been since a useful change has been made */
     private int staleness;
 
-    /** Cull species thresh */
-    private final static double CULL_THRESH = .5;
+    /** Random number generator used to find probabilities */
+    private Random randomGen;
 
     /**
      * Constructor for a species.
@@ -34,6 +32,7 @@ public class Species {
         this.avgFitness = 0;
         this.bestFitness = 0;
         this.staleness = 0;
+        this.randomGen = new Random();
     }
 
     /**
@@ -48,7 +47,7 @@ public class Species {
     }
 
     /**
-     * Gets the average fitness of this speices
+     * Gets the average fitness of this species
      * @return average fitness
      */
     public double getAvgFitness(){
@@ -91,10 +90,12 @@ public class Species {
      * Reproduce organisms
      */
     public void reproduce(int numBabies){
-        if(this.organisms.size() == 1){
-            this.mutate(this.organisms.get(0));
-        }else{
-            for(int i = 0;i < numBabies;i++){
+        for(int i = 0;i < numBabies;i++){
+            if(this.organisms.size() == 1){
+                this.mutate(this.organisms.get(0));
+            }else if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()){
+                this.mutate(this.organisms.get(this.randomGen.nextInt(this.organisms.size()) + 1));
+            }else{
                 Organism organism = this.crossOver();
                 this.mutate(organism);
                 this.organisms.add(organism);
@@ -103,10 +104,10 @@ public class Species {
     }
 
     public Organism crossOver(){
-        Random randomGen = new Random();
-        Organism parentOne = this.organisms.get();
-        Organism parentTwo = this.organisms.get();
-        return null;
+        Organism parentOne = this.organisms.get(this.randomGen.nextInt(this.organisms.size()) + 1);
+        Organism parentTwo = this.organisms.get(this.randomGen.nextInt(this.organisms.size()) + 1);
+
+        return new Organism("Groot");
     }
 
     /**
@@ -114,20 +115,18 @@ public class Species {
      * @param organism the organism to mutate
      */
     public void mutate(Organism organism){
-        Random randomGen = new Random();
-        if(randomGen.nextDouble() < Constant.ADD_NODE_MUT.getValue()){
-
-        }else if(randomGen.nextDouble() < Constant.ADD_LINK_MUT.getValue()){
-
+        if(this.randomGen.nextDouble() < Constant.ADD_NODE_MUT.getValue()){
+            organism.getGenome().addNodeMutation();
+        }else if(this.randomGen.nextDouble() < Constant.ADD_LINK_MUT.getValue()){
+            organism.getGenome().addConnectionMutation();
         }else{
-            if(randomGen.nextDouble() < Constant.WEIGHT_MUT.getValue()){
-
+            if(this.randomGen.nextDouble() < Constant.WEIGHT_MUT.getValue()){
+                organism.getGenome().linkWeightMutation();
             }
-            if(randomGen.nextDouble() < Constant.ENABLE_MUT.getValue()){
-
+            if(this.randomGen.nextDouble() < Constant.ENABLE_MUT.getValue()){
+                organism.getGenome().linkEnableMutation();
             }
         }
-
         organism.setGeneration(organism.getGeneration() + 1);
     }
 
@@ -153,9 +152,9 @@ public class Species {
      * Kill the low performing species.
      */
     public void cullSpecies(){
-        int cullNumber = (int)Math.round(this.organisms.size() * CULL_THRESH);
+        int cullNumber = (int)Math.round(this.organisms.size() * Constant.CULL_THRESH.getValue());
         for(int i = cullNumber;i< this.organisms.size();i++){
-            this.organisms.remove(this.organisms.get(i));
+            this.removeOrganism(this.organisms.get(i));
         }
     }
 

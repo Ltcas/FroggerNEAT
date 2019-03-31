@@ -1,6 +1,5 @@
 package NEAT;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 /**
  * Class that models the population of organisms and species.
@@ -60,7 +59,7 @@ public class Population {
     public void naturalSelection(){
         this.speciate();
         this.sortSpecies();
-        this.staleAndBadSpeices();
+        this.staleAndBadSpecies();
         ArrayList<Organism> organisms = new ArrayList<Organism>();
         for(Species species: this.species){
             int numBabies = (int)Math.round(species.getAvgFitness() / this.avgSum() * this
@@ -124,7 +123,7 @@ public class Population {
     /**
      * Kills off the stale and bad species.
      */
-    public void staleAndBadSpeices(){
+    public void staleAndBadSpecies(){
         ArrayList<Species> killSpecies = new ArrayList<Species>();
         for(Species species: this.species){
             if(species.getStaleness() == Constant.STALENESS_THRESH.getValue()){

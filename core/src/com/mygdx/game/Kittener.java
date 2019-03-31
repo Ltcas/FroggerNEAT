@@ -245,7 +245,7 @@ public class Kittener extends ApplicationAdapter {
 
 		int deadCount = 0;
 		double maxScore = 0;
-		for (int i = 0;i < players.size();i++){
+		for (int i = 0;i < this.players.size();i++){
 			Player player = this.players.get(i);
 			if(player.isAlive()){
 				int prevX = (int)player.getX();
