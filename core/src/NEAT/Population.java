@@ -62,8 +62,8 @@ public class Population {
         this.staleAndBadSpecies();
         ArrayList<Organism> organisms = new ArrayList<Organism>();
         for(Species species: this.species){
-            int numBabies = (int)Math.round(species.getAvgFitness() / this.avgSum() * this
-                    .organisms.size()) - 1;
+            int numBabies =
+                    (int)Math.round(species.getAvgFitness() / this.avgSum() * populationSize - 1);
             species.reproduce(numBabies);
             organisms.addAll(species.getOrganisms());
         }
@@ -126,11 +126,14 @@ public class Population {
     public void staleAndBadSpecies(){
         ArrayList<Species> killSpecies = new ArrayList<Species>();
         for(Species species: this.species){
-            if(species.getStaleness() == Constant.STALENESS_THRESH.getValue()){
+            if(species.getStaleness() >= Constant.STALENESS_THRESH.getValue()){
                 killSpecies.add(species);
             }else if(species.getAvgFitness() / this.avgSum() * this.organisms.size() < 1){
                 killSpecies.add(species);
             }
+        }
+        for(Species species : killSpecies) {
+            this.organisms.removeAll(species.getOrganisms());
         }
         this.species.removeAll(killSpecies);
     }

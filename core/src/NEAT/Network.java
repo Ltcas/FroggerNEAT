@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author Chance Simmons and Brandon Townsend
  * @version 25 February 2019
  */
-public class Network {
+public class Network implements Cloneable {
 
     /** Identification number for this network. */
     private int id;
@@ -345,5 +345,25 @@ public class Network {
 //            }
         }
         return str.toString();
+    }
+
+    /**
+     * Clones this network.
+     * @return A copy of this network's clone.
+     */
+    @Override
+    public Object clone() {
+        Network network;
+        try {
+            network = (Network)super.clone();
+        } catch (CloneNotSupportedException cne) {
+            network = new Network(this.id, this.inNodes, this.outNodes, this.hiddenNodes,
+                    this.links);
+        }
+        network.inNodes = (ArrayList<Node>) this.inNodes.clone();
+        network.outNodes = (ArrayList<Node>) this.outNodes.clone();
+        network.hiddenNodes = (ArrayList<Node>) this.hiddenNodes.clone();
+        network.links = (ArrayList<Link>) this.links.clone();
+        return network;
     }
 }

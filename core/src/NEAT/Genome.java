@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author Chance Simmons and Brandon Townsend
  * @version 25 February 2019
  */
-public class Genome {
+public class Genome implements Cloneable {
     /** ID of this genome */
     int id;
 
@@ -31,8 +31,6 @@ public class Genome {
      * @return the compatibility value
      */
     public double compatible(Genome genome){
-
-
         return 1;
     }
 
@@ -69,5 +67,22 @@ public class Genome {
      */
     public void reenableGeneMutation(){
 
+    }
+
+    /**
+     * Clones this Genome.
+     * @return A clone of this genome.
+     */
+    @Override
+    public Object clone() {
+        Genome genome;
+        try {
+            genome = (Genome) super.clone();
+        } catch (CloneNotSupportedException cne) {
+            genome = new Genome(this.network, this.id);
+        }
+        genome.network = (Network) this.network.clone();
+        genome.genes = (ArrayList<Gene>) this.genes.clone();
+        return genome;
     }
 }
