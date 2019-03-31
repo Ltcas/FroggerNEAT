@@ -75,6 +75,8 @@ public class Population {
             organisms.addAll(species.getOrganisms());
         }
         this.organisms = organisms;
+        System.out.println("Species Count: " + this.species.size());
+        System.out.println("Organism: " + this.organisms.size());
 }
 
     /**

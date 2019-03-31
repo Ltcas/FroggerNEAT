@@ -92,9 +92,13 @@ public class Species {
     public void reproduce(int numBabies){
         for(int i = 0;i < numBabies;i++){
             if(this.organisms.size() == 1){
-                this.mutate(this.organisms.get(0));
+                Organism organism = (Organism)this.organisms.get(0).clone();
+                this.mutate(organism);
+                this.organisms.add(organism);
             }else if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()){
-                this.mutate(this.organisms.get(this.randomGen.nextInt(this.organisms.size()) + 1));
+                Organism organism = (Organism)this.organisms.get(this.randomGen.nextInt(this.organisms.size())).clone();
+                this.mutate(organism);
+                this.organisms.add(organism);
             }else{
                 Organism organism = this.crossOver();
                 this.mutate(organism);
@@ -104,8 +108,8 @@ public class Species {
     }
 
     public Organism crossOver(){
-        Organism parentOne = this.organisms.get(this.randomGen.nextInt(this.organisms.size()) + 1);
-        Organism parentTwo = this.organisms.get(this.randomGen.nextInt(this.organisms.size()) + 1);
+        Organism parentOne = this.organisms.get(this.randomGen.nextInt(this.organisms.size()));
+        Organism parentTwo = this.organisms.get(this.randomGen.nextInt(this.organisms.size()));
 
         return new Organism("Groot");
     }
