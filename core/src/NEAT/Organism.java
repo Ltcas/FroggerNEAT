@@ -1,6 +1,5 @@
 package NEAT;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -9,7 +8,7 @@ import java.util.HashMap;
  * @author Chance Simmons and Brandon Townsend
  * @version 25 February 2019
  */
-public class Organism {
+public class Organism implements Cloneable {
 
     /** Used to keep track of the innovation numbers of each gene. */
     private static HashMap<Gene, Integer> innovation = new HashMap<Gene, Integer>();
@@ -32,9 +31,6 @@ public class Organism {
     /** The neural network related to this organism. Used to represent phenotype. */
     private Network network;
 
-    /** The species this organism belongs to. */
-    private Species species;
-
     /** The genome of this organism. Used to represent genotype. */
     private Genome genome;
 
@@ -47,7 +43,6 @@ public class Organism {
         this.generation = 0;
         this.name       = name;
         this.toElim     = false;
-        this.species    = null;
         this.network    = new Network(id,25,4);
         this.genome     = new Genome(this.network, id);
         id++;
@@ -75,22 +70,6 @@ public class Organism {
      */
     public Genome getGenome(){
         return this.genome;
-    }
-
-    /**
-     * Returns the species of this organism.
-     * @return The species of this organism.
-     */
-    public Species getSpecies() {
-        return species;
-    }
-
-    /**
-     * Sets this organism's species to the specified one.
-     * @param species The specified species to set for this organism.
-     */
-    public void setSpecies(Species species) {
-        this.species = species;
     }
 
     /**
@@ -133,5 +112,22 @@ public class Organism {
      */
     public void setToElim(boolean toElim) {
         this.toElim = toElim;
+    }
+
+    /**
+     * Clones this organism.
+     * @return A clone of this organism.
+     */
+    @Override
+    public Object clone() {
+        Organism organism;
+        try {
+            organism = (Organism) super.clone();
+        } catch (CloneNotSupportedException cne) {
+            organism = new Organism(this.name);
+        }
+        organism.network = (Network) this.network.clone();
+        organism.genome = (Genome) this.genome.clone();
+        return organism;
     }
 }
