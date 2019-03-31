@@ -61,14 +61,21 @@ public class Population {
         this.sortSpecies();
         this.staleAndBadSpecies();
         ArrayList<Organism> organisms = new ArrayList<Organism>();
+        int totalBabies = 0;
         for(Species species: this.species){
-            int numBabies = (int)Math.round(species.getAvgFitness() / this.avgSum() * this
-                    .organisms.size()) - 1;
+            int numBabies = (int)Math.round(species.getAvgFitness() / this.avgSum() * this.populationSize) - 1;
+            totalBabies += numBabies;
+
+            //Check to see if rounding errors has caused there to be too many babies
+            if(totalBabies + this.species.size() > this.populationSize){
+                numBabies = totalBabies + this.species.size() - this.populationSize;
+            }
+
             species.reproduce(numBabies);
             organisms.addAll(species.getOrganisms());
         }
         this.organisms = organisms;
-    }
+}
 
     /**
      * Separates the organisms into species based on their compatibility.
@@ -126,11 +133,17 @@ public class Population {
     public void staleAndBadSpecies(){
         ArrayList<Species> killSpecies = new ArrayList<Species>();
         for(Species species: this.species){
+            //Kill species that have not gotten better over a certain number of generations
             if(species.getStaleness() == Constant.STALENESS_THRESH.getValue()){
                 killSpecies.add(species);
-            }else if(species.getAvgFitness() / this.avgSum() * this.organisms.size() < 1){
+            }else if(species.getAvgFitness() / this.avgSum() * this.populationSize < 1){ //Species that can't reproduce
                 killSpecies.add(species);
             }
+        }
+
+        System.out.println("Kill Species Size: " + killSpecies.size());
+        for(Species species: killSpecies){
+            this.organisms.removeAll(species.getOrganisms());
         }
         this.species.removeAll(killSpecies);
     }
