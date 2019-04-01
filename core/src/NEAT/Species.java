@@ -90,21 +90,28 @@ public class Species {
      * Reproduce organisms
      */
     public void reproduce(int numBabies){
+        ArrayList<Organism> babies = new ArrayList<Organism>();
+        babies.add((Organism) this.organisms.get(0).clone());
         for(int i = 0;i < numBabies;i++){
+            Organism organism;
             if(this.organisms.size() == 1){
-                Organism organism = (Organism)this.organisms.get(0).clone();
+                organism = (Organism)this.organisms.get(0).clone();
                 this.mutate(organism);
-                this.organisms.add(organism);
             }else if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()){
-                Organism organism = (Organism)this.organisms.get(this.randomGen.nextInt(this.organisms.size())).clone();
+                organism = (Organism)this.organisms.get(this.randomGen.nextInt(this.organisms.size())).clone();
                 this.mutate(organism);
-                this.organisms.add(organism);
             }else{
-                Organism organism = this.crossOver();
+                organism = this.crossOver();
                 this.mutate(organism);
-                this.organisms.add(organism);
             }
+
+            // Maybe drop mutate down depending on how well it works.
+            babies.add(organism);
         }
+        for(Organism o : babies) {
+            o.setGeneration(o.getGeneration() + 1);
+        }
+        this.organisms = babies;
     }
 
     public Organism crossOver(){
@@ -131,7 +138,6 @@ public class Species {
                 organism.getGenome().linkEnableMutation();
             }
         }
-        organism.setGeneration(organism.getGeneration() + 1);
     }
 
     /**

@@ -1,6 +1,8 @@
 package NEAT;
 
 import java.util.ArrayList;
+import java.util.Random;
+
 /**
  * Class that models the population of organisms and species.
  * @author Chance Simmons and Brandon Townsend
@@ -61,18 +63,13 @@ public class Population {
         this.sortSpecies();
         this.staleAndBadSpecies();
         ArrayList<Organism> organisms = new ArrayList<Organism>();
-        int totalBabies = 0;
         for(Species species: this.species){
             int numBabies = (int)Math.round(species.getAvgFitness() / this.avgSum() * this.populationSize) - 1;
-            totalBabies += numBabies;
-
-            //Check to see if rounding errors has caused there to be too many babies
-            if(totalBabies + this.species.size() > this.populationSize){
-                numBabies = totalBabies + this.species.size() - this.populationSize;
-            }
-
             species.reproduce(numBabies);
             organisms.addAll(species.getOrganisms());
+        }
+        while(organisms.size() > populationSize) {
+            organisms.remove(populationSize);
         }
         this.organisms = organisms;
         System.out.println("Species Count: " + this.species.size());
