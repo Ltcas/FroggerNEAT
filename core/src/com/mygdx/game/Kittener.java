@@ -291,7 +291,8 @@ public class Kittener extends ApplicationAdapter {
 		}
 
 		this.scoreDisplay.setColor(Color.WHITE);
-		this.scoreDisplay.draw(this.batch,"Max Fitness: " + maxScore,0,this.scoreDisplay
+		this.scoreDisplay.draw(this.batch,"Max Fitness: " + maxScore + "\nGeneration: " +
+				this.population.getGeneration(),0,this.scoreDisplay
 				.getCapHeight() + TILE_PIX);
 	}
 
