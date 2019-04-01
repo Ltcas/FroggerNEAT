@@ -18,6 +18,8 @@ public class Population {
     /** The number of organisms in the population */
     private int populationSize;
 
+    private int generation;
+
     /**
      * Constructor that initializes the population based off of a population size
      * @param populationSize the number of organisms in the population
@@ -27,6 +29,7 @@ public class Population {
         this.populationSize = populationSize;
         this.species = new ArrayList<Species>();
         this.initializePopulation();
+        this.generation = 0;
     }
 
     /**
@@ -36,6 +39,14 @@ public class Population {
         for(int i = 0; i < this.populationSize; i++){
             this.organisms.add(new Organism(String.format("Organism #%d", i)));
         }
+    }
+
+    /**
+     * Gets the generation number of this population
+     * @return the generation number
+     */
+    public int getGeneration(){
+        return this.generation;
     }
 
     /**
@@ -64,22 +75,33 @@ public class Population {
         this.staleAndBadSpecies();
         ArrayList<Organism> organisms = new ArrayList<Organism>();
         for(Species species: this.species){
+            species.calculateAverage();
             int numBabies = (int)Math.round(species.getAvgFitness() / this.avgSum() * this.populationSize) - 1;
             species.reproduce(numBabies);
             organisms.addAll(species.getOrganisms());
         }
-        while(organisms.size() > populationSize) {
-            organisms.remove(populationSize);
+
+        Random random = new Random();
+        //Check to see if the number of babies was less than population size
+        while (organisms.size() < this.populationSize){
+            Species species = this.species.get(random.nextInt(this.species.size()));
+            species.reproduce(1);
+            organisms.addAll(species.getOrganisms());
+        }
+
+        //Check to see if the number of babies went over the population size
+        while(organisms.size() > this.populationSize) {
+            organisms.remove(this.populationSize);
         }
         this.organisms = organisms;
-        System.out.println("Species Count: " + this.species.size());
-        System.out.println("Organism: " + this.organisms.size());
+        this.generation++;
 }
 
     /**
      * Separates the organisms into species based on their compatibility.
      */
     public void speciate() {
+        this.species.clear();
         for(Organism o : organisms) {
             if(this.species.isEmpty()){
                 this.species.add(new Species());
@@ -132,17 +154,13 @@ public class Population {
     public void staleAndBadSpecies(){
         ArrayList<Species> killSpecies = new ArrayList<Species>();
         for(Species species: this.species){
+            species.calculateAverage();
             //Kill species that have not gotten better over a certain number of generations
             if(species.getStaleness() == Constant.STALENESS_THRESH.getValue()){
                 killSpecies.add(species);
             }else if(species.getAvgFitness() / this.avgSum() * this.populationSize < 1){ //Species that can't reproduce
                 killSpecies.add(species);
             }
-        }
-
-        System.out.println("Kill Species Size: " + killSpecies.size());
-        for(Species species: killSpecies){
-            this.organisms.removeAll(species.getOrganisms());
         }
         this.species.removeAll(killSpecies);
     }
