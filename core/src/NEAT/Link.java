@@ -83,6 +83,14 @@ public class Link {
     }
 
     /**
+     * Sets whether or not this Link is enabled.
+     * @param enabled Whether this Link is enabled or not.
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    /**
      * Sets a new output node for this connection link.
      * @param output The specified node to be the new input node.
      */

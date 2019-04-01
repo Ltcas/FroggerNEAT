@@ -80,6 +80,7 @@ public class Population {
      * Separates the organisms into species based on their compatibility.
      */
     public void speciate() {
+        this.species.clear();
         for(Organism o : organisms) {
             if(this.species.isEmpty()){
                 this.species.add(new Species());
@@ -135,7 +136,8 @@ public class Population {
             //Kill species that have not gotten better over a certain number of generations
             if(species.getStaleness() == Constant.STALENESS_THRESH.getValue()){
                 killSpecies.add(species);
-            }else if(species.getAvgFitness() / this.avgSum() * this.populationSize < 1){ //Species that can't reproduce
+            }else if(species.getAvgFitness() / this.avgSum() * this.populationSize < 1){
+                //Species that can't reproduce
                 killSpecies.add(species);
             }
         }
