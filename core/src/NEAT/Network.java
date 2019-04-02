@@ -26,7 +26,7 @@ public class Network implements Cloneable {
     private ArrayList<Link> links;
 
     /** Innovation List */
-    private static ArrayList<Link> innovationList;
+    private static ArrayList<Link> innovationList = new ArrayList<Link>();
 
     /** Bias node of the network */
     private Node biasNode;
@@ -191,14 +191,21 @@ public class Network implements Cloneable {
      */
     public boolean addLink(Node inNode,Node outNode) {
         boolean result = true;
-        int innovationNum = this.links.size();
-        for(int i = 0;i < this.links.size();i++){
-            int inputID = this.links.get(i).getInput().getId();
-            int outputID = this.links.get(i).getOutput().getId();
+        int innovationNum = this.innovationList.size();
+        for(int i = 0;i < this.innovationList.size();i++){
+            int inputID = this.innovationList.get(i).getInput().getId();
+            int outputID = this.innovationList.get(i).getOutput().getId();
+            //If the innovation is identical to one in the overall list, set the new links
+            // innovation number to that innovation number.
             if(inputID == inNode.getId() && outputID == outNode.getId()){
                 innovationNum = i;
             }
         }
+        //If a new innovation was created, add it to the overall list
+        if(innovationNum == this.innovationList.size()){
+            this.innovationList.add(new Link(inNode,outNode,innovationNum));
+        }
+
         this.links.add(new Link(inNode,outNode,innovationNum));
         return result;
     }
