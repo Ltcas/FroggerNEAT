@@ -12,12 +12,16 @@ public class Population {
     /** List of organisms in the population */
     private ArrayList<Organism> organisms;
 
-    /** List of species in the population */
+    /**
+     * List of species in the population. The size of species should always be less than or
+     * equal to the size of organisms.
+     */
     private ArrayList<Species> species;
 
     /** The number of organisms in the population */
     private int populationSize;
 
+    /** The generation number of this population. */
     private int generation;
 
     /**
@@ -62,7 +66,7 @@ public class Population {
      * @param index the index to get the organism
      * @param fitness the fitness of the organism
      */
-    public void setFitness(int index,double fitness){
+    public void setFitness(int index, double fitness){
         this.organisms.get(index).setFitness(fitness);
     }
 
@@ -75,7 +79,6 @@ public class Population {
         this.staleAndBadSpecies();
         ArrayList<Organism> organisms = new ArrayList<Organism>();
         for(Species species: this.species){
-            species.calculateAverage();
             int numBabies = (int)Math.round(species.getAvgFitness() / this.avgSum() * this.populationSize) - 1;
             species.reproduce(numBabies);
             organisms.addAll(species.getOrganisms());
@@ -93,6 +96,8 @@ public class Population {
         while(organisms.size() > this.populationSize) {
             organisms.remove(this.populationSize);
         }
+
+        // TODO: 4/2/2019 Maybe use an elimination variable in organisms instead of a whole new list.
         this.organisms = organisms;
         this.generation++;
 }
@@ -100,7 +105,7 @@ public class Population {
     /**
      * Separates the organisms into species based on their compatibility.
      */
-    public void speciate() {
+    private void speciate() {
         this.species.clear();
         for(Organism o : organisms) {
             if(this.species.isEmpty()){
@@ -108,14 +113,19 @@ public class Population {
                 this.species.get(0).addOrganism(o);
             }else{
                 boolean foundSpecies = false;
+                Network compatibleNetwork = o.getNetwork();
                 for(Species species:this.species){
-                    if(o.getGenome().compatible(species.getOrganisms().get(0).getGenome()) <
+                    Organism compatibleOrgCheck = species.getOrganisms().get(0);
+
+                    // Grab the first organism from a species to check if the organism if
+                    // compatible with that species.
+                    if(compatibleNetwork.compatible(compatibleOrgCheck.getNetwork()) <
                             Constant.COMPAT_THRESH.getValue() && !foundSpecies){
                         species.addOrganism(o);
                         foundSpecies = true;
                     }
                 }
-                if(!foundSpecies){
+                if(!foundSpecies) {
                     Species species = new Species();
                     species.addOrganism(o);
                     this.species.add(species);
@@ -127,7 +137,7 @@ public class Population {
     /**
      * Sorts each of the species by best performing agents.
      */
-    public void sortSpecies(){
+    private void sortSpecies(){
         for(Species species: this.species){
             species.shareFitness();
             species.sort();
@@ -139,9 +149,9 @@ public class Population {
      * Sums all the averages in the species. Used to determine how many times the
      * @return the sum of all the species averages
      */
-    public double avgSum(){
+    private double avgSum(){
         double sum = 0;
-        for(Species species:this.species){
+        for(Species species : this.species){
             species.calculateAverage();
             sum += species.getAvgFitness();
         }
@@ -151,14 +161,16 @@ public class Population {
     /**
      * Kills off the stale and bad species.
      */
-    public void staleAndBadSpecies(){
+    private void staleAndBadSpecies(){
         ArrayList<Species> killSpecies = new ArrayList<Species>();
         for(Species species: this.species){
-            species.calculateAverage();
+
             //Kill species that have not gotten better over a certain number of generations
             if(species.getStaleness() == Constant.STALENESS_THRESH.getValue()){
                 killSpecies.add(species);
-            }else if(species.getAvgFitness() / this.avgSum() * this.populationSize < 1){
+
+            } else if(species.getAvgFitness() / this.avgSum() * this.populationSize < 1){
+
                 //Species that can't reproduce
                 killSpecies.add(species);
             }

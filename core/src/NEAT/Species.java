@@ -12,9 +12,6 @@ public class Species {
     /** List of organisms in this speices */
     private ArrayList<Organism> organisms;
 
-    /** Average fitness of the organisms in the species */
-    private double avgFitness;
-
     /** Best fitness of any of the organisms in this species */
     private double bestFitness;
 
@@ -29,21 +26,9 @@ public class Species {
      */
     public Species(){
         this.organisms = new ArrayList<Organism>();
-        this.avgFitness = 0;
         this.bestFitness = 0;
         this.staleness = 0;
         this.randomGen = new Random();
-    }
-
-    /**
-     * Calculates the average fitness of the species
-     */
-    public void calculateAverage(){
-        double sum = 0;
-        for(Organism organism: this.organisms){
-            sum += organism.getFitness();
-        }
-        this.avgFitness = sum / this.organisms.size();
     }
 
     /**
@@ -51,7 +36,27 @@ public class Species {
      * @return average fitness
      */
     public double getAvgFitness(){
-        return this.avgFitness;
+        double sum = 0;
+        for(Organism o : this.organisms) {
+            sum += o.getFitness();
+        }
+        return sum / this.organisms.size();
+    }
+
+    /**
+     * Gets the staleness of this species
+     * @return the staleness of the species
+     */
+    public int getStaleness(){
+        return this.staleness;
+    }
+
+    /**
+     * Gets the organisms of this list.
+     * @return The list of organisms of this species.
+     */
+    public ArrayList<Organism> getOrganisms(){
+        return this.organisms;
     }
 
     /**
@@ -80,14 +85,8 @@ public class Species {
     }
 
     /**
-     * Gets the organisms of this list.
-     */
-    public ArrayList<Organism> getOrganisms(){
-        return this.organisms;
-    }
-
-    /**
      * Reproduce organisms
+     * @param numBabies The number of babies this species is allowed to make.
      */
     public void reproduce(int numBabies){
         ArrayList<Organism> babies = new ArrayList<Organism>();
@@ -95,13 +94,13 @@ public class Species {
         for(int i = 0;i < numBabies;i++){
             Organism organism;
             if(this.organisms.size() == 1){
+                System.out.println("Mutate Original - one organism in species");
                 organism = (Organism)this.organisms.get(0).clone();
                 this.mutate(organism);
-                System.out.println("Mutate Original");
             }else if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()){
+                System.out.println("Mutation only");
                 organism = (Organism)this.organisms.get(this.randomGen.nextInt(this.organisms.size())).clone();
                 this.mutate(organism);
-                System.out.println("Mutation");
             }else{
                 System.out.println("Crossover");
                 organism = this.crossOver();
@@ -109,10 +108,8 @@ public class Species {
             }
 
             // Maybe drop mutate down depending on how well it works.
+            organism.setGeneration(organism.getGeneration() + 1);
             babies.add(organism);
-        }
-        for(Organism o : babies) {
-            o.setGeneration(o.getGeneration() + 1);
         }
         this.organisms = babies;
     }
@@ -121,6 +118,7 @@ public class Species {
         Organism parentOne = this.organisms.get(this.randomGen.nextInt(this.organisms.size()));
         Organism parentTwo = this.organisms.get(this.randomGen.nextInt(this.organisms.size()));
 
+        // TODO: 4/2/2019 Finish Crossover you idiots
         return new Organism("Groot");
     }
 
@@ -129,18 +127,19 @@ public class Species {
      * @param organism the organism to mutate
      */
     public void mutate(Organism organism){
+        Network network = organism.getNetwork();
         if(this.randomGen.nextDouble() < Constant.ADD_NODE_MUT.getValue()){
-            organism.getGenome().addNodeMutation();
+            network.addNodeMutation();
         }else if(this.randomGen.nextDouble() < Constant.ADD_LINK_MUT.getValue()){
-            organism.getGenome().addConnectionMutation();
+            network.addLinkMutation();
         }else{
             if(this.randomGen.nextDouble() < Constant.WEIGHT_MUT.getValue()){
-                organism.getGenome().linkWeightMutation();
+                network.linkWeightMutation();
             }
             if(this.randomGen.nextDouble() < Constant.ENABLE_MUT.getValue()){
-                organism.getGenome().linkEnableMutation();
+                network.linkEnableMutation();
             }else{
-                organism.getGenome().reenableGeneMutation();
+                network.reenableLinkMutation();
             }
         }
     }
@@ -152,8 +151,9 @@ public class Species {
         ArrayList<Organism> sortedOrganisms = new ArrayList<Organism>();
         for(int i = 0; i < this.organisms.size(); i++) {
             Organism maxOrganism = this.organisms.get(i);
+            double maxFitness = maxOrganism.getFitness();
             for(Organism o : this.organisms) {
-                if(o.getFitness() > maxOrganism.getFitness()){
+                if(o.getFitness() > maxFitness){
                     maxOrganism = o;
                 }
             }
@@ -171,13 +171,5 @@ public class Species {
         for(int i = cullNumber;i< this.organisms.size();i++){
             this.removeOrganism(this.organisms.get(i));
         }
-    }
-
-    /**
-     * Gets the staleness of this species
-         * @return the staleness of the species
-     */
-    public int getStaleness(){
-        return this.staleness;
     }
 }
