@@ -1,20 +1,19 @@
 package NEAT;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Models a neural node that exists in our neural network.
  * @author Chance Simmons and Brandon Townsend
- * @version 25 February 2019
+ * @version 2 April 2019
  */
 public class Node {
 
+    /** The identification number for this node. */
+    private int id;
+
     /** The layer our node will be residing 'on'. */
     private NodeLayer layer;
-
-    /** The bias our node will have. */
-    private double bias;
 
     /** Sum of the inputs being passed into the node */
     private double inputSum;
@@ -29,21 +28,28 @@ public class Node {
     /**
      * Default constructor for a Node. Will create a node on the hidden layer with a bias of 0.
      */
-    public Node() {
-        this(NodeLayer.HIDDEN);
+    public Node(int id) {
+        this(id, NodeLayer.HIDDEN);
     }
 
     /**
      * Creates a Node that is located on a specified layer with a specified bias.
      * @param layer The layer to place this node on.
      */
-    public Node(NodeLayer layer) {
-        Random random = new Random();
+    public Node(int id, NodeLayer layer) {
+        this.id = id;
         this.layer = layer;
         this.inputSum = 0;
         this.output = 0;
         this.outgoingLinks = new ArrayList<Link>();
-        this.bias   = random.nextDouble();
+    }
+
+    /**
+     * Returns the identification number of this node.
+     * @return The identification number of this node.
+     */
+    public int getId() {
+        return this.id;
     }
 
     /**
@@ -52,30 +58,6 @@ public class Node {
      */
     public NodeLayer getLayer() {
         return layer;
-    }
-
-    /**
-     * Modifies what layer our node is 'on'.
-     * @param layer The new layer our node will reside 'on'.
-     */
-    public void setLayer(NodeLayer layer) {
-        this.layer = layer;
-    }
-
-    /**
-     * Returns the bias of our node.
-     * @return The bias of our node.
-     */
-    public double getBias() {
-        return bias;
-    }
-
-    /**
-     * Modifies what the bias of our node will be.
-     * @param bias The new bias of our node.
-     */
-    public void setBias(double bias) {
-        this.bias = bias;
     }
 
     /**
@@ -94,10 +76,18 @@ public class Node {
         this.output = output;
     }
 
+    /**
+     * Returns the output value of this node.
+     * @return The output value of this node.
+     */
     public double getOutput() {
         return this.output;
     }
 
+    /**
+     * Returns the list of links that this node outputs to.
+     * @return The list of links that this node outputs to.
+     */
     public ArrayList<Link> getOutgoingLinks(){
         return this.outgoingLinks;
     }
@@ -109,10 +99,11 @@ public class Node {
         if(this.layer != NodeLayer.INPUT){
             this.output = (1 /(1 + Math.pow(Math.E,(-1 * this.inputSum))));
         }
-        for(int i = 0;i < this.outgoingLinks.size();i++){
-            Link connection = this.outgoingLinks.get(i);
-            if(connection.isEnabled()){
-                connection.getOutput().addInput(connection.getWeight() * this.output);
+        for(Link link : this.outgoingLinks){
+            if(link.isEnabled()){
+
+                // Get's this link's output node and 'sends' something to it's input.
+                link.getOutput().addInput(link.getWeight() * this.output);
             }
         }
         this.inputSum = 0;

@@ -13,12 +13,6 @@ public class Network implements Cloneable {
     /** Identification number for this network. */
     private int id;
 
-    /** Integer representation for the number of nodes in our network. */
-    private int numNodes;
-
-    /** Integer representation for the number of links in our network. */
-    private int numLinks;
-
     /** List of the input nodes for this network. */
     private ArrayList<Node> inNodes;
 
@@ -40,50 +34,6 @@ public class Network implements Cloneable {
     public Network(int id) {
         this(id, new ArrayList<Node>(), new ArrayList<Node>(), new ArrayList<Node>(),
                 new ArrayList<Link>());
-    }
-
-    /**
-     * Constructor that initializes a network based upon the number of nodes we would like to 
-     * create for our input and output layers.
-     * @param id The identification number of the new network.
-     * @param inCount The number of input nodes.
-     * @param outCount The number of output nodes.
-     */
-    public Network(int id, int inCount, int outCount){
-        this.inNodes        = new ArrayList<Node>();
-        this.hiddenNodes    = new ArrayList<Node>();
-        this.outNodes       = new ArrayList<Node>();
-        this.links          = new ArrayList<Link>();
-        this.biasNode = new Node(NodeLayer.BIAS);
-        this.biasNode.setOutput(1);
-        this.numNodes       = inCount + outCount;
-        this.numLinks       = 0;
-        this.id             = id;
-        this.createNetwork(inCount,outCount);
-    }
-
-    /**
-     * Initializes a network by creating and adding nodes to this network's list of nodes.
-     * @param inCount Number of input nodes.
-     * @param outCount Number of output nodes.
-     */
-    private void createNetwork(int inCount,int outCount){
-        for(int i = 0;i < inCount;i++){
-            addNode(new Node(NodeLayer.INPUT));
-            this.inNodes.get(i).setBias(0);
-        }
-
-        for(int i = 0;i < outCount;i++){
-            Node outNode = new Node(NodeLayer.OUTPUT);
-            this.biasNode.getOutgoingLinks().add(new Link(this.biasNode,outNode));
-            addNode(outNode);
-        }
-
-        for(Node i : this.inNodes) {
-            for(Node o : this.outNodes) {
-                this.addLink(new Link(i, o));
-            }
-        }
     }
 
     /**
@@ -112,22 +62,45 @@ public class Network implements Cloneable {
         this.outNodes       = out;
         this.hiddenNodes    = hid;
         this.links          = links;
+    }
 
-        int nodeCount = 0;
-        int linkCount = 0;
+    /**
+     * Constructor that initializes a network based upon the number of nodes we would like to
+     * create for our input and output layers.
+     * @param id The identification number of the new network.
+     * @param inCount The number of input nodes.
+     * @param outCount The number of output nodes.
+     */
+    public Network(int id, int inCount, int outCount){
+        this.inNodes        = new ArrayList<Node>();
+        this.hiddenNodes    = new ArrayList<Node>();
+        this.outNodes       = new ArrayList<Node>();
+        this.links          = new ArrayList<Link>();
+        this.biasNode = new Node(-1, NodeLayer.BIAS);
+        this.biasNode.setOutput(1);
+        this.id             = id;
+        this.createNetwork(inCount,outCount);
+    }
 
-        // Counting up the number of nodes in each list, if any
-        if(!inNodes.isEmpty() || !outNodes.isEmpty() || !hiddenNodes.isEmpty()) {
-            nodeCount = inNodes.size() + outNodes.size() + hiddenNodes.size();
+    /**
+     * Initializes a network by creating and adding nodes to this network's list of nodes.
+     * @param inCount Number of input nodes.
+     * @param outCount Number of output nodes.
+     */
+    private void createNetwork(int inCount,int outCount){
+        for(int i = 0; i < inCount; i++){
+            addNode(new Node(this.getNumNodes(), NodeLayer.INPUT));
         }
 
-        // Counting up the number of links, if any
-        if(!this.links.isEmpty()) {
-            linkCount = this.links.size();
+        for(int i = 0; i < outCount; i++){
+            addNode(new Node(this.getNumNodes(), NodeLayer.OUTPUT));
         }
 
-        this.numNodes = nodeCount;
-        this.numLinks = linkCount;
+        for(Node in : this.inNodes) {
+            for(Node out : this.outNodes) {
+                this.addLink(new Link(in, out));
+            }
+        }
     }
 
     /**
@@ -143,7 +116,7 @@ public class Network implements Cloneable {
      * @return The number of nodes in this network.
      */
     public int getNumNodes() {
-        return numNodes;
+        return this.inNodes.size() + this.outNodes.size() + this.hiddenNodes.size();
     }
 
     /**
@@ -151,37 +124,34 @@ public class Network implements Cloneable {
      * @return The number of links in this network.
      */
     public int getNumLinks() {
-        return numLinks;
+        return this.links.size();
     }
 
     /**
      * Adds a node to the network.
-     * @param n The node to be added.
+     * @param node The node to be added.
      * @return True if the node is added, false otherwise.
      */
-    public boolean addNode(Node n) {
+    public boolean addNode(Node node) {
         boolean result = true;
 
         // Adding the node based on what layer it should be added to.
-        if(n.getLayer() == NodeLayer.INPUT) {
-            result = this.inNodes.add(n);
-        } else if(n.getLayer() == NodeLayer.OUTPUT) {
-            result = this.outNodes.add(n);
+        if(node.getLayer() == NodeLayer.INPUT) {
+            result = this.inNodes.add(node);
+        } else if(node.getLayer() == NodeLayer.OUTPUT) {
+            result = this.outNodes.add(node);
         } else {
-            result = this.hiddenNodes.add(n);
-        }
-        if(result) {
-            this.numNodes++;
+            result = this.hiddenNodes.add(node);
         }
         return result;
     }
 
     /**
      * Removes a node from the network.
-     * @param n The node to be removed.
+     * @param node The node to be removed.
      * @return True if the node is removed, false otherwise.
      */
-    public boolean removeNode(Node n) {
+    public boolean removeNode(Node node) {
         boolean result = true;
 
         // Performing check to see if any lists are empty.
@@ -191,44 +161,40 @@ public class Network implements Cloneable {
         } else {
 
             // Checking to see if the node is in any list.
-            if(inNodes.contains(n)) {
-                inNodes.remove(n);
-            } else if(outNodes.contains(n)) {
-                inNodes.remove(n);
-            } else if(hiddenNodes.contains(n)) {
-                hiddenNodes.remove(n);
+            if(inNodes.contains(node)) {
+                inNodes.remove(node);
+            } else if(outNodes.contains(node)) {
+                inNodes.remove(node);
+            } else if(hiddenNodes.contains(node)) {
+                hiddenNodes.remove(node);
             } else {
                 result = false;
                 System.out.println("Node cannot be removed as it is not in any list.");
             }
-        }
-        if(result) {
-            this.numNodes--;
         }
         return result;
     }
 
     /**
      * Adds a link to the network.
-     * @param l The link to be added.
+     * @param link The link to be added.
      * @return True if the link is added, false otherwise.
      */
-    public boolean addLink(Link l) {
+    public boolean addLink(Link link) {
         boolean result = true;
-        result = this.links.add(l);
+        result = this.links.add(link);
         if(result) {
-            l.getInput().getOutgoingLinks().add(l);
-            this.numLinks++;
+            link.getInput().getOutgoingLinks().add(link);
         }
         return result;
     }
 
     /**
      * Removes a link from the network.
-     * @param l The link to be removed.
+     * @param link The link to be removed.
      * @return True if the link is removed, false otherwise.
      */
-    public boolean removeLink(Link l) {
+    public boolean removeLink(Link link) {
         boolean result = true;
 
         // Performing check to see if the list is empty.
@@ -238,15 +204,12 @@ public class Network implements Cloneable {
         } else {
 
             // Checking to see if the link is in the list.
-            if(this.links.contains(l)) {
-                this.links.remove(l);
+            if(this.links.contains(link)) {
+                this.links.remove(link);
             } else {
                 result = false;
                 System.out.println("Link cannot be removed as it is not in the list of links.");
             }
-        }
-        if(result) {
-            this.numLinks--;
         }
         return result;
     }
@@ -399,8 +362,7 @@ public class Network implements Cloneable {
         str.append("\nInput Nodes:");
         int count = 0;
         for(Node i : inNodes) {
-            str.append(String.format("\n\tNode %d - Bias: %f - Output: %f", count++, i.getBias(),
-             i.getOutput()));
+            str.append(String.format("\n\tNode %d - Bias: %f - Output: %f", count++, i.getOutput()));
             for(Link l : i.getOutgoingLinks()) {
                 str.append(String.format("\n\t\tLink Weight: %f", l.getWeight()));
             }
@@ -408,8 +370,7 @@ public class Network implements Cloneable {
         str.append("\nHidden Nodes:");
         count = 0;
         for(Node h : hiddenNodes) {
-            str.append(String.format("\n\tNode %d - Bias: %f - Output: %f", count++, h.getBias(),
-             h.getOutput()));
+            str.append(String.format("\n\tNode %d - Bias: %f - Output: %f", count++, h.getOutput()));
             for(Link l : h.getOutgoingLinks()) {
                 str.append(String.format("\n\t\tLink Weight: %f", l.getWeight()));
             }
@@ -417,8 +378,7 @@ public class Network implements Cloneable {
         str.append("\nOutput Nodes:");
         count = 0;
         for(Node o : outNodes) {
-            str.append(String.format("\n\tNode %d - Bias: %f - Output: %f", count++, o.getBias(),
-             o.getOutput()));
+            str.append(String.format("\n\tNode %d - Bias: %f - Output: %f", count++, o.getOutput()));
 //            for(Link l : o.getOutgoingLinks()) {
 //                str.append(String.format("\n\t\tLink Weight: %f", l.getWeight()));
 //            }

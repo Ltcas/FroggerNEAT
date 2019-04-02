@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * Class that models the population of organisms and species.
  * @author Chance Simmons and Brandon Townsend
- * @version 25 February 2019
+ * @version 2 April 2019
  */
 public class Population {
     /** List of organisms in the population */
@@ -29,11 +29,11 @@ public class Population {
      * @param populationSize the number of organisms in the population
      */
     public Population(int populationSize){
-        this.organisms = new ArrayList<Organism>();
+        this.organisms      = new ArrayList<Organism>();
+        this.species        = new ArrayList<Species>();
         this.populationSize = populationSize;
-        this.species = new ArrayList<Species>();
+        this.generation     = 0;
         this.initializePopulation();
-        this.generation = 0;
     }
 
     /**
