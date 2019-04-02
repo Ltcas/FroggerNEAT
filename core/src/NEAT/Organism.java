@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class Organism implements Cloneable {
 
     /** Used to keep track of the innovation numbers of each gene. */
-    private static HashMap<Gene, Integer> innovation = new HashMap<Gene, Integer>();
+    private static HashMap<Link, Integer> innovation = new HashMap<Link, Integer>();
 
     /** Used to assign an organism a specified id number. */
     private static int id = 0;
