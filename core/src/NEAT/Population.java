@@ -152,7 +152,6 @@ public class Population {
     private double avgSum(){
         double sum = 0;
         for(Species species : this.species){
-            species.calculateAverage();
             sum += species.getAvgFitness();
         }
         return sum;

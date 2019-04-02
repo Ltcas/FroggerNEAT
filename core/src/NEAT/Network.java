@@ -304,7 +304,7 @@ public class Network implements Cloneable {
      * Checks to see if this genome is compatible with another genome.
      * @return the compatibility value
      */
-    public double compatible(Genome genome){
+    public double compatible(Network network){
         int excessCount = 0;
         int disjointCount = 0;
         double weightDiff = 0;
