@@ -1,6 +1,7 @@
 package NEAT;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Class that models our neural network.
@@ -308,6 +309,95 @@ public class Network implements Cloneable {
         }
 
         return result;
+    }
+
+    /**
+     * Checks to see if this genome is compatible with another genome.
+     * @return the compatibility value
+     */
+    public double compatible(Genome genome){
+        int excessCount = 0;
+        int disjointCount = 0;
+        double weightDiff = 0;
+        double compatibility = 0;
+
+
+        return compatibility;
+    }
+
+    /**
+     * Mutation that enables a link in the network
+     */
+    public void linkEnableMutation(){
+        Random geneChooser = new Random();
+        if(this.links.size() > 0){
+            int geneNum = geneChooser.nextInt(links.size() - 1);
+            Link toToggle = this.links.get(geneNum);
+            toToggle.setEnabled(!toToggle.isEnabled());
+        }
+    }
+
+    /**
+     * Mutation that adjusts a weight of a link
+     * his.weight = weightGenerator.nextDouble() * 2 - 1;
+     */
+    public void linkWeightMutation(){
+        for(Link link : this.links) {
+            if(!link.isEnabled()) {
+                Random weightMutate = new Random();
+                double howMuch = weightMutate.nextDouble();
+
+                // Here we completely change the weight of the link.
+                if(howMuch < 0.1) {
+                    link.setWeight(weightMutate.nextDouble() * 2 - 1);
+                } else { // Here we make a slight adjustment to the weight. Divide by a large
+                    // number to make it tiny
+                    link.setWeight((weightMutate.nextDouble() * 2 - 1) / 50);
+                    if(link.getWeight() > 1) {
+                        link.setWeight(1);
+                    } else if(link.getWeight() < -1) {
+                        link.setWeight(-1);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * A new connection gene is added between two previously unconnected nodes.
+     */
+    public void addConnectionMutation() {
+        for(Link inLink : this.links) {
+            for(Link outLink : this.links) {
+
+                Node input = outLink.getInput();
+                Node output = inLink.getOutput();
+
+                // Maybe replace this with .equals
+                if(input != output) {
+                    Link toAdd = new Link(input, output);
+                    this.addLink(toAdd);
+                }
+            }
+        }
+    }
+
+    /**
+     * Mutation that adds a node to the genome/network.
+     */
+    public void addNodeMutation(){
+
+    }
+
+    /**
+     * Mutation that enables the first disabled gene that is found.
+     */
+    public void reenableGeneMutation(){
+        for(Link link: this.links) {
+            if(!link.isEnabled()) {
+                link.setEnabled(true);
+            }
+        }
     }
 
     /**

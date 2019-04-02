@@ -25,14 +25,8 @@ public class Organism implements Cloneable {
     /** Keeps track of this organisms generation. */
     private int generation;
 
-    /** Used as a marker for whether this organism should be eliminated. */
-    private boolean toElim;
-
     /** The neural network related to this organism. Used to represent phenotype. */
     private Network network;
-
-    /** The genome of this organism. Used to represent genotype. */
-    private Genome genome;
 
     /**
      * Constructor for an organism based on the passed in name.
@@ -42,9 +36,7 @@ public class Organism implements Cloneable {
         this.fitness    = 0;
         this.generation = 0;
         this.name       = name;
-        this.toElim     = false;
         this.network    = new Network(id,25,4);
-        this.genome     = new Genome(this.network, id);
         id++;
     }
 
@@ -65,14 +57,6 @@ public class Organism implements Cloneable {
     }
 
     /**
-     * Returns the genome of this organism
-     * @return the genome of this organism
-     */
-    public Genome getGenome(){
-        return this.genome;
-    }
-
-    /**
      * Generates a string representation of this organism.
      * @return A string representation of this organism.
      */
@@ -84,19 +68,12 @@ public class Organism implements Cloneable {
 
     /**
      * Returns this organism's neural network aka. phenotype.
-     * @return
+     * @return the network of this organism
      */
     public Network getNetwork() {
         return network;
     }
 
-    /**
-     * Returns whether or not this organism should be eliminated.
-     * @return True if it should be eliminated, false otherwise.
-     */
-    public boolean getToElim() {
-        return toElim;
-    }
 
     public int getGeneration(){
         return this.generation;
@@ -104,14 +81,6 @@ public class Organism implements Cloneable {
 
     public void setGeneration(int generation){
         this.generation = generation;
-    }
-
-    /**
-     * Sets whether this organism should be eliminated.
-     * @param toElim Should be true if setting this organism to be eliminated, false otherwise.
-     */
-    public void setToElim(boolean toElim) {
-        this.toElim = toElim;
     }
 
     /**
@@ -127,7 +96,6 @@ public class Organism implements Cloneable {
             organism = new Organism(this.name);
         }
         organism.network = (Network) this.network.clone();
-        organism.genome = (Genome) this.genome.clone();
         return organism;
     }
 }
