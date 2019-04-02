@@ -40,9 +40,11 @@ public class Genome implements Cloneable {
      */
     public void linkEnableMutation(){
         Random geneChooser = new Random();
-        int geneNum = geneChooser.nextInt(genes.size() - 1);
-        Link toToggle = genes.get(geneNum).getLink();
-        toToggle.setEnabled(!toToggle.isEnabled());
+        if(genes.size() != 0) {
+            int geneNum = geneChooser.nextInt(genes.size() - 1);
+            Link toToggle = genes.get(geneNum).getLink();
+            toToggle.setEnabled(!toToggle.isEnabled());
+        }
     }
 
     /**
@@ -100,7 +102,7 @@ public class Genome implements Cloneable {
      * Mutation that adds a node to the genome/network.
      */
     public void addNodeMutation(){
-
+        // TODO: 3/31/2019 Finish this later 
     }
 
     /**
