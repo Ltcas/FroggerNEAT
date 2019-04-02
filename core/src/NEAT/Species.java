@@ -97,10 +97,13 @@ public class Species {
             if(this.organisms.size() == 1){
                 organism = (Organism)this.organisms.get(0).clone();
                 this.mutate(organism);
+                System.out.println("Mutate Original");
             }else if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()){
                 organism = (Organism)this.organisms.get(this.randomGen.nextInt(this.organisms.size())).clone();
                 this.mutate(organism);
+                System.out.println("Mutation");
             }else{
+                System.out.println("Crossover");
                 organism = this.crossOver();
                 this.mutate(organism);
             }
@@ -136,6 +139,8 @@ public class Species {
             }
             if(this.randomGen.nextDouble() < Constant.ENABLE_MUT.getValue()){
                 organism.getGenome().linkEnableMutation();
+            }else{
+                organism.getGenome().reenableGeneMutation();
             }
         }
     }
@@ -170,7 +175,7 @@ public class Species {
 
     /**
      * Gets the staleness of this species
-     * @return the staleness of the species
+         * @return the staleness of the species
      */
     public int getStaleness(){
         return this.staleness;

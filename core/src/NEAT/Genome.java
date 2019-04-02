@@ -32,7 +32,13 @@ public class Genome implements Cloneable {
      * @return the compatibility value
      */
     public double compatible(Genome genome){
-        return 1;
+        int excessCount = 0;
+        int disjointCount = 0;
+        double weightDiff = 0;
+        double compatibility = 0;
+
+
+        return compatibility;
     }
 
     /**
