@@ -366,7 +366,7 @@ public class Network implements Cloneable {
     /**
      * A new connection gene is added between two previously unconnected nodes.
      */
-    public void addConnectionMutation() {
+    public void addLinkMutation() {
         for(Link inLink : this.links) {
             for(Link outLink : this.links) {
 
@@ -392,7 +392,7 @@ public class Network implements Cloneable {
     /**
      * Mutation that enables the first disabled gene that is found.
      */
-    public void reenableGeneMutation(){
+    public void reenableLinkMutation(){
         for(Link link: this.links) {
             if(!link.isEnabled()) {
                 link.setEnabled(true);
