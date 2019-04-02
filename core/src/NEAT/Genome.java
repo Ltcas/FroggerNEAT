@@ -32,7 +32,13 @@ public class Genome implements Cloneable {
      * @return the compatibility value
      */
     public double compatible(Genome genome){
-        return 1;
+        int excessCount = 0;
+        int disjointCount = 0;
+        double weightDiff = 0;
+        double compatibility = 0;
+
+
+        return compatibility;
     }
 
     /**
@@ -40,7 +46,7 @@ public class Genome implements Cloneable {
      */
     public void linkEnableMutation(){
         Random geneChooser = new Random();
-        if(genes.size() != 0) {
+        if(this.genes.size() > 0){
             int geneNum = geneChooser.nextInt(genes.size() - 1);
             Link toToggle = genes.get(geneNum).getLink();
             toToggle.setEnabled(!toToggle.isEnabled());
@@ -102,7 +108,7 @@ public class Genome implements Cloneable {
      * Mutation that adds a node to the genome/network.
      */
     public void addNodeMutation(){
-        // TODO: 3/31/2019 Finish this later 
+        // TODO: 3/31/2019 Finish this later
     }
 
     /**

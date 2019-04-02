@@ -4,10 +4,10 @@ package NEAT;
  * Created by Chance on 3/29/2019.
  */
 public enum Constant {
-    EXCESS_COEFF (2.0),
-    DISJOINT_COEFF (2.0),
-    WEIGHT_COEFF (1),
-    COMPAT_THRESH(.5),
+    EXCESS_COEFF (1),
+    DISJOINT_COEFF (1),
+    WEIGHT_COEFF (.5),
+    COMPAT_THRESH(3),
     STALENESS_THRESH(15),
     CULL_THRESH(.5),
     ADD_NODE_MUT(.5),
