@@ -25,6 +25,10 @@ public class Network implements Cloneable {
     /** List of the links of this network. */
     private ArrayList<Link> links;
 
+    /** Innovation List */
+    private static ArrayList<Link> innovationList;
+
+    /** Bias node of the network */
     private Node biasNode;
 
     /**
@@ -98,7 +102,7 @@ public class Network implements Cloneable {
 
         for(Node in : this.inNodes) {
             for(Node out : this.outNodes) {
-                this.addLink(new Link(in, out));
+                this.addLink(in,out);
             }
         }
     }
@@ -133,14 +137,18 @@ public class Network implements Cloneable {
      * @return True if the node is added, false otherwise.
      */
     public boolean addNode(Node node) {
-        boolean result = true;
+        boolean result;
 
         // Adding the node based on what layer it should be added to.
         if(node.getLayer() == NodeLayer.INPUT) {
             result = this.inNodes.add(node);
         } else if(node.getLayer() == NodeLayer.OUTPUT) {
+            //Negative Innovation for bias node
+            this.biasNode.getOutgoingLinks().add(new Link(this.biasNode,node,-1));
             result = this.outNodes.add(node);
         } else {
+            //Negative Innovation for bias node
+            this.biasNode.getOutgoingLinks().add(new Link(this.biasNode,node,-1));
             result = this.hiddenNodes.add(node);
         }
         return result;
@@ -177,15 +185,21 @@ public class Network implements Cloneable {
 
     /**
      * Adds a link to the network.
-     * @param link The link to be added.
+     * @param inNode the input node of the link
+     * @param outNode the output node of the link
      * @return True if the link is added, false otherwise.
      */
-    public boolean addLink(Link link) {
+    public boolean addLink(Node inNode,Node outNode) {
         boolean result = true;
-        result = this.links.add(link);
-        if(result) {
-            link.getInput().getOutgoingLinks().add(link);
+        int innovationNum = this.links.size();
+        for(int i = 0;i < this.links.size();i++){
+            int inputID = this.links.get(i).getInput().getId();
+            int outputID = this.links.get(i).getOutput().getId();
+            if(inputID == inNode.getId() && outputID == outNode.getId()){
+                innovationNum = i;
+            }
         }
+        this.links.add(new Link(inNode,outNode,innovationNum));
         return result;
     }
 
@@ -327,8 +341,9 @@ public class Network implements Cloneable {
 
                 // Maybe replace this with .equals
                 if(input != output) {
-                    Link toAdd = new Link(input, output);
-                    this.addLink(toAdd);
+                    //TODO:Fix adding a link here
+                    //Link toAdd = new Link(input, output);
+                    //this.addLink(toAdd);
                 }
             }
         }

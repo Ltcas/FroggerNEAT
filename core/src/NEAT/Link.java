@@ -20,18 +20,21 @@ public class Link {
 
     /**Used to show if the link is enabled or not */
     private boolean enabled;
+
+    private int innovationNum;
     /**
      * Constructor for a Link object. Creates it based on a passed in weight, input, and output
      * node.
      * @param in The specified input node for this connection.
      * @param out The specified output node for this connection.
      */
-    public Link(Node in, Node out) {
+    public Link(Node in, Node out,int innovationNum) {
         Random weightGenerator = new Random();
         this.weight = weightGenerator.nextDouble() * 2 - 1;
         this.input  = in;
         this.output = out;
         this.enabled = true;
+        this.innovationNum = innovationNum;
     }
 
     /**
