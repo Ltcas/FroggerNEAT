@@ -40,9 +40,11 @@ public class Genome implements Cloneable {
      */
     public void linkEnableMutation(){
         Random geneChooser = new Random();
-        int geneNum = geneChooser.nextInt(genes.size() - 1);
-        Link toToggle = genes.get(geneNum).getLink();
-        toToggle.setEnabled(!toToggle.isEnabled());
+        if(this.genes.size() > 0){
+            int geneNum = geneChooser.nextInt(genes.size() - 1);
+            Link toToggle = genes.get(geneNum).getLink();
+            toToggle.setEnabled(!toToggle.isEnabled());
+        }
     }
 
     /**
