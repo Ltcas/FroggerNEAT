@@ -392,10 +392,11 @@ public class Network implements Cloneable {
         link.setEnabled(false);
         Node newNode = new Node(this.getNumNodes());
         Node oldIn = link.getInput();
-        Node oldOut = link.getInput();
+        Node oldOut = link.getOutput();
 
         this.addLink(oldIn,newNode);
         this.addLink(newNode,oldOut);
+        this.addNode(newNode);
     }
 
     /**
