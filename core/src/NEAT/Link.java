@@ -46,6 +46,14 @@ public class Link {
     }
 
     /**
+     * Gets the innovation number for this link
+     * @return the innovation number
+     */
+    public int getInnovationNum(){
+        return this.innovationNum;
+    }
+
+    /**
      * Used to adjust the weight of this connection link.
      * @param weight The new weight this link should be set to.
      */
@@ -99,5 +107,16 @@ public class Link {
      */
     public void setOutput(Node output) {
         this.output = output;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Link){
+            Link link = (Link) o;
+            if(link.getInnovationNum() == this.getInnovationNum()){
+                return true;
+            }
+        }
+        return false;
     }
 }

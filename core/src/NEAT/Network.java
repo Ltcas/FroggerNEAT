@@ -116,6 +116,14 @@ public class Network implements Cloneable {
     }
 
     /**
+     * Returns the links in this network
+     * @return the links of this network
+     */
+    public ArrayList<Link> getLinks(){
+        return this.links;
+    }
+
+    /**
      * Returns the number of nodes in this network.
      * @return The number of nodes in this network.
      */
@@ -191,10 +199,10 @@ public class Network implements Cloneable {
      */
     public boolean addLink(Node inNode,Node outNode) {
         boolean result = true;
-        int innovationNum = this.innovationList.size();
-        for(int i = 0;i < this.innovationList.size();i++){
-            int inputID = this.innovationList.get(i).getInput().getId();
-            int outputID = this.innovationList.get(i).getOutput().getId();
+        int innovationNum = Network.innovationList.size();
+        for(int i = 0;i < Network.innovationList.size();i++){
+            int inputID = Network.innovationList.get(i).getInput().getId();
+            int outputID = Network.innovationList.get(i).getOutput().getId();
             //If the innovation is identical to one in the overall list, set the new links
             // innovation number to that innovation number.
             if(inputID == inNode.getId() && outputID == outNode.getId()){
@@ -202,8 +210,8 @@ public class Network implements Cloneable {
             }
         }
         //If a new innovation was created, add it to the overall list
-        if(innovationNum == this.innovationList.size()){
-            this.innovationList.add(new Link(inNode,outNode,innovationNum));
+        if(innovationNum == Network.innovationList.size()){
+            Network.innovationList.add(new Link(inNode,outNode,innovationNum));
         }
 
         this.links.add(new Link(inNode,outNode,innovationNum));
@@ -293,7 +301,9 @@ public class Network implements Cloneable {
         int disjointCount = 0;
         double weightDiff = 0;
         double compatibility = 0;
+        for(Link link: this.links){
 
+        }
 
         return compatibility;
     }
