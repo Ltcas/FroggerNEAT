@@ -222,7 +222,9 @@ public class Network implements Cloneable {
             Network.innovationList.add(new Link(inNode,outNode,innovationNum));
         }
 
-        this.links.add(new Link(inNode,outNode,innovationNum));
+        Link toAdd = new Link(inNode, outNode, innovationNum);
+        this.links.add(toAdd);
+        inNode.getOutgoingLinks().add(toAdd);
     }
 
     /**
@@ -364,21 +366,18 @@ public class Network implements Cloneable {
      */
     public void linkWeightMutation(){
         for(Link link : this.links) {
-            if(link.isEnabled()) {
-                Random weightMutate = new Random();
-                double howMuch = weightMutate.nextDouble();
+            double howMuch = Math.random();
 
-                // Here we completely change the weight of the link.
-                if(howMuch < 0.1) {
-                    link.setWeight(weightMutate.nextDouble() * 2 - 1);
-                } else { // Here we make a slight adjustment to the weight. Divide by a large
-                    // number to make it tiny
-                    link.setWeight((weightMutate.nextDouble() * 2 - 1) / 50);
-                    if(link.getWeight() > 1) {
-                        link.setWeight(1);
-                    } else if(link.getWeight() < -1) {
-                        link.setWeight(-1);
-                    }
+            // Here we completely change the weight of the link.
+            if(howMuch < 0.1) {
+                link.setWeight(Math.random() * 2 - 1);
+            } else { // Here we make a slight adjustment to the weight. Divide by a large
+                // number to make it tiny
+                link.setWeight(link.getWeight() + (Math.random() * 2 - 1) / 50);
+                if(link.getWeight() > 1) {
+                    link.setWeight(1);
+                } else if(link.getWeight() < -1) {
+                    link.setWeight(-1);
                 }
             }
         }
@@ -388,18 +387,45 @@ public class Network implements Cloneable {
      * A new connection gene is added between two previously unconnected nodes.
      */
     public void addLinkMutation() {
-        for(Link inLink : this.links) {
-            for(Link outLink : this.links) {
+        boolean added = false;
+        Random random = new Random();
+        Node inNode;
+        Node outNode;
+        while(!added && !this.hiddenNodes.isEmpty()) {
+            boolean found = false;
+            ArrayList<Link> outgoingLinks;
 
-                Node input = outLink.getInput();
-                Node output = inLink.getOutput();
+            // Grab a random hidden node.
+            Node hidden = this.hiddenNodes.get(random.nextInt(hiddenNodes.size()));
 
-                // Maybe replace this with .equals
-                if(input != output) {
-                    //TODO:Fix adding a link here
-                    //Link toAdd = new Link(input, output);
-                    //this.addLink(toAdd);
+            // Half the time we attempt to make a connection between input and hidden.
+            if(random.nextDouble() < 0.5) {
+
+                // Grab a random input node and its outgoing links.
+                inNode = this.inNodes.get(random.nextInt(inNodes.size()));
+                outNode = hidden;
+                outgoingLinks = inNode.getOutgoingLinks();
+
+            } else { // Half the time, we attempt to make a connection between hidden and output.
+
+                // Grab a random output node and the links going from our hidden node.
+                inNode = hidden;
+                outNode = this.outNodes.get(random.nextInt(outNodes.size()));
+                outgoingLinks = hidden.getOutgoingLinks();
+            }
+
+            // Check our list of outgoing links to see if there is not already a link.
+            for(int i = 0; i < outgoingLinks.size() && !found; i++) {
+                Node check = outgoingLinks.get(i).getOutput();
+                if(check.getId() == outNode.getId()) {
+                    found = true;
                 }
+            }
+
+            // If we didn't find the link, it doesn't exist and we can add it.
+            if(!found) {
+                addLink(inNode, outNode);
+                added = true;
             }
         }
     }

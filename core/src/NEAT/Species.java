@@ -96,15 +96,18 @@ public class Species {
             if(this.organisms.size() == 1){
                 System.out.println("Mutate Original - one organism in species");
                 organism = (Organism)this.organisms.get(0).clone();
-                //this.mutate(organism);
+                this.mutate(organism);
             }else if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()){
                 System.out.println("Mutation only");
                 organism = (Organism)this.organisms.get(this.randomGen.nextInt(this.organisms.size())).clone();
-                //this.mutate(organism);
+                this.mutate(organism);
             }else{
                 System.out.println("Crossover");
                 organism = this.crossOver();
-                //this.mutate(organism);
+                if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()) {
+                    System.out.println("Crossover and mutation");
+                    this.mutate(organism);
+                }
             }
 
             // Maybe drop mutate down depending on how well it works.
@@ -138,7 +141,8 @@ public class Species {
             }
             if(this.randomGen.nextDouble() < Constant.ENABLE_MUT.getValue()){
                 network.linkEnableMutation();
-            }else{
+            }
+            if(this.randomGen.nextDouble() < Constant.REENABLE_MUT.getValue()){
                 network.reenableLinkMutation();
             }
         }

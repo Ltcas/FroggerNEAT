@@ -13,7 +13,8 @@ public enum Constant {
     ADD_LINK_MUT(.5),
     WEIGHT_MUT(.25),
     ENABLE_MUT(.25),
-    MUT_THRESH(.25);
+    REENABLE_MUT(.25),
+    MUT_THRESH(.75);
 
     private final double value;
 
