@@ -434,7 +434,16 @@ public class Network implements Cloneable {
      * Mutation that adds a node to the genome/network.
      */
     public void addNodeMutation(){
+        Random random = new Random();
+        Link link = this.links.get(random.nextInt(this.getNumLinks()));
+        link.setEnabled(false);
+        Node newNode = new Node(this.getNumNodes());
+        Node oldIn = link.getInput();
+        Node oldOut = link.getOutput();
 
+        this.addLink(oldIn,newNode);
+        this.addLink(newNode,oldOut);
+        this.addNode(newNode);
     }
 
     /**
