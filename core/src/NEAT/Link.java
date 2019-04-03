@@ -27,6 +27,7 @@ public class Link {
      * node.
      * @param in The specified input node for this connection.
      * @param out The specified output node for this connection.
+     * @param innovationNum The specified innovation number of this link.
      */
     public Link(Node in, Node out,int innovationNum) {
         Random weightGenerator = new Random();

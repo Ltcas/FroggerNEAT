@@ -1,5 +1,7 @@
 package NEAT;
 
+import sun.nio.ch.Net;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -92,14 +94,18 @@ public class Network implements Cloneable {
      * @param outCount Number of output nodes.
      */
     private void createNetwork(int inCount,int outCount){
+
+        // Creates all input layer nodes.
         for(int i = 0; i < inCount; i++){
             addNode(new Node(this.getNumNodes(), NodeLayer.INPUT));
         }
 
+        // Creates all output layer nodes.
         for(int i = 0; i < outCount; i++){
             addNode(new Node(this.getNumNodes(), NodeLayer.OUTPUT));
         }
 
+        // Fully connects all input layer nodes to all output layer nodes.
         for(Node in : this.inNodes) {
             for(Node out : this.outNodes) {
                 this.addLink(in,out);
@@ -195,27 +201,28 @@ public class Network implements Cloneable {
      * Adds a link to the network.
      * @param inNode the input node of the link
      * @param outNode the output node of the link
-     * @return True if the link is added, false otherwise.
      */
-    public boolean addLink(Node inNode,Node outNode) {
-        boolean result = true;
+    public void addLink(Node inNode,Node outNode) {
         int innovationNum = Network.innovationList.size();
-        for(int i = 0;i < Network.innovationList.size();i++){
-            int inputID = Network.innovationList.get(i).getInput().getId();
-            int outputID = Network.innovationList.get(i).getOutput().getId();
+
+        for(int i = 0; i < Network.innovationList.size(); i++){
+            Link toCheck = Network.innovationList.get(i);
+            int inputID = toCheck.getInput().getId();
+            int outputID = toCheck.getOutput().getId();
+
             //If the innovation is identical to one in the overall list, set the new links
             // innovation number to that innovation number.
             if(inputID == inNode.getId() && outputID == outNode.getId()){
                 innovationNum = i;
             }
         }
+
         //If a new innovation was created, add it to the overall list
         if(innovationNum == Network.innovationList.size()){
             Network.innovationList.add(new Link(inNode,outNode,innovationNum));
         }
 
         this.links.add(new Link(inNode,outNode,innovationNum));
-        return result;
     }
 
     /**
@@ -312,8 +319,8 @@ public class Network implements Cloneable {
      * Mutation that enables a link in the network
      */
     public void linkEnableMutation(){
-        Random geneChooser = new Random();
-        if(this.links.size() > 0){
+        if(this.links.size() > 0) {
+            Random geneChooser = new Random();
             int geneNum = geneChooser.nextInt(links.size() - 1);
             Link toToggle = this.links.get(geneNum);
             toToggle.setEnabled(!toToggle.isEnabled());
@@ -321,12 +328,26 @@ public class Network implements Cloneable {
     }
 
     /**
+     * Mutation that enables the first disabled gene that is found.
+     */
+    public void reenableLinkMutation(){
+        boolean foundLink = false;
+        for(int i = 0; !foundLink && i < this.links.size(); i++) {
+            Link link = this.links.get(i);
+            if(!link.isEnabled()) {
+                link.setEnabled(true);
+                foundLink = true;
+            }
+        }
+    }
+
+    /**
      * Mutation that adjusts a weight of a link
-     * his.weight = weightGenerator.nextDouble() * 2 - 1;
+     * this.weight = weightGenerator.nextDouble() * 2 - 1;
      */
     public void linkWeightMutation(){
         for(Link link : this.links) {
-            if(!link.isEnabled()) {
+            if(link.isEnabled()) {
                 Random weightMutate = new Random();
                 double howMuch = weightMutate.nextDouble();
 
@@ -371,17 +392,6 @@ public class Network implements Cloneable {
      */
     public void addNodeMutation(){
 
-    }
-
-    /**
-     * Mutation that enables the first disabled gene that is found.
-     */
-    public void reenableLinkMutation(){
-        for(Link link: this.links) {
-            if(!link.isEnabled()) {
-                link.setEnabled(true);
-            }
-        }
     }
 
     /**
