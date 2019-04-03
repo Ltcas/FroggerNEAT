@@ -297,13 +297,30 @@ public class Network implements Cloneable {
      * @return the compatibility value
      */
     public double compatible(Network network){
-        int excessCount = 0;
-        int disjointCount = 0;
-        double weightDiff = 0;
-        double compatibility = 0;
+        double weightSum = 0;
+        int matchingCount = 0;
+        int disjointCount;
+        double weightDiff;
+        double compatibility;
         for(Link link: this.links){
-
+            for(Link otherLink:network.getLinks()){
+                if(link.equals(otherLink)){
+                    matchingCount++;
+                    weightSum += link.getWeight() - otherLink.getWeight();
+                }
+            }
         }
+
+        if(this.links.size() > network.getLinks().size()){
+            disjointCount = this.getNumLinks() - matchingCount;
+        }else{
+            disjointCount = network.getNumLinks() - matchingCount;
+        }
+
+        weightDiff = weightSum / matchingCount;
+
+        compatibility = (disjointCount * Constant.DISJOINT_COEFF.getValue()) + (weightDiff *
+                Constant.WEIGHT_COEFF.getValue());
 
         return compatibility;
     }
