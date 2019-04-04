@@ -91,16 +91,23 @@ public class Species {
     public void reproduce(int numBabies){
         ArrayList<Organism> babies = new ArrayList<Organism>();
         babies.add((Organism) this.organisms.get(0).clone());
-        for(int i = 0;i <= numBabies;i++){
+        for(int i = 0;i < numBabies;i++){
             Organism organism;
             if(this.organisms.size() == 1){
                 System.out.println("Mutate Original - one organism in species");
                 organism = (Organism)this.organisms.get(0).clone();
                 this.mutate(organism);
-            }else{
+            }else if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()){
                 System.out.println("Mutation only");
                 organism = (Organism)this.organisms.get(this.randomGen.nextInt(this.organisms.size())).clone();
                 this.mutate(organism);
+            }else{
+                System.out.println("Crossover");
+                organism = this.crossOver();
+                if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()) {
+                    System.out.println("Crossover and mutation");
+                    this.mutate(organism);
+                }
             }
 
             // Maybe drop mutate down depending on how well it works.
