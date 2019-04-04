@@ -97,17 +97,10 @@ public class Species {
                 System.out.println("Mutate Original - one organism in species");
                 organism = (Organism)this.organisms.get(0).clone();
                 this.mutate(organism);
-            }else if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()){
+            }else{
                 System.out.println("Mutation only");
                 organism = (Organism)this.organisms.get(this.randomGen.nextInt(this.organisms.size())).clone();
                 this.mutate(organism);
-            }else{
-                System.out.println("Crossover");
-                organism = this.crossOver();
-                if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()) {
-                    System.out.println("Crossover and mutation");
-                    this.mutate(organism);
-                }
             }
 
             // Maybe drop mutate down depending on how well it works.
@@ -145,10 +138,15 @@ public class Species {
             for(Link otherLink: parentLinks){
                 if(link.equals(otherLink)){
                     if(randomGen.nextDouble() > .5){ //Randomly choose which matching link to put in the network
-                        link = (Link)otherLink.clone();
+                        link.setWeight(otherLink.getWeight());
                     }
                 }else if(!babyLinks.contains(otherLink)){ //Check for disjoint links
-
+                    Node input = baby.getNetwork().getNode(otherLink.getInput().getId());
+                    Node output = baby.getNetwork().getNode(otherLink.getOutput().getId());
+                    if(!(input == null) && !(output == null)){
+                        Link newLink = baby.getNetwork().addLink(input,output);
+                        newLink.setWeight(otherLink.getWeight());
+                    }
                 }
             }
         }
@@ -164,16 +162,16 @@ public class Species {
         if(this.randomGen.nextDouble() < Constant.ADD_NODE_MUT.getValue()){
             //network.addNodeMutation();
         }else if(this.randomGen.nextDouble() < Constant.ADD_LINK_MUT.getValue()){
-            network.addLinkMutation();
+            //network.addLinkMutation();
         }else{
             if(this.randomGen.nextDouble() < Constant.WEIGHT_MUT.getValue()){
                 network.linkWeightMutation();
             }
             if(this.randomGen.nextDouble() < Constant.ENABLE_MUT.getValue()){
-                network.linkEnableMutation();
+                //network.linkEnableMutation();
             }
             if(this.randomGen.nextDouble() < Constant.REENABLE_MUT.getValue()){
-                network.reenableLinkMutation();
+                //network.reenableLinkMutation();
             }
         }
     }
