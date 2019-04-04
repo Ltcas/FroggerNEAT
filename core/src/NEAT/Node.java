@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author Chance Simmons and Brandon Townsend
  * @version 2 April 2019
  */
-public class Node {
+public class Node implements Cloneable{
 
     /** The identification number for this node. */
     private int id;
@@ -107,5 +107,20 @@ public class Node {
             }
         }
         this.inputSum = 0;
+    }
+
+    /**
+     * Clones this node.
+     * @return A clone of this node.
+     */
+    @Override
+    public Object clone() {
+        Node node;
+        try {
+            node = (Node) super.clone();
+        } catch (CloneNotSupportedException cne) {
+            node = new Node(this.id);
+        }
+        return node;
     }
 }

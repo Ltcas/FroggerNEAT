@@ -9,7 +9,7 @@ import java.util.Random;
  * @version 13 March 2019
  */
 public class Species {
-    /** List of organisms in this speices */
+    /** List of organisms in this species */
     private ArrayList<Organism> organisms;
 
     /** Best fitness of any of the organisms in this species */
@@ -118,11 +118,41 @@ public class Species {
     }
 
     public Organism crossOver(){
+        //Randomly choose two parents from the species
         Organism parentOne = this.organisms.get(this.randomGen.nextInt(this.organisms.size()));
         Organism parentTwo = this.organisms.get(this.randomGen.nextInt(this.organisms.size()));
 
-        // TODO: 4/2/2019 Finish Crossover you idiots
-        return new Organism("Groot");
+        Organism maxParent;
+        Organism leastParent;
+
+        //Find the most fit parent
+        if(parentOne.getFitness() > parentTwo.getFitness()){
+            maxParent = parentOne;
+            leastParent = parentTwo;
+        }else{
+            maxParent = parentTwo;
+            leastParent = parentOne;
+        }
+
+        //Clone the most fit parent as the baby
+        Organism baby = (Organism)maxParent.clone();
+
+        //Get the list of links from the baby and the parent
+        ArrayList<Link> babyLinks = baby.getNetwork().getLinks();
+        ArrayList<Link> parentLinks = leastParent.getNetwork().getLinks();
+
+        for(Link link: babyLinks){
+            for(Link otherLink: parentLinks){
+                if(link.equals(otherLink)){
+                    if(randomGen.nextDouble() > .5){ //Randomly choose which matching link to put in the network
+                        link = (Link)otherLink.clone();
+                    }
+                }else if(!babyLinks.contains(otherLink)){ //Check for disjoint links
+
+                }
+            }
+        }
+        return baby;
     }
 
     /**
@@ -132,7 +162,7 @@ public class Species {
     public void mutate(Organism organism){
         Network network = organism.getNetwork();
         if(this.randomGen.nextDouble() < Constant.ADD_NODE_MUT.getValue()){
-            network.addNodeMutation();
+            //network.addNodeMutation();
         }else if(this.randomGen.nextDouble() < Constant.ADD_LINK_MUT.getValue()){
             network.addLinkMutation();
         }else{

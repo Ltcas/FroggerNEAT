@@ -311,6 +311,8 @@ public class Network implements Cloneable {
         int disjointCount;
         double weightDiff;
         double compatibility;
+
+        //Find the number of matching links, as well as the weight difference with the matching links
         for(Link link: this.links){
             for(Link otherLink:network.getLinks()){
                 if(link.equals(otherLink)){
@@ -320,6 +322,7 @@ public class Network implements Cloneable {
             }
         }
 
+        //Find the disjoint count based off of the max number of links
         if(this.links.size() > network.getLinks().size()){
             disjointCount = this.getNumLinks() - matchingCount;
         }else{
