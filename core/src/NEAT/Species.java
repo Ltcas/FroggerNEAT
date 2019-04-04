@@ -141,11 +141,11 @@ public class Species {
         ArrayList<Link> babyLinks = baby.getNetwork().getLinks();
         ArrayList<Link> parentLinks = leastParent.getNetwork().getLinks();
 
-        for(Link link: babyLinks){
+        for(int i = 0;i < babyLinks.size();i++){
             for(Link otherLink: parentLinks){
-                if(link.equals(otherLink)){
+                if(babyLinks.get(i).equals(otherLink)){
                     if(randomGen.nextDouble() > .5){ //Randomly choose which matching link to put in the network
-                        link.setWeight(otherLink.getWeight());
+                        babyLinks.get(i).setWeight(otherLink.getWeight());
                     }
                 }else if(!babyLinks.contains(otherLink)){ //Check for disjoint links
                     Node input = baby.getNetwork().getNode(otherLink.getInput().getId());
@@ -167,18 +167,18 @@ public class Species {
     public void mutate(Organism organism){
         Network network = organism.getNetwork();
         if(this.randomGen.nextDouble() < Constant.ADD_NODE_MUT.getValue()){
-            //network.addNodeMutation();
+            network.addNodeMutation();
         }else if(this.randomGen.nextDouble() < Constant.ADD_LINK_MUT.getValue()){
-            //network.addLinkMutation();
+            network.addLinkMutation();
         }else{
             if(this.randomGen.nextDouble() < Constant.WEIGHT_MUT.getValue()){
                 network.linkWeightMutation();
             }
             if(this.randomGen.nextDouble() < Constant.ENABLE_MUT.getValue()){
-                //network.linkEnableMutation();
+                network.linkEnableMutation();
             }
             if(this.randomGen.nextDouble() < Constant.REENABLE_MUT.getValue()){
-                //network.reenableLinkMutation();
+                network.reenableLinkMutation();
             }
         }
     }
