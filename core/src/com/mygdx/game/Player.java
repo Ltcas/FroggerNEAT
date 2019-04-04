@@ -167,7 +167,7 @@ public class Player extends Sprite{
      * @param direction int that is used to pick the direction the player will move
      */
     public void move(int direction){
-        if(this.isAlive && this.frameCount % 30 == 0){
+        if(this.isAlive && this.frameCount % 15 == 0){
             switch (direction){
                 case 0:
                     if(this.y + TILE_PIX < this.height){

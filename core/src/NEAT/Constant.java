@@ -9,9 +9,9 @@ public enum Constant {
     COMPAT_THRESH(3),
     STALENESS_THRESH(15),
     CULL_THRESH(.5),
-    ADD_NODE_MUT(.5),
-    ADD_LINK_MUT(.5),
-    WEIGHT_MUT(.25),
+    ADD_NODE_MUT(.1),
+    ADD_LINK_MUT(.8),
+    WEIGHT_MUT(.35),
     ENABLE_MUT(.25),
     REENABLE_MUT(.25),
     MUT_THRESH(.75);

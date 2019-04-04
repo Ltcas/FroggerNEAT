@@ -265,7 +265,9 @@ public class Kittener extends ApplicationAdapter {
 						max = j;
 					}
 				}
-				player.move(max);
+				if(max != 4){
+					player.move(max);
+				}
 				if (player.getFrameCount() % 60 == 0) {
 					player.hasMoved(prevX, prevY);
 				}
