@@ -317,7 +317,7 @@ public class Network implements Cloneable {
             for(Link otherLink:network.getLinks()){
                 if(link.equals(otherLink)){
                     matchingCount++;
-                    weightSum += link.getWeight() - otherLink.getWeight();
+                    weightSum += Math.abs(link.getWeight() - otherLink.getWeight());
                 }
             }
         }
@@ -394,7 +394,41 @@ public class Network implements Cloneable {
         Random random = new Random();
         Node inNode;
         Node outNode;
-        while(!added && !this.hiddenNodes.isEmpty()) {
+
+        // Check to see if it's a fully connected network.
+        if(this.hiddenNodes.isEmpty()) {
+            added = true;
+        } else {
+            int linkCounter = 0;
+            int linkSum = 0;
+            for(Node input : this.inNodes) {
+                for(Link link : input.getOutgoingLinks()) {
+                    linkSum++;
+                    if(this.links.contains(link)) {
+                        linkCounter++;
+                    }
+                }
+            }
+
+            // If the input -> hidden is fully connected, check the hidden -> output connections.
+            if(linkCounter == linkSum) {
+                linkCounter = 0;
+                linkSum = 0;
+                for(Node hidden : this.hiddenNodes) {
+                    for(Link link : hidden.getOutgoingLinks()) {
+                        linkSum++;
+                        if(this.links.contains(link)) {
+                            linkCounter++;
+                        }
+                    }
+                }
+                if(linkCounter == linkSum) {
+                    added = true;
+                }
+            }
+        }
+
+        while(!added) {
             boolean found = false;
             ArrayList<Link> outgoingLinks;
 
@@ -449,10 +483,10 @@ public class Network implements Cloneable {
         this.addNode(newNode);
     }
 
-    /**
+/*    *//**
      * Returns a string representation of this network.
      * @return A String representation of this network.
-     */
+     *//*
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
@@ -481,7 +515,7 @@ public class Network implements Cloneable {
 //            }
         }
         return str.toString();
-    }
+    }*/
 
     /**
      * Clones this network.
