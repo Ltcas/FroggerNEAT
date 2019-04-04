@@ -201,8 +201,9 @@ public class Network implements Cloneable {
      * Adds a link to the network.
      * @param inNode the input node of the link
      * @param outNode the output node of the link
+     * @return the link that was added
      */
-    public void addLink(Node inNode,Node outNode) {
+    public Link addLink(Node inNode,Node outNode) {
         int innovationNum = Network.innovationList.size();
 
         for(int i = 0; i < Network.innovationList.size(); i++){
@@ -225,6 +226,7 @@ public class Network implements Cloneable {
         Link toAdd = new Link(inNode, outNode, innovationNum);
         this.links.add(toAdd);
         inNode.getOutgoingLinks().add(toAdd);
+        return toAdd;
     }
 
     /**
@@ -299,6 +301,33 @@ public class Network implements Cloneable {
         }
 
         return result;
+    }
+
+    /**
+     * Gets a node that has a certain ID.
+     * @param id the ID to search for
+     * @return the node
+     */
+    public Node getNode(int id){
+        for(Node node: this.inNodes){
+            if(node.getId() == id){
+                return node;
+            }
+        }
+
+        for(Node node:this.hiddenNodes){
+            if(node.getId() == id){
+                return node;
+            }
+        }
+
+        for(Node node:this.outNodes){
+            if(node.getId() == id){
+                return node;
+            }
+        }
+
+        return null;
     }
 
     /**
