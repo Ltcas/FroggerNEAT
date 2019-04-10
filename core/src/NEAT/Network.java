@@ -438,7 +438,7 @@ public class Network implements Cloneable {
                     }
                 }
             }
-
+            //System.out.println("Link Counter: " + linkCounter + "Total Link: " + linkSum);
             // If the input -> hidden is fully connected, check the hidden -> output connections.
             if(linkCounter == linkSum) {
                 linkCounter = 0;
@@ -451,16 +451,16 @@ public class Network implements Cloneable {
                         }
                     }
                 }
+                //System.out.println("Link Counter" + linkCounter + "Total Link: " + linkSum);
                 if(linkCounter == linkSum) {
                     added = true;
                 }
             }
         }
-
         while(!added) {
+            //System.out.println("Loop");
             boolean found = false;
             ArrayList<Link> outgoingLinks;
-
             // Grab a random hidden node.
             Node hidden = this.hiddenNodes.get(random.nextInt(hiddenNodes.size()));
 
@@ -506,7 +506,6 @@ public class Network implements Cloneable {
         Node newNode = new Node(this.getNumNodes());
         Node oldIn = link.getInput();
         Node oldOut = link.getOutput();
-
         this.addLink(oldIn,newNode);
         this.addLink(newNode,oldOut);
         this.addNode(newNode);
