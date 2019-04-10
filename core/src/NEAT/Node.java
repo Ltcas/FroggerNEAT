@@ -123,4 +123,16 @@ public class Node implements Cloneable{
         }
         return node;
     }
+
+    @Override
+    public boolean equals(Object o){
+        boolean result = false;
+        if(o instanceof Node){
+            Node node = (Node)o;
+            if(node.getId() == this.id){
+                result = true;
+            }
+        }
+        return result;
+    }
 }

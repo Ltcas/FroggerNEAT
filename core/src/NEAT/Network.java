@@ -440,7 +440,7 @@ public class Network implements Cloneable {
         while(!added) {
             Node inNode;
             Node outNode;
-            //System.out.println("Loop");
+            System.out.println("Loop");
             boolean found = false;
 
             // Grab a random hidden node.
