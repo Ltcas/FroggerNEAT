@@ -421,8 +421,6 @@ public class Network implements Cloneable {
     public void addLinkMutation() {
         boolean added = false;
         Random random = new Random();
-        Node inNode;
-        Node outNode;
 
         // Check to see if it's a fully connected network.
         if(this.hiddenNodes.isEmpty()) {
@@ -432,43 +430,36 @@ public class Network implements Cloneable {
             totalPossibleLinks += this.hiddenNodes.size() * (this.inNodes.size() + this.outNodes.size());
             System.out.println("Total possible links: " + totalPossibleLinks);
 
-            System.out.println("Difference: " + (this.links.size() - totalPossibleLinks));
+            System.out.println("Difference: " + (totalPossibleLinks - this.links.size()));
             // Calculate the difference to see if we can add any links.
-            if(this.links.size() - totalPossibleLinks == 0) {
+            if(totalPossibleLinks - this.links.size() == 0) {
                 added = true;
             }
         }
 
         while(!added) {
+            Node inNode;
+            Node outNode;
             boolean found = false;
-            ArrayList<Link> outgoingLinks;
 
             // Grab a random hidden node.
             Node hidden = this.hiddenNodes.get(random.nextInt(hiddenNodes.size()));
 
             // Half the time we attempt to make a connection between input and hidden.
             if(random.nextDouble() < 0.5) {
-
-                // Grab a random input node and its outgoing links.
                 inNode = this.inNodes.get(random.nextInt(inNodes.size()));
                 outNode = hidden;
-                outgoingLinks = inNode.getOutgoingLinks();
-
             } else { // Half the time, we attempt to make a connection between hidden and output.
-
-                // Grab a random output node and the links going from our hidden node.
                 inNode = hidden;
                 outNode = this.outNodes.get(random.nextInt(outNodes.size()));
-                outgoingLinks = hidden.getOutgoingLinks();
             }
 
-            // Check our list of outgoing links to see if there is not already a link.
-            for(int i = 0; i < outgoingLinks.size() && !found; i++) {
-                Node check = outgoingLinks.get(i).getOutput();
-                if(check.getId() == outNode.getId()) {
+            for(Link link : inNode.getOutgoingLinks()) {
+                if(link.getInput().equals(inNode) && link.getOutput().equals(outNode)) {
                     found = true;
                 }
             }
+
 
             // If we didn't find the link, it doesn't exist and we can add it.
             if(!found) {
