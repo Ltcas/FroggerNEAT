@@ -440,6 +440,7 @@ public class Network implements Cloneable {
         while(!added) {
             Node inNode;
             Node outNode;
+            //System.out.println("Loop");
             boolean found = false;
 
             // Grab a random hidden node.
@@ -479,7 +480,6 @@ public class Network implements Cloneable {
         Node newNode = new Node(this.getNumNodes());
         Node oldIn = link.getInput();
         Node oldOut = link.getOutput();
-
         this.addLink(oldIn,newNode);
         this.addLink(newNode,oldOut);
         this.addNode(newNode);
