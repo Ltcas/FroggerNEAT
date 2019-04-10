@@ -427,20 +427,21 @@ public class Network implements Cloneable {
         // Check to see if it's a fully connected network.
         if(this.hiddenNodes.isEmpty()) {
             added = true;
-        } else {
+        }
+        if(!this.hiddenNodes.isEmpty()){
             int totalPossibleLinks = this.inNodes.size() * this.outNodes.size();
             totalPossibleLinks += this.hiddenNodes.size() * (this.inNodes.size() + this.outNodes.size());
             System.out.println("Total possible links: " + totalPossibleLinks);
-
-            System.out.println("Difference: " + (this.links.size() - totalPossibleLinks));
+            System.out.println("Link Size: " + this.links.size());
+            System.out.println("Difference: " + (totalPossibleLinks - this.links.size()));
             // Calculate the difference to see if we can add any links.
-            if(this.links.size() - totalPossibleLinks == 0) {
+            if( totalPossibleLinks - this.links.size() == 0) {
                 added = true;
             }
         }
 
         while(!added) {
-            //System.out.println("Loop");
+            System.out.println("Loop");
             boolean found = false;
             ArrayList<Link> outgoingLinks;
 
