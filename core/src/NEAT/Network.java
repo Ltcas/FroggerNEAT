@@ -421,72 +421,46 @@ public class Network implements Cloneable {
     public void addLinkMutation() {
         boolean added = false;
         Random random = new Random();
-        Node inNode;
-        Node outNode;
 
         // Check to see if it's a fully connected network.
         if(this.hiddenNodes.isEmpty()) {
             added = true;
         } else {
-            int linkCounter = 0;
-            int linkSum = 0;
-            for(Node input : this.inNodes) {
-                for(Link link : input.getOutgoingLinks()) {
-                    linkSum++;
-                    if(this.links.contains(link)) {
-                        linkCounter++;
-                    }
-                }
-            }
+            int totalPossibleLinks = this.inNodes.size() * this.outNodes.size();
+            totalPossibleLinks += this.hiddenNodes.size() * (this.inNodes.size() + this.outNodes.size());
+            System.out.println("Total possible links: " + totalPossibleLinks);
 
-            // If the input -> hidden is fully connected, check the hidden -> output connections.
-            if(linkCounter == linkSum) {
-                linkCounter = 0;
-                linkSum = 0;
-                for(Node hidden : this.hiddenNodes) {
-                    for(Link link : hidden.getOutgoingLinks()) {
-                        linkSum++;
-                        if(this.links.contains(link)) {
-                            linkCounter++;
-                        }
-                    }
-                }
-                if(linkCounter == linkSum) {
-                    added = true;
-                }
+            System.out.println("Difference: " + (totalPossibleLinks - this.links.size()));
+            // Calculate the difference to see if we can add any links.
+            if(totalPossibleLinks - this.links.size() == 0) {
+                added = true;
             }
         }
 
         while(!added) {
+            Node inNode;
+            Node outNode;
+            System.out.println("Loop");
             boolean found = false;
-            ArrayList<Link> outgoingLinks;
 
             // Grab a random hidden node.
             Node hidden = this.hiddenNodes.get(random.nextInt(hiddenNodes.size()));
 
             // Half the time we attempt to make a connection between input and hidden.
             if(random.nextDouble() < 0.5) {
-
-                // Grab a random input node and its outgoing links.
                 inNode = this.inNodes.get(random.nextInt(inNodes.size()));
                 outNode = hidden;
-                outgoingLinks = inNode.getOutgoingLinks();
-
             } else { // Half the time, we attempt to make a connection between hidden and output.
-
-                // Grab a random output node and the links going from our hidden node.
                 inNode = hidden;
                 outNode = this.outNodes.get(random.nextInt(outNodes.size()));
-                outgoingLinks = hidden.getOutgoingLinks();
             }
 
-            // Check our list of outgoing links to see if there is not already a link.
-            for(int i = 0; i < outgoingLinks.size() && !found; i++) {
-                Node check = outgoingLinks.get(i).getOutput();
-                if(check.getId() == outNode.getId()) {
+            for(Link link : inNode.getOutgoingLinks()) {
+                if(link.getInput().equals(inNode) && link.getOutput().equals(outNode)) {
                     found = true;
                 }
             }
+
 
             // If we didn't find the link, it doesn't exist and we can add it.
             if(!found) {
@@ -508,7 +482,6 @@ public class Network implements Cloneable {
         Node newNode = new Node(this.getNumNodes());
         Node oldIn = link.getInput();
         Node oldOut = link.getOutput();
-
         this.addLink(oldIn,newNode);
         this.addLink(newNode,oldOut);
         this.addNode(newNode);
