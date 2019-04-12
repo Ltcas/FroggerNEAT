@@ -493,6 +493,8 @@ public class Network implements Cloneable {
                 addLink(inNode, outNode);
                 added = true;
             }
+            System.out.println("Looping " + added + "\tIn Node: " + inNode.getId() + "\tOut Node:" +
+                    " " + outNode.getId());
         }
     }
 
