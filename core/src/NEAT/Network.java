@@ -224,7 +224,9 @@ public class Network implements Cloneable {
         }
 
         Link toAdd = new Link(inNode, outNode, innovationNum);
+        System.out.println("Size of links before: " + this.links.size());
         this.links.add(toAdd);
+        System.out.println("Size of links after: " + this.links.size());
         inNode.getOutgoingLinks().add(toAdd);
         return toAdd;
     }
@@ -337,7 +339,7 @@ public class Network implements Cloneable {
     public double compatible(Network network){
         double weightSum = 0;
         int matchingCount = 0;
-        int disjointCount;
+        int disjointCount = 0;
         double weightDiff;
         double compatibility;
 
@@ -354,7 +356,7 @@ public class Network implements Cloneable {
         //Find the disjoint count based off of the max number of links
         if(this.links.size() > network.getLinks().size()){
             disjointCount = this.getNumLinks() - matchingCount;
-        }else{
+        }else if(this.links.size() < network.getLinks().size()){
             disjointCount = network.getNumLinks() - matchingCount;
         }
 
@@ -440,7 +442,6 @@ public class Network implements Cloneable {
         while(!added) {
             Node inNode;
             Node outNode;
-            System.out.println("Loop");
             boolean found = false;
 
             // Grab a random hidden node.
