@@ -139,9 +139,9 @@ public class Population {
      */
     private void sortSpecies(){
         for(Species species: this.species){
-            species.shareFitness();
             species.sort();
             species.cullSpecies();
+            species.shareFitness();
         }
     }
 
