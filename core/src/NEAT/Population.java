@@ -109,7 +109,13 @@ public class Population {
      * Separates the organisms into species based on their compatibility.
      */
     private void speciate() {
-        this.species.clear();
+        for(int i = 0; i < this.species.size(); i++) {
+            Species checkEmpty = this.species.get(i);
+            if(checkEmpty.getOrganisms().isEmpty()) {
+                this.species.remove(checkEmpty);
+                i--;
+            }
+        }
         for(Organism o : organisms) {
             if(this.species.isEmpty()){
                 this.species.add(new Species());

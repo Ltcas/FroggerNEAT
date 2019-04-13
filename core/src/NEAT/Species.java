@@ -207,7 +207,7 @@ public class Species {
     }
 
     /**
-     * Kill the low performing species.
+     * Kill the low performing organisms in this species.
      */
     public void cullSpecies(){
         int cullNumber = (int)Math.round(this.organisms.size() * Constant.CULL_THRESH.getValue());
