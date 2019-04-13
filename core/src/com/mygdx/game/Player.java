@@ -124,7 +124,7 @@ public class Player extends Sprite{
      * @return the score that the player has
      */
     public double getScore(){
-        return (int) Math.round(this.score * (1.0 / this.frameCount) * 1000);
+        return (int) Math.round(this.score * (5.0 / this.frameCount) * 100);
     }
 
     /**
@@ -236,9 +236,9 @@ public class Player extends Sprite{
         return this.isAlive;
     }
 
-    public boolean hasMoved(int prevX, int prevY) {
+    public boolean hasMoved(int prevX, int prevY, double prevScore) {
         boolean result = true;
-        if((this.getX() - prevX == 0 && this.getY() - prevY == 0) || (this.score < 1 && frameCount >= 900)) {
+        if((this.getX() - prevX == 0 && this.getY() - prevY == 0) || ((this.score - prevScore <= 0) && frameCount >= 900)) {
             this.frameDiff--;
             result = false;
         }
