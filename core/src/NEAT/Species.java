@@ -12,6 +12,8 @@ public class Species {
     /** List of organisms in this species */
     private ArrayList<Organism> organisms;
 
+    private Organism champion;
+
     /** Best fitness of any of the organisms in this species */
     private double bestFitness;
 
@@ -91,34 +93,37 @@ public class Species {
     public void reproduce(int numBabies){
         ArrayList<Organism> babies = new ArrayList<Organism>();
 
-        Organism clonedBaby = (Organism) this.organisms.get(0).clone();
-        clonedBaby.setGeneration(clonedBaby.getGeneration()+1);
-        babies.add(clonedBaby);
+        this.champion.setGeneration(this.champion.getGeneration() + 1);
+        babies.add(this.champion);
 
         for(int i = 1;i < numBabies;i++){
-            Organism organism;
-            if(this.organisms.size() == 1){
-                //System.out.println("Mutate Original - one organism in species");
-                organism = (Organism)this.organisms.get(0).clone();
-                this.mutate(organism);
-            }else if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()){
-                //System.out.println("Mutation only");
-                organism = (Organism)this.organisms.get(this.randomGen.nextInt(this.organisms.size())).clone();
-                this.mutate(organism);
-            }else{
-                //System.out.println("Crossover");
-                organism = this.crossOver();
-                if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()) {
-                    //System.out.println("Crossover and mutation");
-                    this.mutate(organism);
-                }
-            }
-
-            // Maybe drop mutate down depending on how well it works.
-            organism.setGeneration(organism.getGeneration() + 1);
-            babies.add(organism);
+            Organism newBaby = getBaby();
+            babies.add(newBaby);
         }
         this.organisms = babies;
+    }
+
+    public Organism getBaby() {
+        Organism organism;
+        if(this.organisms.size() == 1) {
+            //System.out.println("Mutate Original - one organism in species");
+            organism = (Organism)this.organisms.get(0).clone();
+            this.mutate(organism);
+        }else if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()){
+            //System.out.println("Mutation only");
+            organism = (Organism)this.organisms.get(this.randomGen.nextInt(this.organisms.size())).clone();
+            this.mutate(organism);
+        }else{
+            //System.out.println("Crossover");
+            organism = this.crossOver();
+            if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()) {
+                //System.out.println("Crossover and mutation");
+                this.mutate(organism);
+            }
+        }
+
+        organism.setGeneration(organism.getGeneration() + 1);
+        return organism;
     }
 
     public Organism crossOver(){
