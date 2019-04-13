@@ -1,5 +1,7 @@
 package NEAT;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -14,6 +16,9 @@ public class Species {
 
     /** Best fitness of any of the organisms in this species */
     private double bestFitness;
+
+    /**Organism in this species that had the best fitness */
+    private Organism champion;
 
     /** Used to measure how many generations it has been since a useful change has been made */
     private int staleness;
@@ -64,7 +69,32 @@ public class Species {
      * @param organism the organism to be added
      */
     public void addOrganism(Organism organism){
+        if(this.organisms.size() == 0){
+            this.champion = organism;
+            this.bestFitness = organism.getFitness();
+        }
         this.organisms.add(organism);
+    }
+
+    /**
+     * Sets the champion of this species if a new champion has been found
+     */
+    public void setChampion(){
+         if(this.organisms.get(0).getFitness() > this.champion.getFitness()){
+             this.champion = this.organisms.get(0);
+             this.bestFitness = this.organisms.get(0).getFitness();
+         }
+    }
+
+    /**
+     * Sets the staleness of this species.
+     */
+    public void setStaleness(){
+        if(this.organisms.get(0).getFitness() < this.bestFitness){
+            this.staleness++;
+        }else{
+            this.staleness = 0;
+        }
     }
 
     /**
@@ -91,34 +121,36 @@ public class Species {
     public void reproduce(int numBabies){
         ArrayList<Organism> babies = new ArrayList<Organism>();
 
-        Organism clonedBaby = (Organism) this.organisms.get(0).clone();
-        clonedBaby.setGeneration(clonedBaby.getGeneration()+1);
-        babies.add(clonedBaby);
+        this.champion.setGeneration(this.champion.getGeneration() + 1);
+        babies.add(this.champion);
 
-        for(int i = 0;i < numBabies;i++){
-            Organism organism;
-            if(this.organisms.size() == 1){
-                //System.out.println("Mutate Original - one organism in species");
-                organism = (Organism)this.organisms.get(0).clone();
-                this.mutate(organism);
-            }else if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()){
-                //System.out.println("Mutation only");
-                organism = (Organism)this.organisms.get(this.randomGen.nextInt(this.organisms.size())).clone();
-                this.mutate(organism);
-            }else{
-                //System.out.println("Crossover");
-                organism = this.crossOver();
-                if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()) {
-                    //System.out.println("Crossover and mutation");
-                    this.mutate(organism);
-                }
-            }
-
-            // Maybe drop mutate down depending on how well it works.
-            organism.setGeneration(organism.getGeneration() + 1);
+        for(int i = 1;i < numBabies;i++){
+            Organism organism = addBaby();
             babies.add(organism);
         }
         this.organisms = babies;
+    }
+
+    public Organism addBaby(){
+        Organism organism;
+        if(this.organisms.size() == 1){
+            //System.out.println("Mutate Original - one organism in species");
+            organism = (Organism)this.organisms.get(0).clone();
+            this.mutate(organism);
+        }else if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()){
+            //System.out.println("Mutation only");
+            organism = (Organism)this.organisms.get(this.randomGen.nextInt(this.organisms.size())).clone();
+            this.mutate(organism);
+        }else{
+            //System.out.println("Crossover");
+            organism = this.crossOver();
+            if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()) {
+                //System.out.println("Crossover and mutation");
+                this.mutate(organism);
+            }
+        }
+        organism.setGeneration(organism.getGeneration() + 1);
+        return organism;
     }
 
     public Organism crossOver(){

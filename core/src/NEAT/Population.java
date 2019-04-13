@@ -80,7 +80,7 @@ public class Population {
         ArrayList<Organism> organisms = new ArrayList<Organism>();
 
         for(Species species: this.species){
-            int numBabies = (int)Math.round(species.getAvgFitness() / this.avgSum() * this.populationSize) - 1;
+            int numBabies = (int)Math.round(species.getAvgFitness() / this.avgSum() * this.populationSize);
 
             // FIXME: 4/13/2019 This reproduce is when we get stuck in the infinite loop
             species.reproduce(numBabies);
@@ -91,8 +91,9 @@ public class Population {
         //Check to see if the number of babies was less than population size
         while (organisms.size() < this.populationSize){
             Species species = this.species.get(random.nextInt(this.species.size()));
-            species.reproduce(1);
-            organisms.addAll(species.getOrganisms());
+            Organism baby = species.addBaby();
+            species.getOrganisms().add(baby);
+            organisms.add(baby);
         }
 
         //Check to see if the number of babies went over the population size
@@ -109,7 +110,6 @@ public class Population {
      * Separates the organisms into species based on their compatibility.
      */
     private void speciate() {
-        this.species.clear();
         for(Organism o : organisms) {
             if(this.species.isEmpty()){
                 this.species.add(new Species());
@@ -145,6 +145,8 @@ public class Population {
             species.sort();
             species.cullSpecies();
             species.shareFitness();
+            species.setChampion();
+            species.setStaleness();
         }
     }
 
