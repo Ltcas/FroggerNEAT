@@ -117,6 +117,9 @@ public class Species {
      * @param numBabies The number of babies this species is allowed to make.
      */
     public void reproduce(int numBabies){
+        for(Organism organism : this.organisms) {
+            organism.setToEliminate(true);
+        }
         ArrayList<Organism> babies = new ArrayList<Organism>();
 
         this.champion.setGeneration(this.champion.getGeneration() + 1);
@@ -126,6 +129,9 @@ public class Species {
             Organism organism = addBaby();
             babies.add(organism);
         }
+        for(Organism baby : babies) {
+            baby.setToEliminate(false);
+        }
         this.organisms = babies;
     }
 
@@ -134,6 +140,7 @@ public class Species {
         if(this.organisms.size() == 1){
             //System.out.println("Mutate Original - one organism in species");
             organism = (Organism)this.organisms.get(0).clone();
+            this.organisms.get(0).setToEliminate(true);
             this.mutate(organism);
         }else if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()){
             //System.out.println("Mutation only");
