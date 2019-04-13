@@ -77,15 +77,12 @@ public class Population {
      */
     public void naturalSelection(){
         this.speciate();
-        this.removeOld();
         this.sortSpecies();
         this.staleAndBadSpecies();
         ArrayList<Organism> organisms = new ArrayList<Organism>();
 
         for(Species species: this.species){
             int numBabies = (int)Math.round(species.getAvgFitness() / this.avgSum() * this.populationSize);
-
-            // FIXME: 4/13/2019 This reproduce is when we get stuck in the infinite loop
             species.reproduce(numBabies);
             organisms.addAll(species.getOrganisms());
         }
@@ -117,8 +114,10 @@ public class Population {
             if(this.species.isEmpty()){
                 this.species.add(new Species());
                 this.species.get(0).addOrganism(o);
+                o.setSpecies(this.species.get(0));
             }else{
                 boolean foundSpecies = false;
+                Species originalSpecies = o.getSpecies();
                 Network compatibleNetwork = o.getNetwork();
                 for(Species species:this.species){
                     Organism compatibleOrgCheck = species.getOrganisms().get(0);
@@ -128,32 +127,18 @@ public class Population {
                     if(compatibleNetwork.compatible(compatibleOrgCheck.getNetwork()) <
                             Constant.COMPAT_THRESH.getValue() && !foundSpecies){
                         species.addOrganism(o);
+                        originalSpecies.getOrganisms().remove(o);
+                        o.setSpecies(species);
                         foundSpecies = true;
                     }
                 }
                 if(!foundSpecies) {
                     Species species = new Species();
                     species.addOrganism(o);
+                    originalSpecies.getOrganisms().remove(o);
+                    o.setSpecies(species);
                     this.species.add(species);
                 }
-            }
-        }
-    }
-
-    private void removeOld() {
-        for(int i = 0; i < this.species.size(); i++) {
-            Species species = this.species.get(i);
-            ArrayList<Organism> orgList = species.getOrganisms();
-            for(int j = 0; j < orgList.size(); j++) {
-                Organism toCheck = orgList.get(j);
-                if(toCheck.getGeneration() < this.generation) {
-                    orgList.remove(j);
-                    j--;
-                }
-            }
-            if(orgList.isEmpty()) {
-                this.species.remove(i);
-                i--;
             }
         }
     }

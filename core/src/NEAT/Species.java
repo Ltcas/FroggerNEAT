@@ -119,13 +119,14 @@ public class Species {
     public void reproduce(int numBabies){
         ArrayList<Organism> babies = new ArrayList<Organism>();
 
-        this.champion.setGeneration(this.champion.getGeneration() + 1);
         babies.add(this.champion);
 
         for(int i = 1;i < numBabies;i++){
             Organism organism = addBaby();
+            organism.setGeneration(organism.getGeneration() + 1);
             babies.add(organism);
         }
+        this.champion.setGeneration(this.champion.getGeneration() + 1);
         this.organisms = babies;
     }
 
@@ -147,7 +148,6 @@ public class Species {
                 this.mutate(organism);
             }
         }
-        organism.setGeneration(organism.getGeneration() + 1);
         return organism;
     }
 
