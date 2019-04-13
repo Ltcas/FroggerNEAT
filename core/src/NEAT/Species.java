@@ -12,10 +12,11 @@ public class Species {
     /** List of organisms in this species */
     private ArrayList<Organism> organisms;
 
-    private Organism champion;
-
     /** Best fitness of any of the organisms in this species */
     private double bestFitness;
+
+    /**Organism in this species that had the best fitness */
+    private Organism champion;
 
     /** Used to measure how many generations it has been since a useful change has been made */
     private int staleness;
@@ -66,7 +67,32 @@ public class Species {
      * @param organism the organism to be added
      */
     public void addOrganism(Organism organism){
+        if(this.organisms.size() == 0){
+            this.champion = organism;
+            this.bestFitness = organism.getFitness();
+        }
         this.organisms.add(organism);
+    }
+
+    /**
+     * Sets the champion of this species if a new champion has been found
+     */
+    public void setChampion(){
+         if(this.organisms.get(0).getFitness() > this.champion.getFitness()){
+             this.champion = this.organisms.get(0);
+             this.bestFitness = this.organisms.get(0).getFitness();
+         }
+    }
+
+    /**
+     * Sets the staleness of this species.
+     */
+    public void setStaleness(){
+        if(this.organisms.get(0).getFitness() < this.bestFitness){
+            this.staleness++;
+        }else{
+            this.staleness = 0;
+        }
     }
 
     /**
@@ -97,15 +123,15 @@ public class Species {
         babies.add(this.champion);
 
         for(int i = 1;i < numBabies;i++){
-            Organism newBaby = getBaby();
-            babies.add(newBaby);
+            Organism organism = addBaby();
+            babies.add(organism);
         }
         this.organisms = babies;
     }
 
-    public Organism getBaby() {
+    public Organism addBaby(){
         Organism organism;
-        if(this.organisms.size() == 1) {
+        if(this.organisms.size() == 1){
             //System.out.println("Mutate Original - one organism in species");
             organism = (Organism)this.organisms.get(0).clone();
             this.mutate(organism);
@@ -121,7 +147,6 @@ public class Species {
                 this.mutate(organism);
             }
         }
-
         organism.setGeneration(organism.getGeneration() + 1);
         return organism;
     }

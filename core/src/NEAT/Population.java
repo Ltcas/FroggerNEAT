@@ -91,9 +91,9 @@ public class Population {
         //Check to see if the number of babies was less than population size
         while (organisms.size() < this.populationSize){
             Species species = this.species.get(random.nextInt(this.species.size()));
-            Organism newBaby = species.getBaby();
-            species.getOrganisms().add(newBaby);
-            organisms.add(newBaby);
+            Organism baby = species.addBaby();
+            species.getOrganisms().add(baby);
+            organisms.add(baby);
         }
 
         //Check to see if the number of babies went over the population size
@@ -152,6 +152,8 @@ public class Population {
             species.sort();
             species.cullSpecies();
             species.shareFitness();
+            species.setChampion();
+            species.setStaleness();
         }
     }
 
