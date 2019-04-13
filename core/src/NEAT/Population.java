@@ -1,7 +1,5 @@
 package NEAT;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -106,27 +104,12 @@ public class Population {
         // TODO: 4/2/2019 Maybe use an elimination variable in organisms instead of a whole new list.
         this.organisms = organisms;
         this.generation++;
-}
+    }
 
     /**
      * Separates the organisms into species based on their compatibility.
      */
     private void speciate() {
-        for(int i = 0; i < this.species.size(); i++) {
-            ArrayList<Organism> organismList = this.species.get(i).getOrganisms();
-            for(int j = 0; j < organismList.size(); j++) {
-                Organism toCheck = organismList.get(0);
-                if(toCheck.isToEliminate()) {
-                    organismList.remove(toCheck);
-                    j--;
-                }
-            }
-            if(organismList.isEmpty()) {
-                this.species.remove(this.species.get(i));
-                i--;
-            }
-        }
-
         for(Organism o : organisms) {
             if(this.species.isEmpty()){
                 this.species.add(new Species());

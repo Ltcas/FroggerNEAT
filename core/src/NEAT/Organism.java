@@ -23,7 +23,6 @@ public class Organism implements Cloneable {
     /** The neural network related to this organism. Used to represent phenotype. */
     private Network network;
 
-    private boolean toEliminate;
 
     /**
      * Constructor for an organism based on the passed in name.
@@ -32,7 +31,6 @@ public class Organism implements Cloneable {
     public Organism(String name){
         this.fitness    = 0;
         this.generation = 0;
-        this.toEliminate = false;
         this.name       = name;
         this.network    = new Network(id,25,5);
         id++;
@@ -71,13 +69,6 @@ public class Organism implements Cloneable {
         this.generation = generation;
     }
 
-    public boolean isToEliminate() {
-        return toEliminate;
-    }
-
-    public void setToEliminate(boolean toEliminate) {
-        this.toEliminate = toEliminate;
-    }
 
     /**
      * Generates a string representation of this organism.
