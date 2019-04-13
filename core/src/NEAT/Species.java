@@ -90,7 +90,11 @@ public class Species {
      */
     public void reproduce(int numBabies){
         ArrayList<Organism> babies = new ArrayList<Organism>();
-        babies.add((Organism) this.organisms.get(0).clone());
+
+        Organism clonedBaby = (Organism) this.organisms.get(0).clone();
+        clonedBaby.setGeneration(clonedBaby.getGeneration()+1);
+        babies.add(clonedBaby);
+
         for(int i = 0;i < numBabies;i++){
             Organism organism;
             if(this.organisms.size() == 1){

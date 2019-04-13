@@ -224,9 +224,7 @@ public class Network implements Cloneable {
         }
 
         Link toAdd = new Link(inNode, outNode, innovationNum);
-        System.out.println("Size of links before: " + this.links.size());
         this.links.add(toAdd);
-        System.out.println("Size of links after: " + this.links.size());
         inNode.getOutgoingLinks().add(toAdd);
         return toAdd;
     }
@@ -421,56 +419,92 @@ public class Network implements Cloneable {
      * A new connection gene is added between two previously unconnected nodes.
      */
     public void addLinkMutation() {
-        boolean added = false;
+        boolean found = false;
         Random random = new Random();
 
         // Check to see if it's a fully connected network.
         if(this.hiddenNodes.isEmpty()) {
-            added = true;
+            found = true;
         } else {
             int totalPossibleLinks = this.inNodes.size() * this.outNodes.size();
             totalPossibleLinks += this.hiddenNodes.size() * (this.inNodes.size() + this.outNodes.size());
             System.out.println("Total possible links: " + totalPossibleLinks);
 
             System.out.println("Difference: " + (totalPossibleLinks - this.links.size()));
+            System.out.println("Size of hidden nodes: " + this.hiddenNodes.size());
+            System.out.println();
             // Calculate the difference to see if we can add any links.
             if(totalPossibleLinks - this.links.size() == 0) {
-                added = true;
+                found = true;
             }
         }
 
-        while(!added) {
-            Node inNode;
-            Node outNode;
-            boolean found = false;
-
-            // Grab a random hidden node.
-            Node hidden = this.hiddenNodes.get(random.nextInt(hiddenNodes.size()));
-
-            // Half the time we attempt to make a connection between input and hidden.
-            if(random.nextDouble() < 0.5) {
-                inNode = this.inNodes.get(random.nextInt(inNodes.size()));
-                outNode = hidden;
-            } else { // Half the time, we attempt to make a connection between hidden and output.
-                inNode = hidden;
-                outNode = this.outNodes.get(random.nextInt(outNodes.size()));
-            }
-
-            for(Link link : inNode.getOutgoingLinks()) {
-                if(link.getInput().equals(inNode) && link.getOutput().equals(outNode)) {
-                    found = true;
+        ArrayList<Link> allLinks;
+        if(!found) {
+            allLinks = new ArrayList<Link>();
+            for(Node input : this.inNodes) {
+                for(Node hidden : this.hiddenNodes) {
+                    allLinks.add(new Link(input, hidden, -1));
                 }
             }
 
-
-            // If we didn't find the link, it doesn't exist and we can add it.
-            if(!found) {
-                addLink(inNode, outNode);
-                added = true;
+            for(Node hidden : this.hiddenNodes) {
+                for(Node output : this.outNodes) {
+                    allLinks.add(new Link(hidden, output, -1));
+                }
             }
-            System.out.println("Looping " + added + "\tIn Node: " + inNode.getId() + "\tOut Node:" +
-                    " " + outNode.getId());
+
+            int start = this.inNodes.size() * this.outNodes.size();
+            for(; start < this.links.size(); start++) {
+                boolean removed = false;
+                Link actualLink = this.links.get(start);
+                for(int i = 0; !removed && i < allLinks.size(); i++) {
+                    Link removeLink = allLinks.get(i);
+                    if(actualLink.getInput().equals(removeLink.getInput()) &&
+                            actualLink.getOutput().equals(removeLink.getOutput())) {
+                        allLinks.remove(removeLink);
+                        removed = true;
+                    }
+                }
+            }
+
+            Link toAdd = allLinks.get(random.nextInt(allLinks.size()));
+            addLink(toAdd.getInput(), toAdd.getOutput());
         }
+
+//        while(!added) {
+//            Node inNode;
+//            Node outNode;
+//            boolean found = false;
+//
+//            // Grab a random hidden node.
+//            Node hidden = this.hiddenNodes.get(random.nextInt(hiddenNodes.size()));
+//
+//            // Half the time we attempt to make a connection between input and hidden.
+//            if(random.nextDouble() < 0.5) {
+//                inNode = this.inNodes.get(random.nextInt(inNodes.size()));
+//                outNode = hidden;
+//            } else { // Half the time, we attempt to make a connection between hidden and output.
+//                inNode = hidden;
+//                outNode = this.outNodes.get(random.nextInt(outNodes.size()));
+//            }
+//
+//            for(Link link : inNode.getOutgoingLinks()) {
+//                if(link.getInput().equals(inNode) && link.getOutput().equals(outNode)) {
+//                    found = true;
+//                }
+//            }
+//
+//
+//            // If we didn't find the link, it doesn't exist and we can add it.
+//            if(!found) {
+//                addLink(inNode, outNode);
+//                added = true;
+//            }
+//            System.out.println("Looping " + added + "\tIn Node: " + inNode.getId() + "\tOut Node:" +
+//                    " " + outNode.getId());
+//            System.out.println();
+//        }
     }
 
     /**

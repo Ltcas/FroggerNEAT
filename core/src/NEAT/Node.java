@@ -115,12 +115,14 @@ public class Node implements Cloneable{
      */
     @Override
     public Object clone() {
+        //System.out.println("this node's Id: " + this.getId());
         Node node;
         try {
             node = (Node) super.clone();
         } catch (CloneNotSupportedException cne) {
             node = new Node(this.id);
         }
+        //System.out.println("Clone's Id: " + node.getId());
         return node;
     }
 
