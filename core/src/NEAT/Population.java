@@ -80,7 +80,7 @@ public class Population {
         ArrayList<Organism> organisms = new ArrayList<Organism>();
 
         for(Species species: this.species){
-            int numBabies = (int)Math.round(species.getAvgFitness() / this.avgSum() * this.populationSize) - 1;
+            int numBabies = (int)Math.round(species.getAvgFitness() / this.avgSum() * this.populationSize);
 
             // FIXME: 4/13/2019 This reproduce is when we get stuck in the infinite loop
             species.reproduce(numBabies);

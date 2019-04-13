@@ -95,7 +95,7 @@ public class Species {
         clonedBaby.setGeneration(clonedBaby.getGeneration()+1);
         babies.add(clonedBaby);
 
-        for(int i = 0;i < numBabies;i++){
+        for(int i = 1;i < numBabies;i++){
             Organism organism;
             if(this.organisms.size() == 1){
                 //System.out.println("Mutate Original - one organism in species");
