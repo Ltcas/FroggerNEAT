@@ -1,5 +1,7 @@
 package NEAT;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -75,6 +77,7 @@ public class Population {
      */
     public void naturalSelection(){
         this.speciate();
+        this.removeOld();
         this.sortSpecies();
         this.staleAndBadSpecies();
         ArrayList<Organism> organisms = new ArrayList<Organism>();
@@ -137,6 +140,24 @@ public class Population {
         }
     }
 
+    private void removeOld() {
+        for(int i = 0; i < this.species.size(); i++) {
+            Species species = this.species.get(i);
+            ArrayList<Organism> orgList = species.getOrganisms();
+            for(int j = 0; j < orgList.size(); j++) {
+                Organism toCheck = orgList.get(j);
+                if(toCheck.getGeneration() < this.generation) {
+                    orgList.remove(j);
+                    j--;
+                }
+            }
+            if(orgList.isEmpty()) {
+                this.species.remove(i);
+                i--;
+            }
+        }
+    }
+
     /**
      * Sorts each of the species by best performing agents.
      */
@@ -144,9 +165,9 @@ public class Population {
         for(Species species: this.species){
             species.sort();
             species.cullSpecies();
-            species.shareFitness();
             species.setChampion();
             species.setStaleness();
+            species.shareFitness();
         }
     }
 
