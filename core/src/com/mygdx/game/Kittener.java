@@ -250,6 +250,7 @@ public class Kittener extends ApplicationAdapter {
 			if(player.isAlive()){
 				int prevX = (int)player.getX();
 				int prevY = (int)player.getY();
+				double prevScore = player.getScore();
 
 				player.update(Kittener.mapVision);
 				int[][] vision = player.getPlayerVision();
@@ -269,9 +270,9 @@ public class Kittener extends ApplicationAdapter {
 					player.move(max);
 				}
 				if (player.getFrameCount() % 60 == 0) {
-					player.hasMoved(prevX, prevY);
+					player.hasMoved(prevX, prevY, prevScore);
 				}
-				// ten seconds of not moving.
+				// five seconds of not moving.
 				if(player.getFrameCount() - player.getFrameDiff() >= 5) {
 					player.kill();
 				}
