@@ -86,8 +86,8 @@ public class Organism implements Cloneable {
      */
     @Override
     public String toString() {
-        return "\nName: " + this.name + "\nID: " + this.network.getId()+ "\nGen: "
-                + this.generation + "\nFitness: " + this.fitness;
+        return "\tName: " + this.name + "\tID: " + this.network.getId()+ "\tGen: "
+                + this.generation + "\tFitness: " + this.fitness;
     }
 
     /**

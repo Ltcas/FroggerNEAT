@@ -101,9 +101,17 @@ public class Population {
             organisms.remove(this.populationSize);
         }
 
-        // TODO: 4/2/2019 Maybe use an elimination variable in organisms instead of a whole new list.
         this.organisms = organisms;
         this.generation++;
+
+        int counter = 0;
+        for(Species s: this.species) {
+            System.out.printf("\nSpecies %2d - Avg. Fitness: %f", counter, s.getAvgFitness());
+            for(Organism o : s.getOrganisms()) {
+                System.out.printf("\n\t%s", o);
+            }
+            counter++;
+        }
     }
 
     /**
@@ -127,7 +135,9 @@ public class Population {
                     if(compatibleNetwork.compatible(compatibleOrgCheck.getNetwork()) <
                             Constant.COMPAT_THRESH.getValue() && !foundSpecies){
                         species.addOrganism(o);
-                        originalSpecies.getOrganisms().remove(o);
+                        if(originalSpecies != null) {
+                            originalSpecies.getOrganisms().remove(o);
+                        }
                         o.setSpecies(species);
                         foundSpecies = true;
                     }
@@ -135,10 +145,19 @@ public class Population {
                 if(!foundSpecies) {
                     Species species = new Species();
                     species.addOrganism(o);
-                    originalSpecies.getOrganisms().remove(o);
+                    if(originalSpecies != null) {
+                        originalSpecies.getOrganisms().remove(o);
+                    }
                     o.setSpecies(species);
                     this.species.add(species);
                 }
+            }
+        }
+        for(int i = 0; i < this.species.size(); i++) {
+            Species toCheck = this.species.get(i);
+            if(toCheck.getOrganisms().isEmpty()) {
+                this.species.remove(i);
+                i--;
             }
         }
     }
