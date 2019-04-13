@@ -23,6 +23,8 @@ public class Organism implements Cloneable {
     /** The neural network related to this organism. Used to represent phenotype. */
     private Network network;
 
+    private boolean toEliminate;
+
     /**
      * Constructor for an organism based on the passed in name.
      * @param name The name to be granted to the organism.
@@ -30,6 +32,7 @@ public class Organism implements Cloneable {
     public Organism(String name){
         this.fitness    = 0;
         this.generation = 0;
+        this.toEliminate = false;
         this.name       = name;
         this.network    = new Network(id,25,5);
         id++;
@@ -52,16 +55,6 @@ public class Organism implements Cloneable {
     }
 
     /**
-     * Generates a string representation of this organism.
-     * @return A string representation of this organism.
-     */
-    @Override
-    public String toString() {
-        return "\nName: " + this.name + "\nID: " + this.network.getId()+ "\nGen: "
-                + this.generation + "\nFitness: " + this.fitness;
-    }
-
-    /**
      * Returns this organism's neural network aka. phenotype.
      * @return the network of this organism
      */
@@ -76,6 +69,24 @@ public class Organism implements Cloneable {
 
     public void setGeneration(int generation){
         this.generation = generation;
+    }
+
+    public boolean isToEliminate() {
+        return toEliminate;
+    }
+
+    public void setToEliminate(boolean toEliminate) {
+        this.toEliminate = toEliminate;
+    }
+
+    /**
+     * Generates a string representation of this organism.
+     * @return A string representation of this organism.
+     */
+    @Override
+    public String toString() {
+        return "\nName: " + this.name + "\nID: " + this.network.getId()+ "\nGen: "
+                + this.generation + "\nFitness: " + this.fitness;
     }
 
     /**

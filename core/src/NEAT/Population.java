@@ -1,5 +1,7 @@
 package NEAT;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -90,6 +92,7 @@ public class Population {
         Random random = new Random();
         //Check to see if the number of babies was less than population size
         while (organisms.size() < this.populationSize){
+            System.out.println("Species size : " + this.species.size());
             Species species = this.species.get(random.nextInt(this.species.size()));
             Organism baby = species.addBaby();
             species.getOrganisms().add(baby);
@@ -110,14 +113,16 @@ public class Population {
      * Separates the organisms into species based on their compatibility.
      */
     private void speciate() {
-        for(int i = 0; i < this.species.size(); i++) {
-            Species checkEmpty = this.species.get(i);
-            if(checkEmpty.getOrganisms().isEmpty()) {
-                this.species.remove(checkEmpty);
-                i--;
-            }
-        }
+//        for(int i = 0; i < this.species.size(); i++) {
+//            Species checkEmpty = this.species.get(i);
+//            if(checkEmpty.getOrganisms().isEmpty()) {
+//                this.species.remove(checkEmpty);
+//                i--;
+//            }
+//        }
+
         for(Organism o : organisms) {
+            o.setToEliminate(true);
             if(this.species.isEmpty()){
                 this.species.add(new Species());
                 this.species.get(0).addOrganism(o);
@@ -140,6 +145,21 @@ public class Population {
                     species.addOrganism(o);
                     this.species.add(species);
                 }
+            }
+        }
+
+        for(int i = 0; i < this.species.size(); i++) {
+            ArrayList<Organism> organismList = this.species.get(i).getOrganisms();
+            for(int j = 0; j < organismList.size(); j++) {
+                Organism toCheck = organismList.get(0);
+                if(toCheck.isToEliminate()) {
+                    organismList.remove(toCheck);
+                    j--;
+                }
+            }
+            if(organismList.isEmpty()) {
+                this.species.remove(this.species.get(i));
+                i--;
             }
         }
     }
