@@ -66,11 +66,18 @@ public class Car extends Sprite {
         int x = (int)this.getX() / 32;
         for (int i = 0; i < tileSize + 1; i++) {
             if(x + i > 0 && x + i < mapVision[0].length) {
-                mapVision[y][x + i] = 1;
+                mapVision[y][x + i] = MapObjects.HAZARD.getValue();
             }
         }
         if(this.getX() < boundLeft || this.getX() > boundRight){
-            this.setPosition(this.startX, this.startY);
+            this.reset();
         }
+    }
+
+    /**
+     * Resets the position of this car.
+     */
+    public void reset(){
+        this.setPosition(this.startX, this.startY);
     }
 }

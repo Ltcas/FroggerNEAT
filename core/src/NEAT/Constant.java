@@ -7,7 +7,7 @@ public enum Constant {
     DISJOINT_COEFF (1),
     WEIGHT_COEFF (.5),
     COMPAT_THRESH(0.3),
-    STALENESS_THRESH(15),
+    STALENESS_THRESH(5),
     CULL_THRESH(.5),
     ADD_NODE_MUT(.1),
     ADD_LINK_MUT(.8),

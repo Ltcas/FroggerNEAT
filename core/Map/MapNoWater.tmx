@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="15" height="12" tilewidth="32" tileheight="32" infinite="0" nextlayerid="30" nextobjectid="1">
+ <tileset firstgid="1" source="Grass.tsx"/>
+ <tileset firstgid="2" source="Road.tsx"/>
+ <tileset firstgid="3" source="Water.tsx"/>
+ <tileset firstgid="4" source="Grass2.tsx"/>
+ <layer id="29" name="level" width="15" height="12">
+  <data encoding="csv">
+4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+4,4,4,4,4,4,4,4,4,4,4,4,4,4,4
+</data>
+ </layer>
+</map>

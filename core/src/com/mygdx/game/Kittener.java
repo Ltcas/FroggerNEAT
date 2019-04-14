@@ -79,6 +79,9 @@ public class Kittener extends ApplicationAdapter {
 	/** Population for the NEAT algorithm. */
 	private Population population;
 
+	/** Holds the max score that the players have reached */
+	private double maxOverAll;
+
 	/**
 	 * Constructs a new Kittener game object.
 	 * @param width The initial width of the game window.
@@ -88,10 +91,11 @@ public class Kittener extends ApplicationAdapter {
 		Kittener.mapVision 	= new int[12][15];
 		this.width 			= width;
 		this.height 		= height;
+		this.maxOverAll     = 0;
 		this.players 		= new ArrayList<Player>();
 		this.platforms 		= new ArrayList<Platform>();
 		this.cars 			= new ArrayList<Car>();
-		this.numPlayers 	= 20;
+		this.numPlayers 	= 100;
 		this.initMapVision();
 	}
 
@@ -122,8 +126,8 @@ public class Kittener extends ApplicationAdapter {
 		this.camera.position.set((float) this.width/2,(float) this.height/2,0);
 		this.viewport = new FitViewport(this.width,this.height,camera);
 		TmxMapLoader loader = new TmxMapLoader();
-		this.map = loader.load("core/Map/Map.tmx");
-		this.addPlatforms();
+		this.map = loader.load("core/Map/MapNoWater.tmx");
+		//this.addPlatforms();
 		this.addCars();
 		this.addPlayers();
 		this.population = new Population(this.numPlayers);
@@ -244,7 +248,7 @@ public class Kittener extends ApplicationAdapter {
 		}
 
 		int deadCount = 0;
-		double maxScore = 0;
+		double maxFitness = 0;
 		for (int i = 0;i < this.players.size();i++){
 			Player player = this.players.get(i);
 			if(player.isAlive()){
@@ -279,8 +283,11 @@ public class Kittener extends ApplicationAdapter {
 			}else{
 				deadCount++;
 			}
-			if(player.getScore() > maxScore){
-				maxScore = player.getScore();
+			if(player.getScore() > maxFitness){
+				maxFitness = player.getScore();
+			}
+			if(player.getScore() > this.maxOverAll){
+				this.maxOverAll = player.getScore();
 			}
 			player.draw(this.batch);
 		}
@@ -291,12 +298,20 @@ public class Kittener extends ApplicationAdapter {
 			}
 			this.population.naturalSelection();
 			this.resetPlayers();
+
+			for(Platform platform: this.platforms){
+				platform.reset();
+			}
+
+			for(Car car: this.cars){
+				car.reset();
+			}
 		}
 
 		this.scoreDisplay.setColor(Color.WHITE);
-		this.scoreDisplay.draw(this.batch,"Max Fitness: " + maxScore + "\nGeneration: " +
-				this.population.getGeneration(),0,this.scoreDisplay
-				.getCapHeight() + TILE_PIX);
+		this.scoreDisplay.draw(this.batch, "Generation: " + this.population.getGeneration() + "\nGeneration Max: " +
+				maxFitness + "\nMax Overall: " + this.maxOverAll,0,this.scoreDisplay
+				.getCapHeight() + TILE_PIX + 15);
 	}
 
 	/**

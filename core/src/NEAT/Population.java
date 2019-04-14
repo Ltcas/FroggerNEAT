@@ -128,7 +128,12 @@ public class Population {
                 Species originalSpecies = o.getSpecies();
                 Network compatibleNetwork = o.getNetwork();
                 for(Species species:this.species){
-                    Organism compatibleOrgCheck = species.getOrganisms().get(0);
+                    Organism compatibleOrgCheck;
+                    if(species.getOrganisms().size() > 0){
+                         compatibleOrgCheck =species.getOrganisms().get(0);
+                    }else{
+                        compatibleOrgCheck = species.getChampion();
+                    }
 
                     // Grab the first organism from a species to check if the organism if
                     // compatible with that species.

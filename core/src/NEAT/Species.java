@@ -68,7 +68,7 @@ public class Species {
      */
     public void addOrganism(Organism organism){
         if(this.organisms.size() == 0){
-            this.champion = organism;
+            this.champion = (Organism)organism.clone();
             this.bestFitness = organism.getFitness();
         }
         this.organisms.add(organism);
@@ -79,9 +79,13 @@ public class Species {
      */
     public void setChampion(){
         if(this.organisms.get(0).getFitness() > this.champion.getFitness()){
-            this.champion = this.organisms.get(0);
+            this.champion = (Organism)this.organisms.get(0).clone();
             this.bestFitness = this.organisms.get(0).getFitness();
         }
+    }
+
+    public Organism getChampion() {
+        return champion;
     }
 
     /**
@@ -118,8 +122,8 @@ public class Species {
      */
     public void reproduce(int numBabies){
         ArrayList<Organism> babies = new ArrayList<Organism>();
-
-        babies.add(this.champion);
+        Organism champClone = (Organism)this.champion.clone();
+        babies.add(champClone);
 
         for(int i = 1;i < numBabies;i++){
             Organism organism = addBaby();
@@ -127,6 +131,7 @@ public class Species {
             babies.add(organism);
         }
         this.champion.setGeneration(this.champion.getGeneration() + 1);
+        champClone.setGeneration(champClone.getGeneration() + 1);
         this.organisms = babies;
     }
 
