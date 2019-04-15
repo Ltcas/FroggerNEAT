@@ -64,7 +64,7 @@ public class Player extends Sprite{
     /**Used to count number of frames to limit movement */
     private int frameCount;
 
-    private int frameDiff;
+    private double prevScore;
 
     private int[][] playerVision;
     /**
@@ -89,7 +89,7 @@ public class Player extends Sprite{
         this.platforms = platforms;
         this.score = 0;
         this.frameCount = 0;
-        this.frameDiff = 0;
+        this.prevScore = 0.0;
         this.randomGenerator = new Random();
         this.playerVision = new int[VISION_SIZE][VISION_SIZE];
     }
@@ -124,21 +124,26 @@ public class Player extends Sprite{
      * @return the score that the player has
      */
     public double getScore(){
-        return (int) Math.round(this.score * (5.0 / this.frameCount) * 100);
+        return (int) Math.round(this.score);
     }
 
     /**
      * Resets player and score back to the starting point.
      */
     public void reset(){
-        this.isAlive = true;
-        this.frameCount = 1;
-        this.frameDiff = 1;
-        this.x = TILE_PIX*8;
-        this.y = 0;
-        this.score = 0;
-        this.setPosition(this.x,this.y);
-        this.setTexture(new Texture("core/assets/cat_back.png"));
+        if(this.isAlive) {
+            this.y = 0;
+            this.setPosition(this.x,this.y);
+        } else {
+            this.isAlive = true;
+            this.frameCount = 1;
+            this.prevScore = 0.0;
+            this.x = TILE_PIX*8;
+            this.y = 0;
+            this.score = 0;
+            this.setPosition(this.x,this.y);
+            this.setTexture(new Texture("core/assets/cat_back.png"));
+        }
     }
 
     /**
@@ -147,14 +152,16 @@ public class Player extends Sprite{
     public void update(int[][] mapVision){
         if(this.isAlive) {
             this.frameCount++;
-            this.frameDiff++;
             int xPositon = this.x / Player.TILE_PIX - 2;
             int yPostion = (this.height/ Player.TILE_PIX - 1) - (this.y / Player.TILE_PIX) - 2;
             for(int i = 0;i < VISION_SIZE;i++){
                 for(int j = 0;j < VISION_SIZE;j++){
-                    if(xPositon+j < 0 || xPositon+j >= this.width / Player.TILE_PIX || yPostion+i < 0 || yPostion+i >=
-                            this.height / Player.TILE_PIX){
-                        this.playerVision[i][j] = MapObjects.HAZARD.getValue();
+                    if(xPositon+j < 0 || xPositon+j >= this.width / Player.TILE_PIX || yPostion+i < 0 || yPostion+i >= this.height / Player.TILE_PIX){
+                        if(yPostion+i < 0) {
+                            this.playerVision[i][j] = MapObjects.FLOOR.getValue();
+                        } else {
+                            this.playerVision[i][j] = MapObjects.HAZARD.getValue();
+                        }
                     }else{
                         this.playerVision[i][j] = mapVision[yPostion + i][xPositon + j];
                     }
@@ -220,13 +227,6 @@ public class Player extends Sprite{
         return this.frameCount;
     }
 
-    /**
-     *
-     * @return
-     */
-    public int getFrameDiff() {
-        return this.frameDiff;
-    }
 
     /**
      * Gets the status of the player
@@ -236,11 +236,12 @@ public class Player extends Sprite{
         return this.isAlive;
     }
 
-    public boolean hasMoved(int prevX, int prevY, double prevScore) {
-        boolean result = true;
-        if((this.getX() - prevX == 0 && this.getY() - prevY == 0) || ((this.score - prevScore <= 0) && frameCount >= 900)) {
-            this.frameDiff--;
-            result = false;
+    public boolean shouldDie() {
+        boolean result = false;
+        if(this.score - this.prevScore < 100) {
+            result = true;
+        } else {
+            prevScore = this.score;
         }
         return result;
     }

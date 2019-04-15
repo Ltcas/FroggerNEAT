@@ -88,6 +88,7 @@ public class Kittener extends ApplicationAdapter {
 	 * @param height The initial height of the game window.
 	 */
 	public Kittener(int width, int height){
+		// TODO: 4/15/2019 Maybe add an extra row for the top to have a value of 1?
 		Kittener.mapVision 	= new int[12][15];
 		this.width 			= width;
 		this.height 		= height;
@@ -109,7 +110,9 @@ public class Kittener extends ApplicationAdapter {
 				if(i < 1 || i > 5){
 					Kittener.mapVision[i][j] = MapObjects.FLOOR.getValue();
 				}else{
-					Kittener.mapVision[i][j] = MapObjects.HAZARD.getValue();
+					// Switch to floor for debugging.
+					Kittener.mapVision[i][j] = MapObjects.FLOOR.getValue();
+					//Kittener.mapVision[i][j] = MapObjects.HAZARD.getValue();
 				}
 			}
 		}
@@ -249,12 +252,31 @@ public class Kittener extends ApplicationAdapter {
 
 		int deadCount = 0;
 		double maxFitness = 0;
+
+		// Used for debugging.
+		int counter = 0;
+
 		for (int i = 0;i < this.players.size();i++){
 			Player player = this.players.get(i);
+
+			// Debugging to see a single player's vision.
+			/*if(counter == 0 && player.isAlive()) {
+				//this.printMap();
+				int[][] result = player.getPlayerVision();
+				for(int row = 0; row < result.length; row++) {
+					for(int col = 0; col < result[row].length; col++) {
+						System.out.print("\t" + result[row][col]);
+					}
+					System.out.println();
+				}
+				System.out.println("\n##################################\n");
+				counter++;
+//				if(catWontLearn()){
+//					learn();
+//				}
+			}*/
+
 			if(player.isAlive()){
-				int prevX = (int)player.getX();
-				int prevY = (int)player.getY();
-				double prevScore = player.getScore();
 
 				player.update(Kittener.mapVision);
 				int[][] vision = player.getPlayerVision();
@@ -273,13 +295,10 @@ public class Kittener extends ApplicationAdapter {
 				if(max != 4){
 					player.move(max);
 				}
-				if (player.getFrameCount() % 60 == 0) {
-					player.hasMoved(prevX, prevY, prevScore);
-				}
-				// five seconds of not moving.
-				if(player.getFrameCount() - player.getFrameDiff() >= 5) {
+				if(player.shouldDie() && player.getFrameCount() % 600 == 0) {
 					player.kill();
 				}
+
 			}else{
 				deadCount++;
 			}
