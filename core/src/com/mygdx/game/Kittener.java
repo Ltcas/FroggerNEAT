@@ -88,7 +88,6 @@ public class Kittener extends ApplicationAdapter {
 	 * @param height The initial height of the game window.
 	 */
 	public Kittener(int width, int height){
-		// TODO: 4/15/2019 Maybe add an extra row for the top to have a value of 1?
 		Kittener.mapVision 	= new int[12][15];
 		this.width 			= width;
 		this.height 		= height;
@@ -96,7 +95,7 @@ public class Kittener extends ApplicationAdapter {
 		this.players 		= new ArrayList<Player>();
 		this.platforms 		= new ArrayList<Platform>();
 		this.cars 			= new ArrayList<Car>();
-		this.numPlayers 	= 100;
+		this.numPlayers 	= 20;
 		this.initMapVision();
 	}
 
@@ -111,8 +110,8 @@ public class Kittener extends ApplicationAdapter {
 					Kittener.mapVision[i][j] = MapObjects.FLOOR.getValue();
 				}else{
 					// Switch to floor for debugging.
-					Kittener.mapVision[i][j] = MapObjects.FLOOR.getValue();
-					//Kittener.mapVision[i][j] = MapObjects.HAZARD.getValue();
+					//Kittener.mapVision[i][j] = MapObjects.FLOOR.getValue();
+					Kittener.mapVision[i][j] = MapObjects.HAZARD.getValue();
 				}
 			}
 		}
@@ -129,8 +128,8 @@ public class Kittener extends ApplicationAdapter {
 		this.camera.position.set((float) this.width/2,(float) this.height/2,0);
 		this.viewport = new FitViewport(this.width,this.height,camera);
 		TmxMapLoader loader = new TmxMapLoader();
-		this.map = loader.load("core/Map/MapNoWater.tmx");
-		//this.addPlatforms();
+		this.map = loader.load("core/Map/Map.tmx");
+		this.addPlatforms();
 		this.addCars();
 		this.addPlayers();
 		this.population = new Population(this.numPlayers);
@@ -166,7 +165,7 @@ public class Kittener extends ApplicationAdapter {
 		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset*-3, DIR_RIGHT, 3));
 		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset*-5, DIR_RIGHT, 3));
 
-		this.cars.add(new Car(racecar, 1, initEdgeRight, row*2, offset, DIR_LEFT, 6));
+		this.cars.add(new Car(racecar, 1, initEdgeRight, row*2, offset, DIR_LEFT, 5));
 
 		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-1, DIR_RIGHT, 4));
 		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-3, DIR_RIGHT, 4));
@@ -260,8 +259,8 @@ public class Kittener extends ApplicationAdapter {
 			Player player = this.players.get(i);
 
 			// Debugging to see a single player's vision.
-			/*if(counter == 0 && player.isAlive()) {
-				//this.printMap();
+/*			if(counter == 0 && player.isAlive()) {
+				this.printMap();
 				int[][] result = player.getPlayerVision();
 				for(int row = 0; row < result.length; row++) {
 					for(int col = 0; col < result[row].length; col++) {

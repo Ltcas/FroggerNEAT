@@ -7,7 +7,7 @@ package com.mygdx.game;
  */
 public enum MapObjects {
     HAZARD  (0),
-    FLOOR   (1);
+    FLOOR   (10);
 
     /** Represents the value that will be stored at each index (tile) in the array. */
     private final int value;
