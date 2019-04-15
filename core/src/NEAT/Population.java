@@ -74,6 +74,11 @@ public class Population {
      * Performs natural selection on the species in this population
      */
     public void naturalSelection(){
+        System.out.println("\n\nGeneration: " + this.generation + "\nBEFORE NATURAL SELECTION");
+        for(Organism org : this.organisms) {
+            System.out.println(org);
+        }
+
         this.speciate();
         this.sortSpecies();
         this.staleAndBadSpecies();
@@ -102,13 +107,24 @@ public class Population {
         this.organisms = organisms;
         this.generation++;
 
-        int counter = 0;
+        /*int counter = 0;
+        System.out.println("\n\nAFTER NATURAL SELECTION");
         for(Species s: this.species) {
             System.out.printf("\nSpecies %2d - Avg. Fitness: %f", counter, s.getAvgFitness());
             for(Organism o : s.getOrganisms()) {
                 System.out.printf("\n\t%s", o);
             }
             counter++;
+        }*/
+        System.out.println("\n\nAFTER NATURAL SELECTION");
+        for(Organism org : this.organisms) {
+            System.out.println(org);
+            org.setFitness(0.0);
+        }
+        for(Species s : this.species) {
+            for(Organism o : s.getOrganisms()) {
+                o.setFitness(0.0);
+            }
         }
     }
 
@@ -195,18 +211,30 @@ public class Population {
      */
     private void staleAndBadSpecies(){
         ArrayList<Species> killSpecies = new ArrayList<Species>();
+        Species bestSpecies = this.getMaxSpecies();
         for(Species species: this.species){
 
-            //Kill species that have not gotten better over a certain number of generations
-            if(species.getStaleness() == Constant.STALENESS_THRESH.getValue()){
-                killSpecies.add(species);
+            if(!species.equals(bestSpecies)) {
+                //Kill species that have not gotten better over a certain number of generations
+                if (species.getStaleness() == Constant.STALENESS_THRESH.getValue()) {
+                    killSpecies.add(species);
+                } else if (species.getAvgFitness() / this.avgSum() * this.populationSize < 1) {
 
-            } else if(species.getAvgFitness() / this.avgSum() * this.populationSize < 1){
-
-                //Species that can't reproduce
-                killSpecies.add(species);
+                    //Species that can't reproduce
+                    killSpecies.add(species);
+                }
             }
         }
         this.species.removeAll(killSpecies);
+    }
+
+    private Species getMaxSpecies() {
+        Species maxSpecies = this.species.get(0);
+        for(Species species : this.species) {
+            if(species.getAvgFitness() > maxSpecies.getAvgFitness()) {
+                maxSpecies = species;
+            }
+        }
+        return maxSpecies;
     }
 }
