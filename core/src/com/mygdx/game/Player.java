@@ -163,7 +163,12 @@ public class Player extends Sprite{
                             this.playerVision[i][j] = MapObjects.HAZARD.getValue();
                         }
                     }else{
-                        this.playerVision[i][j] = mapVision[yPostion + i][xPositon + j];
+                        // TODO: 4/15/2019 Make sure this works. 
+                        if(j > yPostion) {
+                            this.playerVision[i][j] = mapVision[yPostion + i][xPositon + j] / 2;
+                        } else {
+                            this.playerVision[i][j] = mapVision[yPostion + i][xPositon + j];
+                        }
                     }
                 }
             }

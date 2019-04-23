@@ -24,14 +24,25 @@ public class Species {
     /** Random number generator used to find probabilities */
     private Random randomGen;
 
+    private Network compatibilityNetwork;
+
     /**
      * Constructor for a species.
      */
     public Species(){
         this.organisms = new ArrayList<Organism>();
+        this.compatibilityNetwork = null;
         this.bestFitness = 0;
         this.staleness = 0;
         this.randomGen = new Random();
+    }
+
+    public Network getCompatibilityNetwork() {
+        return compatibilityNetwork;
+    }
+
+    public void setCompatibilityNetwork(Network compatibilityNetwork) {
+        this.compatibilityNetwork = compatibilityNetwork;
     }
 
     /**

@@ -1,6 +1,5 @@
 package NEAT;
 
-import sun.nio.ch.Net;
 
 import java.util.ArrayList;
 import java.util.Random;

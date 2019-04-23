@@ -1,7 +1,5 @@
 package com.mygdx.game;
 
-import NEAT.Network;
-import NEAT.Organism;
 import NEAT.Population;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -95,7 +93,7 @@ public class Kittener extends ApplicationAdapter {
 		this.players 		= new ArrayList<Player>();
 		this.platforms 		= new ArrayList<Platform>();
 		this.cars 			= new ArrayList<Car>();
-		this.numPlayers 	= 250;
+		this.numPlayers 	= 150;
 		this.initMapVision();
 	}
 
@@ -107,11 +105,11 @@ public class Kittener extends ApplicationAdapter {
 		for(int i = 0; i < Kittener.mapVision.length; i++){
 			for(int j = 0; j < Kittener.mapVision[i].length; j++){
 				if(i < 1 || i > 5){
-					Kittener.mapVision[i][j] = MapObjects.FLOOR.getValue();
-				}else{
 					// Switch to floor for debugging.
-					//Kittener.mapVision[i][j] = MapObjects.FLOOR.getValue();
-					Kittener.mapVision[i][j] = MapObjects.HAZARD.getValue();
+					Kittener.mapVision[i][j] = MapObjects.FLOOR.getValue();
+					//Kittener.mapVision[i][j] = MapObjects.HAZARD.getValue();
+				}else{
+					Kittener.mapVision[i][j] = MapObjects.FLOOR.getValue();
 				}
 			}
 		}
@@ -128,8 +126,8 @@ public class Kittener extends ApplicationAdapter {
 		this.camera.position.set((float) this.width/2,(float) this.height/2,0);
 		this.viewport = new FitViewport(this.width,this.height,camera);
 		TmxMapLoader loader = new TmxMapLoader();
-		this.map = loader.load("core/Map/Map.tmx");
-		this.addPlatforms();
+		this.map = loader.load("core/Map/MapNoWater.tmx");
+		//this.addPlatforms();
 		this.addCars();
 		this.addPlayers();
 		this.population = new Population(this.numPlayers);
@@ -161,18 +159,35 @@ public class Kittener extends ApplicationAdapter {
 		Sprite yellowCar = new Sprite(new Texture("core/assets/yellow_car.png"));
 		Sprite bus = new Sprite(new Texture("core/assets/bus.png"));
 
-		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset*-1, DIR_RIGHT, 3));
-		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset*-3, DIR_RIGHT, 3));
-		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset*-5, DIR_RIGHT, 3));
+//		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset*-1, DIR_RIGHT, 3));
+//		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset*-3, DIR_RIGHT, 3));
+//		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset*-5, DIR_RIGHT, 3));
+//
+//		this.cars.add(new Car(racecar, 1, initEdgeRight, row*2, offset, DIR_LEFT, 5));
+//
+//		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-1, DIR_RIGHT, 4));
+//		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-3, DIR_RIGHT, 4));
+//		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-5, DIR_RIGHT, 4));
+//
+//		this.cars.add(new Car(bus, 2, initEdgeRight, row*4, offset, DIR_LEFT,2));
+//		this.cars.add(new Car(bus, 2, initEdgeRight, row*5, offset*5, DIR_LEFT,2));
 
-		this.cars.add(new Car(racecar, 1, initEdgeRight, row*2, offset, DIR_LEFT, 5));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*6, offset*-1, DIR_RIGHT, 3));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*6, offset*-3, DIR_RIGHT, 3));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*6, offset*-5, DIR_RIGHT, 3));
 
-		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-1, DIR_RIGHT, 4));
-		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-3, DIR_RIGHT, 4));
-		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-5, DIR_RIGHT, 4));
+		this.cars.add(new Car(racecar, 1, initEdgeRight, row*7, offset, DIR_LEFT, 5));
 
-		this.cars.add(new Car(bus, 2, initEdgeRight, row*4, offset, DIR_LEFT,2));
-		this.cars.add(new Car(bus, 2, initEdgeRight, row*4, offset*5, DIR_LEFT,2));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*8, offset*-1, DIR_RIGHT, 4));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*8, offset*-3, DIR_RIGHT, 4));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*8, offset*-5, DIR_RIGHT, 4));
+
+		this.cars.add(new Car(bus, 2, initEdgeRight, row*9, offset, DIR_LEFT,2));
+		this.cars.add(new Car(bus, 2, initEdgeRight, row*9, offset*5, DIR_LEFT,2));
+
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*10, offset*-1, DIR_RIGHT, 2));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*10, offset*-3, DIR_RIGHT, 2));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*10, offset*-5, DIR_RIGHT, 2));
 	}
 
 	/**
@@ -259,8 +274,8 @@ public class Kittener extends ApplicationAdapter {
 			Player player = this.players.get(i);
 
 			// Debugging to see a single player's vision.
-/*			if(counter == 0 && player.isAlive()) {
-				this.printMap();
+			/*if(counter == 0 && player.isAlive()) {
+				//this.printMap();
 				int[][] result = player.getPlayerVision();
 				for(int row = 0; row < result.length; row++) {
 					for(int col = 0; col < result[row].length; col++) {

@@ -121,11 +121,6 @@ public class Population {
             System.out.println(org);
             org.setFitness(0.0);
         }
-        for(Species s : this.species) {
-            for(Organism o : s.getOrganisms()) {
-                o.setFitness(0.0);
-            }
-        }
     }
 
     /**
@@ -136,22 +131,17 @@ public class Population {
             if(this.species.isEmpty()){
                 this.species.add(new Species());
                 this.species.get(0).addOrganism(o);
+                this.species.get(0).setCompatibilityNetwork(o.getNetwork());
                 o.setSpecies(this.species.get(0));
             }else{
                 boolean foundSpecies = false;
                 Species originalSpecies = o.getSpecies();
                 Network compatibleNetwork = o.getNetwork();
                 for(Species species:this.species){
-                    Organism compatibleOrgCheck;
-                    if(species.getOrganisms().size() > 0){
-                         compatibleOrgCheck =species.getOrganisms().get(0);
-                    }else{
-                        compatibleOrgCheck = species.getChampion();
-                    }
 
                     // Grab the first organism from a species to check if the organism if
                     // compatible with that species.
-                    if(compatibleNetwork.compatible(compatibleOrgCheck.getNetwork()) <
+                    if(compatibleNetwork.compatible(species.getCompatibilityNetwork()) <
                             Constant.COMPAT_THRESH.getValue() && !foundSpecies){
                         species.addOrganism(o);
                         if(originalSpecies != null) {
@@ -164,6 +154,7 @@ public class Population {
                 if(!foundSpecies) {
                     Species species = new Species();
                     species.addOrganism(o);
+                    species.setCompatibilityNetwork(o.getNetwork());
                     if(originalSpecies != null) {
                         originalSpecies.getOrganisms().remove(o);
                     }
