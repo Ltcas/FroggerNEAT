@@ -396,6 +396,7 @@ public class Network implements Cloneable {
      * this.weight = weightGenerator.nextDouble() * 2 - 1;
      */
     public void linkWeightMutation(){
+        Random random = new Random();
         for(Link link : this.links) {
             double howMuch = Math.random();
 
@@ -404,7 +405,7 @@ public class Network implements Cloneable {
                 link.setWeight(Math.random() * 2 - 1);
             } else { // Here we make a slight adjustment to the weight. Divide by a large
                 // number to make it tiny
-                link.setWeight(link.getWeight() + (Math.random() * 2 - 1) / 50);
+                link.setWeight(link.getWeight() + random.nextGaussian() / 50);
                 if(link.getWeight() > 1) {
                     link.setWeight(1);
                 } else if(link.getWeight() < -1) {
@@ -477,15 +478,33 @@ public class Network implements Cloneable {
      * Mutation that adds a node to the genome/network.
      */
     public void addNodeMutation(){
+//        System.out.printf("\n\t\t----- Number of Nodes before call to addNodeMutation: %d",
+//                this.getNumNodes());
+//        int count = 0;
+//        for(Link l : this.links) {
+//            if(!l.isEnabled()) {
+//                count++;
+//            }
+//        }
+//        System.out.printf("\n\t\t----- Number of Disabled Links: %d", count);
         Random random = new Random();
         Link link = this.links.get(random.nextInt(this.getNumLinks()));
         link.setEnabled(false);
         Node newNode = new Node(this.getNumNodes());
         Node oldIn = link.getInput();
         Node oldOut = link.getOutput();
+        this.addNode(newNode);
         this.addLink(oldIn,newNode);
         this.addLink(newNode,oldOut);
-        this.addNode(newNode);
+//        System.out.printf("\n\t\t----- Number of Nodes after call to addNodeMutation: %d",
+//                this.getNumNodes());
+//        count = 0;
+//        for(Link l : this.links) {
+//            if(!l.isEnabled()) {
+//                count++;
+//            }
+//        }
+//        System.out.printf("\n\t\t----- Number of Disabled Links: %d", count);
     }
 
 /*    *//**
@@ -535,10 +554,23 @@ public class Network implements Cloneable {
             network = new Network(this.id, this.inNodes, this.outNodes, this.hiddenNodes,
                     this.links);
         }
-        network.inNodes = (ArrayList<Node>) this.inNodes.clone();
-        network.outNodes = (ArrayList<Node>) this.outNodes.clone();
-        network.hiddenNodes = (ArrayList<Node>) this.hiddenNodes.clone();
-        network.links = (ArrayList<Link>) this.links.clone();
+        network.biasNode = (Node) biasNode.clone();
+        network.inNodes = new ArrayList<Node>();
+        for(Node input : this.inNodes) {
+            network.inNodes.add((Node) input.clone());
+        }
+        network.outNodes = new ArrayList<Node>();
+        for(Node output : this.outNodes) {
+            network.outNodes.add((Node) output.clone());
+        }
+        network.hiddenNodes = new ArrayList<Node>();
+        for(Node hidden : this.hiddenNodes) {
+            network.hiddenNodes.add((Node) hidden.clone());
+        }
+        network.links = new ArrayList<Link>();
+        for(Link link : this.links) {
+            network.links.add((Link) link.clone());
+        }
         return network;
     }
 }

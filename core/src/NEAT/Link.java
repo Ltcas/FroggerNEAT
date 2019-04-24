@@ -114,9 +114,7 @@ public class Link implements Cloneable{
     public boolean equals(Object o){
         if(o instanceof Link){
             Link link = (Link) o;
-            if(link.getInnovationNum() == this.getInnovationNum()){
-                return true;
-            }
+            return link.getInnovationNum() == this.getInnovationNum();
         }
         return false;
     }
@@ -133,7 +131,7 @@ public class Link implements Cloneable{
         } catch (CloneNotSupportedException cne) {
             link = new Link((Node)this.input.clone(),(Node)this.output.clone(),this.innovationNum);
         }
-        link.setInput((Node) this.getInput().clone());
+        link.setInput((Node)this.getInput().clone());
         link.setOutput((Node)this.getOutput().clone());
         return link;
     }

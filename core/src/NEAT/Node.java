@@ -44,6 +44,15 @@ public class Node implements Cloneable{
         this.outgoingLinks = new ArrayList<Link>();
     }
 
+    public Node(int id, NodeLayer layer, double inputSum, double output,
+                ArrayList<Link> outgoingLinks) {
+        this.id = id;
+        this.layer = layer;
+        this.inputSum = inputSum;
+        this.output = output;
+        this.outgoingLinks = outgoingLinks;
+    }
+
     /**
      * Returns the identification number of this node.
      * @return The identification number of this node.
@@ -115,14 +124,16 @@ public class Node implements Cloneable{
      */
     @Override
     public Object clone() {
-        //System.out.println("this node's Id: " + this.getId());
         Node node;
         try {
             node = (Node) super.clone();
         } catch (CloneNotSupportedException cne) {
-            node = new Node(this.id);
+            node = new Node(this.id, this.layer);
         }
-        //System.out.println("Clone's Id: " + node.getId());
+        node.outgoingLinks = new ArrayList<Link>();
+        for(Link link : this.outgoingLinks) {
+            node.outgoingLinks.add(new Link(node, (Node) link.getOutput().clone(), link.getInnovationNum()));
+        }
         return node;
     }
 

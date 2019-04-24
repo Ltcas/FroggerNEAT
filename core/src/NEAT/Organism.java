@@ -103,6 +103,7 @@ public class Organism implements Cloneable {
             organism = new Organism(this.name);
         }
         organism.network = (Network) this.network.clone();
+        organism.species = this.species;
         return organism;
     }
 }
