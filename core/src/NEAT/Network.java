@@ -555,21 +555,26 @@ public class Network implements Cloneable {
                     this.links);
         }
         network.biasNode = (Node) biasNode.clone();
-        network.inNodes = new ArrayList<Node>();
-        for(Node input : this.inNodes) {
-            network.inNodes.add((Node) input.clone());
-        }
-        network.outNodes = new ArrayList<Node>();
-        for(Node output : this.outNodes) {
-            network.outNodes.add((Node) output.clone());
-        }
-        network.hiddenNodes = new ArrayList<Node>();
-        for(Node hidden : this.hiddenNodes) {
-            network.hiddenNodes.add((Node) hidden.clone());
-        }
         network.links = new ArrayList<Link>();
-        for(Link link : this.links) {
-            network.links.add((Link) link.clone());
+        network.inNodes = new ArrayList<Node>();
+        for(Node node : this.inNodes) {
+            Node toAdd = (Node) node.clone();
+            network.inNodes.add(toAdd);
+            network.links.addAll(toAdd.getOutgoingLinks());
+        }
+
+        network.outNodes = new ArrayList<Node>();
+        for(Node node : this.outNodes) {
+            Node toAdd = (Node) node.clone();
+            network.outNodes.add(toAdd);
+            network.links.addAll(toAdd.getOutgoingLinks());
+        }
+
+        network.hiddenNodes = new ArrayList<Node>();
+        for(Node node : this.hiddenNodes) {
+            Node toAdd = (Node) node.clone();
+            network.hiddenNodes.add(toAdd);
+            network.links.addAll(toAdd.getOutgoingLinks());
         }
         return network;
     }
