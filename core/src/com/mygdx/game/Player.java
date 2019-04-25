@@ -64,6 +64,8 @@ public class Player extends Sprite{
     /**Used to count number of frames to limit movement */
     private int frameCount;
 
+    private int frameDiff;
+
     private double prevScore;
 
     private int[][] playerVision;
@@ -89,6 +91,7 @@ public class Player extends Sprite{
         this.platforms = platforms;
         this.score = 0;
         this.frameCount = 0;
+        this.frameDiff = 0;
         this.prevScore = 0.0;
         this.randomGenerator = new Random();
         this.playerVision = new int[VISION_SIZE][VISION_SIZE];
@@ -137,6 +140,7 @@ public class Player extends Sprite{
         } else {
             this.isAlive = true;
             this.frameCount = 1;
+            this.frameDiff = 0;
             this.prevScore = 0.0;
             this.x = TILE_PIX*8;
             this.y = 0;
@@ -244,9 +248,13 @@ public class Player extends Sprite{
     public boolean shouldDie() {
         boolean result = false;
         if(this.score - this.prevScore < 100) {
-            result = true;
+            this.frameDiff++;
+            if(frameDiff >= 600) {
+                result = true;
+            }
         } else {
             prevScore = this.score;
+            this.frameDiff = 0;
         }
         return result;
     }

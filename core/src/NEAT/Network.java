@@ -552,14 +552,14 @@ public class Network {
 //        }
 //        System.out.printf("\n\t\t----- Number of Disabled Links: %d", count);
         Random random = new Random();
-        boolean found = false;
-        Link link = null;
-        while(!found) {
-            link = this.links.get(random.nextInt(this.getNumLinks()));
+
+        ArrayList<Link> inToOut = new ArrayList<Link>();
+        for(Link link : this.links) {
             if(link.getInput().getLayer() == NodeLayer.INPUT && link.getOutput().getLayer() == NodeLayer.OUTPUT) {
-                found = true;
+                inToOut.add(link);
             }
         }
+        Link link = inToOut.get(random.nextInt(inToOut.size()));
         link.setEnabled(false);
         Node newNode = new Node(this.getNumNodes());
         Node oldIn = link.getInput();

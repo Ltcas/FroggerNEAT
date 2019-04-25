@@ -309,7 +309,7 @@ public class Kittener extends ApplicationAdapter {
 				if(max != 4){
 					player.move(max);
 				}
-				if(player.shouldDie() && player.getFrameCount() % 600 == 0) {
+				if(player.shouldDie()) {
 					player.kill();
 				}
 

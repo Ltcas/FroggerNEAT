@@ -34,7 +34,7 @@ public class Organism implements Cloneable {
         this.generation = 0;
         this.name       = name;
         this.species    = null;
-        this.network    = new Network(id,12*15,5);
+        this.network    = new Network(id, 25,5);
         id++;
     }
 
