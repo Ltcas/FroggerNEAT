@@ -249,7 +249,7 @@ public class Player extends Sprite{
         boolean result = false;
         if(this.score - this.prevScore < 100) {
             this.frameDiff++;
-            if(frameDiff >= 600) {
+            if(frameDiff >= 8*60) {
                 result = true;
             }
         } else {

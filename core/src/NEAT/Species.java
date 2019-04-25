@@ -12,8 +12,6 @@ public class Species {
     /** List of organisms in this species */
     private ArrayList<Organism> organisms;
 
-    /** Best fitness of any of the organisms in this species */
-    private double bestFitness;
 
     /**Organism in this species that had the best fitness */
     private Organism champion;
@@ -32,7 +30,6 @@ public class Species {
     public Species(){
         this.organisms = new ArrayList<Organism>();
         this.compatibilityNetwork = null;
-        this.bestFitness = 0;
         this.staleness = 0;
         this.randomGen = new Random();
     }
@@ -80,7 +77,6 @@ public class Species {
     public void addOrganism(Organism organism){
         if(this.organisms.size() == 0){
             this.champion = (Organism)organism.clone();
-            this.bestFitness = organism.getFitness();
         }
         this.organisms.add(organism);
     }
@@ -91,7 +87,6 @@ public class Species {
     public void setChampion(){
         if(this.organisms.get(0).getFitness() > this.champion.getFitness()){
             this.champion = (Organism)this.organisms.get(0).clone();
-            this.bestFitness = this.organisms.get(0).getFitness();
         }
     }
 
@@ -103,7 +98,7 @@ public class Species {
      * Sets the staleness of this species.
      */
     public void setStaleness(){
-        if(this.organisms.get(0).getFitness() < this.bestFitness){
+        if(this.organisms.get(0).getFitness() < this.champion.getFitness()){
             this.staleness++;
         }else{
             this.staleness = 0;
@@ -252,19 +247,16 @@ public class Species {
      * Sorts the organisms in this species.
      */
     public void sort(){
-        ArrayList<Organism> sortedOrganisms = new ArrayList<Organism>();
         for(int i = 0; i < this.organisms.size(); i++) {
-            Organism maxOrganism = this.organisms.get(i);
-            double maxFitness = maxOrganism.getFitness();
-            for(Organism o : this.organisms) {
-                if(o.getFitness() > maxFitness){
-                    maxOrganism = o;
+            for(int j = 0; j < this.organisms.size()-1; j++) {
+                Organism check = this.organisms.get(j);
+                Organism other = this.organisms.get(j+1);
+                if(check.getFitness() < other.getFitness()) {
+                    this.organisms.set(j, other);
+                    this.organisms.set(j+1, check);
                 }
             }
-            this.organisms.remove(maxOrganism);
-            sortedOrganisms.add(maxOrganism);
         }
-        this.organisms = sortedOrganisms;
     }
 
     /**
