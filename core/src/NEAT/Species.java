@@ -264,7 +264,7 @@ public class Species {
      */
     public void cullSpecies(){
         int cullNumber = (int)Math.round(this.organisms.size() * Constant.CULL_THRESH.getValue());
-        for(int i = cullNumber;i< this.organisms.size();i++){
+        for(int i = this.organisms.size()-1; i >= cullNumber; i--){
             this.removeOrganism(this.organisms.get(i));
         }
     }
