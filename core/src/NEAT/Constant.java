@@ -6,7 +6,7 @@ package NEAT;
 public enum Constant {
     DISJOINT_COEFF (1),
     WEIGHT_COEFF (.5),
-    COMPAT_THRESH(1),
+    COMPAT_THRESH(0.3),
     STALENESS_THRESH(15),
     CULL_THRESH(.5),
 

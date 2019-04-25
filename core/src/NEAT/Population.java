@@ -158,13 +158,6 @@ public class Population {
                 }
             }
         }
-        for(int i = 0; i < this.species.size(); i++) {
-            Species toCheck = this.species.get(i);
-            if(toCheck.getOrganisms().isEmpty()) {
-                this.species.remove(i);
-                i--;
-            }
-        }
     }
 
     /**
@@ -202,7 +195,7 @@ public class Population {
 
             if(!species.equals(bestSpecies)) {
                 //Kill species that have not gotten better over a certain number of generations
-                if (species.getStaleness() == Constant.STALENESS_THRESH.getValue()) {
+                if (species.getStaleness() == Constant.STALENESS_THRESH.getValue() || species.getOrganisms().isEmpty()) {
                     killSpecies.add(species);
                 } else if (species.getAvgFitness() / this.avgSum() * this.populationSize < 1) {
 
