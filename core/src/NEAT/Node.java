@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author Chance Simmons and Brandon Townsend
  * @version 2 April 2019
  */
-public class Node implements Cloneable{
+public class Node {
 
     /** The identification number for this node. */
     private int id;
@@ -44,13 +44,12 @@ public class Node implements Cloneable{
         this.outgoingLinks = new ArrayList<Link>();
     }
 
-    public Node(int id, NodeLayer layer, double inputSum, double output,
-                ArrayList<Link> outgoingLinks) {
+    public Node(int id, NodeLayer layer, double inputSum, double output) {
         this.id = id;
         this.layer = layer;
         this.inputSum = inputSum;
         this.output = output;
-        this.outgoingLinks = outgoingLinks;
+        this.outgoingLinks = new ArrayList<Link>();
     }
 
     /**
@@ -67,6 +66,10 @@ public class Node implements Cloneable{
      */
     public NodeLayer getLayer() {
         return layer;
+    }
+
+    public double getInputSum() {
+        return this.inputSum;
     }
 
     /**
@@ -116,25 +119,6 @@ public class Node implements Cloneable{
             }
         }
         this.inputSum = 0;
-    }
-
-    /**
-     * Clones this node.
-     * @return A clone of this node.
-     */
-    @Override
-    public Object clone() {
-        Node node;
-        try {
-            node = (Node) super.clone();
-        } catch (CloneNotSupportedException cne) {
-            node = new Node(this.id, this.layer);
-        }
-        node.outgoingLinks = new ArrayList<Link>();
-        for(Link link : this.outgoingLinks) {
-            node.outgoingLinks.add(new Link(node, (Node) link.getOutput().clone(), link.getInnovationNum()));
-        }
-        return node;
     }
 
     @Override

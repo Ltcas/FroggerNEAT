@@ -11,14 +11,14 @@ public enum Constant {
     CULL_THRESH(.5),
 
     // Next five are the individual chances for a mutation to occur.
-    ADD_NODE_MUT(.05),
-    ADD_LINK_MUT(.15),
-    WEIGHT_MUT(.4),
-    ENABLE_MUT(.2),
-    REENABLE_MUT(.2),
+    ADD_NODE_MUT(.01),
+    ADD_LINK_MUT(.05),
+    WEIGHT_MUT(.8),
+    ENABLE_MUT(.3),
+    REENABLE_MUT(.3),
 
     // Chance that a mutation will happen at all.
-    MUT_THRESH(.75);
+    MUT_THRESH(.25);
 
     private final double value;
 

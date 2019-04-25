@@ -34,7 +34,7 @@ public class Organism implements Cloneable {
         this.generation = 0;
         this.name       = name;
         this.species    = null;
-        this.network    = new Network(id,25,5);
+        this.network    = new Network(id,12*15,5);
         id++;
     }
 
@@ -102,7 +102,9 @@ public class Organism implements Cloneable {
         } catch (CloneNotSupportedException cne) {
             organism = new Organism(this.name);
         }
-        organism.network = (Network) this.network.clone();
+        organism.network = new Network(this.network);
+        //System.out.printf("\n***Old Network Mem Address: %s\t New Network Mem Address: %s",
+        //        this.getNetwork(), organism.getNetwork());
         organism.species = this.species;
         return organism;
     }

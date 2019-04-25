@@ -74,32 +74,28 @@ public class Population {
      * Performs natural selection on the species in this population
      */
     public void naturalSelection(){
-//        System.out.println("\n\nGeneration: " + this.generation + "\nBEFORE NATURAL SELECTION");
-//        for(Organism org : this.organisms) {
-//            System.out.println(org);
-//        }
-        System.out.printf("\n----- Generation %d -----", this.generation);
+        //System.out.printf("\n----- Generation %d -----", this.generation);
 
         this.speciate();
         this.sortSpecies();
         this.staleAndBadSpecies();
         ArrayList<Organism> organisms = new ArrayList<Organism>();
 
-        int count = 0;
+/*        int count = 0;
         for(Species species: this.species){
             int numBabies = (int)Math.round(species.getAvgFitness() / this.avgSum() * this.populationSize);
             System.out.printf("\nSpecies %d gets %d babies", count++, numBabies);
             species.reproduce(numBabies);
             organisms.addAll(species.getOrganisms());
             System.out.println();
-        }
+        }*/
 
         Random random = new Random();
         //Check to see if the number of babies was less than population size
         while (organisms.size() < this.populationSize){
             Species species = this.species.get(random.nextInt(this.species.size()));
             Organism baby = species.addBaby();
-            System.out.print("\n\t\tAdded extra baby.");
+            /*System.out.print("\n\t\tAdded extra baby.");
             count = 0;
             for(Link l : baby.getNetwork().getLinks()) {
                 if(!l.isEnabled()) {
@@ -108,7 +104,7 @@ public class Population {
             }
             System.out.printf("\n\t\tBaby %d\t NumNodes: %d\t NumLinks: %d\t NumDisabledLinks: " +
                             "%d", organisms.size()+1, baby.getNetwork().getNumNodes(),
-                                            baby.getNetwork().getNumLinks(), count);
+                                            baby.getNetwork().getNumLinks(), count);*/
             species.getOrganisms().add(baby);
             organisms.add(baby);
         }

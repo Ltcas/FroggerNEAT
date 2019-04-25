@@ -135,11 +135,11 @@ public class Species {
         ArrayList<Organism> babies = new ArrayList<Organism>();
         Organism champClone = (Organism)this.champion.clone();
         babies.add(champClone);
-        System.out.printf("\n\tChampion: %s\n\tOther Babies:", champClone);
+        //System.out.printf("\n\tChampion: %s\n\tOther Babies:", champClone);
 
         for(int i = 1;i < numBabies;i++){
             Organism organism = addBaby();
-            int count = 0;
+            /*int count = 0;
             for(Link l : organism.getNetwork().getLinks()) {
                 if(!l.isEnabled()) {
                     count++;
@@ -147,7 +147,7 @@ public class Species {
             }
             System.out.printf("\n\t\tBaby %d\t NumNodes: %d\t NumLinks: %d\t NumDisabledLinks: " +
                     "%d", i, organism.getNetwork().getNumNodes(),
-                    organism.getNetwork().getNumLinks(), count);
+                    organism.getNetwork().getNumLinks(), count);*/
             organism.setGeneration(organism.getGeneration() + 1);
             babies.add(organism);
         }
@@ -159,18 +159,18 @@ public class Species {
     public Organism addBaby(){
         Organism organism;
         if(this.organisms.size() == 1){
-            System.out.print("\n\t\t\t>> Single Organism in the Species - clone and mutate.");
+            //System.out.print("\n\t\t\t>> Single Organism in the Species - clone and mutate.");
             organism = (Organism)this.organisms.get(0).clone();
             this.mutate(organism);
         }else if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()){
-            System.out.print("\n\t\t\t>> Hit Mutation Threshold - Clone random and mutate.");
+            //System.out.print("\n\t\t\t>> Hit Mutation Threshold - Clone random and mutate.");
             organism = (Organism)this.organisms.get(this.randomGen.nextInt(this.organisms.size())).clone();
             this.mutate(organism);
         }else{
-            System.out.print("\n\t\t\t>> Hit Crossover");
+            //System.out.print("\n\t\t\t>> Hit Crossover");
             organism = this.crossOver();
             if(this.randomGen.nextDouble() < Constant.MUT_THRESH.getValue()) {
-                System.out.print("\n\t\t\t\t>> Mutation after Crossover.");
+                //System.out.print("\n\t\t\t\t>> Mutation after Crossover.");
                 this.mutate(organism);
             }
         }
@@ -227,24 +227,24 @@ public class Species {
     public void mutate(Organism organism){
         Network network = organism.getNetwork();
         if(this.randomGen.nextDouble() < Constant.ADD_NODE_MUT.getValue()){
-            System.out.print("\n\t\t\t>> Baby Below Hit Add Node Mutation");
+            //System.out.print("\n\t\t\t>> Baby Below Hit Add Node Mutation");
             network.addNodeMutation();
-        }else if(this.randomGen.nextDouble() < Constant.ADD_LINK_MUT.getValue()){
-            System.out.print("\n\t\t\t>> Baby Below Hit Add Link Mutation");
+        }
+        if(this.randomGen.nextDouble() < Constant.ADD_LINK_MUT.getValue()){
+            //System.out.print("\n\t\t\t>> Baby Below Hit Add Link Mutation");
             network.addLinkMutation();
-        }else{
-            if(this.randomGen.nextDouble() < Constant.WEIGHT_MUT.getValue()){
-                System.out.print("\n\t\t\t>> Baby Below Hit Link Weight Mutation");
-                network.linkWeightMutation();
-            }
-            if(this.randomGen.nextDouble() < Constant.ENABLE_MUT.getValue()){
-                System.out.print("\n\t\t\t>> Baby Below Hit Link Toggle Mutation");
-                network.linkEnableMutation();
-            }
-            if(this.randomGen.nextDouble() < Constant.REENABLE_MUT.getValue()){
-                System.out.print("\n\t\t\t>> Baby Below Hit Link Reenable Mutation");
-                network.reenableLinkMutation();
-            }
+        }
+        if(this.randomGen.nextDouble() < Constant.WEIGHT_MUT.getValue()){
+            //System.out.print("\n\t\t\t>> Baby Below Hit Link Weight Mutation");
+            network.linkWeightMutation();
+        }
+        if(this.randomGen.nextDouble() < Constant.ENABLE_MUT.getValue()){
+            //System.out.print("\n\t\t\t>> Baby Below Hit Link Toggle Mutation");
+            //network.linkEnableMutation();
+        }
+        if(this.randomGen.nextDouble() < Constant.REENABLE_MUT.getValue()){
+            //System.out.print("\n\t\t\t>> Baby Below Hit Link Reenable Mutation");
+            //network.reenableLinkMutation();
         }
     }
 

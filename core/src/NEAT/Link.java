@@ -7,7 +7,7 @@ import java.util.Random;
  * @author Chance Simmons and Brandon Townsend
  * @version 25 February 2019
  */
-public class Link implements Cloneable{
+public class Link {
 
     /** The weight of the connection between the input and output nodes. */
     private double weight;
@@ -111,28 +111,11 @@ public class Link implements Cloneable{
     }
 
     @Override
-    public boolean equals(Object o){
-        if(o instanceof Link){
+    public boolean equals(Object o) {
+        if (o instanceof Link) {
             Link link = (Link) o;
             return link.getInnovationNum() == this.getInnovationNum();
         }
         return false;
-    }
-
-    /**
-     * Clones this link.
-     * @return A clone of this link.
-     */
-    @Override
-    public Object clone() {
-        Link link;
-        try {
-            link = (Link) super.clone();
-        } catch (CloneNotSupportedException cne) {
-            link = new Link((Node)this.input.clone(),(Node)this.output.clone(),this.innovationNum);
-        }
-        link.setInput((Node)this.getInput().clone());
-        link.setOutput((Node)this.getOutput().clone());
-        return link;
     }
 }

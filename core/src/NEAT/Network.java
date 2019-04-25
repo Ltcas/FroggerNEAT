@@ -9,7 +9,7 @@ import java.util.Random;
  * @author Chance Simmons and Brandon Townsend
  * @version 25 February 2019
  */
-public class Network implements Cloneable {
+public class Network {
 
     /** Identification number for this network. */
     private int id;
@@ -85,6 +85,70 @@ public class Network implements Cloneable {
         this.biasNode.setOutput(1);
         this.id             = id;
         this.createNetwork(inCount,outCount);
+    }
+
+    public Network(Network oldNetwork) {
+        this.id             = oldNetwork.getId();
+        this.inNodes        = new ArrayList<Node>();
+        this.hiddenNodes    = new ArrayList<Node>();
+        this.outNodes       = new ArrayList<Node>();
+        this.links          = new ArrayList<Link>();
+        this.biasNode       = new Node(-1, NodeLayer.BIAS);
+        this.biasNode.setOutput(1);
+
+        for(Node input : oldNetwork.inNodes) {
+            Node toAdd = new Node(input.getId(), NodeLayer.INPUT, input.getInputSum(),
+                    input.getOutput());
+            this.addNode(toAdd);
+            //System.out.printf("\n-> Old Node Mem Address: %s\t New Node Mem Address: %s", input,
+            //        toAdd);
+        }
+        for(Node hidden : oldNetwork.hiddenNodes) {
+            Node toAdd = new Node(hidden.getId(), NodeLayer.HIDDEN, hidden.getInputSum(),
+                    hidden.getOutput());
+            this.addNode(toAdd);
+            //System.out.printf("\n-> Old Node Mem Address: %s\t New Node Mem Address: %s", hidden,
+            //        toAdd);
+        }
+        for(Node output : oldNetwork.outNodes) {
+            Node toAdd = new Node(output.getId(), NodeLayer.OUTPUT, output.getInputSum(),
+                    output.getOutput());
+            this.addNode(toAdd);
+            //System.out.printf("\n-> Old Node Mem Address: %s\t New Node Mem Address: %s", output,
+            //        toAdd);
+        }
+        int inputIndex;
+        int outputIndex;
+        Node newInput;
+        Node newOutput;
+
+        // Below is something atrocious, I know. It's the best way I could think about doing it
+        // though. Sets up links based on the nodes.
+        for(Link oldLink : oldNetwork.getLinks()) {
+            Node oldLinkInput = oldLink.getInput();
+            Node oldLinkOutput = oldLink.getOutput();
+            if(this.inNodes.contains(oldLinkInput)) {
+                inputIndex = this.inNodes.indexOf(oldLinkInput);
+                newInput = this.inNodes.get(inputIndex);
+                if(this.hiddenNodes.contains(oldLinkOutput)) {
+                    outputIndex = this.hiddenNodes.indexOf(oldLinkOutput);
+                    newOutput = this.hiddenNodes.get(outputIndex);
+                } else {
+                    outputIndex = this.outNodes.indexOf(oldLinkOutput);
+                    newOutput = this.outNodes.get(outputIndex);
+                }
+            } else {
+                inputIndex = this.hiddenNodes.indexOf(oldLinkInput);
+                outputIndex = this.outNodes.indexOf(oldLinkOutput);
+                newInput = this.hiddenNodes.get(inputIndex);
+                newOutput = this.outNodes.get(outputIndex);
+            }
+            Link toAdd = addLink(newInput, newOutput);
+            toAdd.setWeight(oldLink.getWeight());
+            toAdd.setEnabled(oldLink.isEnabled());
+            //System.out.printf("\n\t-> Old Link Mem Address: %s\t New Link Mem Address: %s",
+            //        oldLink, toAdd);
+        }
     }
 
     /**
@@ -488,7 +552,14 @@ public class Network implements Cloneable {
 //        }
 //        System.out.printf("\n\t\t----- Number of Disabled Links: %d", count);
         Random random = new Random();
-        Link link = this.links.get(random.nextInt(this.getNumLinks()));
+        boolean found = false;
+        Link link = null;
+        while(!found) {
+            link = this.links.get(random.nextInt(this.getNumLinks()));
+            if(link.getInput().getLayer() == NodeLayer.INPUT && link.getOutput().getLayer() == NodeLayer.OUTPUT) {
+                found = true;
+            }
+        }
         link.setEnabled(false);
         Node newNode = new Node(this.getNumNodes());
         Node oldIn = link.getInput();
@@ -540,42 +611,4 @@ public class Network implements Cloneable {
         }
         return str.toString();
     }*/
-
-    /**
-     * Clones this network.
-     * @return A copy of this network's clone.
-     */
-    @Override
-    public Object clone() {
-        Network network;
-        try {
-            network = (Network)super.clone();
-        } catch (CloneNotSupportedException cne) {
-            network = new Network(this.id, this.inNodes, this.outNodes, this.hiddenNodes,
-                    this.links);
-        }
-        network.biasNode = (Node) biasNode.clone();
-        network.links = new ArrayList<Link>();
-        network.inNodes = new ArrayList<Node>();
-        for(Node node : this.inNodes) {
-            Node toAdd = (Node) node.clone();
-            network.inNodes.add(toAdd);
-            network.links.addAll(toAdd.getOutgoingLinks());
-        }
-
-        network.outNodes = new ArrayList<Node>();
-        for(Node node : this.outNodes) {
-            Node toAdd = (Node) node.clone();
-            network.outNodes.add(toAdd);
-            network.links.addAll(toAdd.getOutgoingLinks());
-        }
-
-        network.hiddenNodes = new ArrayList<Node>();
-        for(Node node : this.hiddenNodes) {
-            Node toAdd = (Node) node.clone();
-            network.hiddenNodes.add(toAdd);
-            network.links.addAll(toAdd.getOutgoingLinks());
-        }
-        return network;
-    }
 }
