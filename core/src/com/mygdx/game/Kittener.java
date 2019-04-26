@@ -330,6 +330,12 @@ public class Kittener extends ApplicationAdapter {
 				this.population.setFitness(i,this.players.get(i).getScore());
 			}
 			this.population.naturalSelection();
+			try {
+				// Wait a second to see how all have died.
+				Thread.sleep(1000);
+			} catch(InterruptedException ie) {
+				System.out.println(ie.getMessage());
+			}
 			this.resetPlayers();
 
 			for(Platform platform: this.platforms){

@@ -81,20 +81,21 @@ public class Population {
         this.staleAndBadSpecies();
         ArrayList<Organism> organisms = new ArrayList<Organism>();
 
-/*        int count = 0;
+        //int count = 0;
         for(Species species: this.species){
             int numBabies = (int)Math.round(species.getAvgFitness() / this.avgSum() * this.populationSize);
-            System.out.printf("\nSpecies %d gets %d babies", count++, numBabies);
+            //System.out.printf("\nSpecies %d gets %d babies", count++, numBabies);
             species.reproduce(numBabies);
             organisms.addAll(species.getOrganisms());
-            System.out.println();
-        }*/
+            //System.out.println();
+        }
 
         Random random = new Random();
         //Check to see if the number of babies was less than population size
         while (organisms.size() < this.populationSize){
             Species species = this.species.get(random.nextInt(this.species.size()));
-            Organism baby = species.addBaby();
+            Organism baby = (Organism) species.getChampion().clone();
+            species.mutate(baby);
             /*System.out.print("\n\t\tAdded extra baby.");
             count = 0;
             for(Link l : baby.getNetwork().getLinks()) {
@@ -126,7 +127,7 @@ public class Population {
             if(this.species.isEmpty()){
                 this.species.add(new Species());
                 this.species.get(0).addOrganism(o);
-                this.species.get(0).setCompatibilityNetwork(o.getNetwork());
+                this.species.get(0).setCompatibilityNetwork(new Network(o.getNetwork()));
                 o.setSpecies(this.species.get(0));
             }else{
                 boolean foundSpecies = false;
@@ -149,7 +150,7 @@ public class Population {
                 if(!foundSpecies) {
                     Species species = new Species();
                     species.addOrganism(o);
-                    species.setCompatibilityNetwork(o.getNetwork());
+                    species.setCompatibilityNetwork(new Network(o.getNetwork()));
                     if(originalSpecies != null) {
                         originalSpecies.getOrganisms().remove(o);
                     }

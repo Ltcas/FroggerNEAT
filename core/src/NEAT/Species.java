@@ -87,6 +87,7 @@ public class Species {
     public void setChampion(){
         if(this.organisms.get(0).getFitness() > this.champion.getFitness()){
             this.champion = (Organism)this.organisms.get(0).clone();
+            this.setCompatibilityNetwork(this.champion.getNetwork());
         }
     }
 
