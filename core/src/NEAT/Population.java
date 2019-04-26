@@ -24,6 +24,8 @@ public class Population {
     /** The generation number of this population. */
     private int generation;
 
+    private Organism populationChampion;
+
     /**
      * Constructor that initializes the population based off of a population size
      * @param populationSize the number of organisms in the population
@@ -32,6 +34,7 @@ public class Population {
         this.organisms      = new ArrayList<Organism>();
         this.species        = new ArrayList<Species>();
         this.populationSize = populationSize;
+        this.populationChampion = null;
         this.generation     = 0;
         this.initializePopulation();
     }
@@ -70,6 +73,17 @@ public class Population {
         this.organisms.get(index).setFitness(fitness);
     }
 
+    private void setPopulationChampion() {
+        Organism maxChamp = this.species.get(0).getChampion();
+        for(Species species: this.species) {
+            Organism champCheck = species.getChampion();
+            if(champCheck.getFitness() > maxChamp.getFitness()) {
+                maxChamp = champCheck;
+            }
+        }
+        this.populationChampion = maxChamp;
+    }
+
     /**
      * Performs natural selection on the species in this population
      */
@@ -78,6 +92,7 @@ public class Population {
 
         this.speciate();
         this.sortSpecies();
+        this.setPopulationChampion();
         this.staleAndBadSpecies();
         ArrayList<Organism> organisms = new ArrayList<Organism>();
 
@@ -116,7 +131,8 @@ public class Population {
         }
 
         this.organisms = organisms;
-        System.out.println("Number of organisms after Natural Selection: " + this.organisms.size());
+        //System.out.println("Number of organisms after Natural Selection: " + this.organisms
+        // .size());
         this.generation++;
     }
 
@@ -160,37 +176,19 @@ public class Population {
                 }
             }
         }
-        int numOrganisms = 0;
-        for(Species species:this.species){
-            numOrganisms += species.getOrganisms().size();
-        }
-        int speciesCount = 0;
-        for(Species species:this.species){
-            System.out.println("Species " + speciesCount + ":");
-            int orgCount = 0;
-            for(Organism organism:species.getOrganisms()){
-                System.out.println("\tOrganism " + orgCount + " generation: " + organism.getGeneration());
-                orgCount+=1;
-            }
-            speciesCount+=1;
-        }
-        System.out.println("Number of organisms after Speciate: " + numOrganisms);
     }
 
     /**
      * Sorts each of the species by best performing agents.
      */
     private void sortSpecies(){
-        int numOrganisms = 0;
         for(Species species: this.species){
             species.sort();
             species.cullSpecies();
             species.setChampion();
             species.setStaleness();
             species.shareFitness();
-            numOrganisms += species.getOrganisms().size();
         }
-        System.out.println("Number of Organisms after Culling: " + numOrganisms);
     }
 
     /**
@@ -210,10 +208,10 @@ public class Population {
      */
     private void staleAndBadSpecies(){
         ArrayList<Species> killSpecies = new ArrayList<Species>();
-        Species bestSpecies = this.getMaxSpecies();
+        //Species bestSpecies = this.getMaxSpecies();
         for(Species species: this.species){
 
-            if(!species.equals(bestSpecies)) {
+            if(!species.getChampion().equals(this.populationChampion)) {
                 //Kill species that have not gotten better over a certain number of generations
                 if (species.getStaleness() == Constant.STALENESS_THRESH.getValue() || species.getOrganisms().isEmpty()) {
                     killSpecies.add(species);
@@ -227,7 +225,7 @@ public class Population {
         this.species.removeAll(killSpecies);
     }
 
-    private Species getMaxSpecies() {
+    /*private Species getMaxSpecies() {
         Species maxSpecies = this.species.get(0);
         for(Species species : this.species) {
             if(species.getAvgFitness() > maxSpecies.getAvgFitness()) {
@@ -235,5 +233,5 @@ public class Population {
             }
         }
         return maxSpecies;
-    }
+    }*/
 }

@@ -85,7 +85,7 @@ public class Species {
      * Sets the champion of this species if a new champion has been found
      */
     public void setChampion(){
-        if(this.organisms.get(0).getFitness() > this.champion.getFitness()){
+        if(!this.organisms.isEmpty() && this.organisms.get(0).getFitness() > this.champion.getFitness()){
             this.champion = (Organism)this.organisms.get(0).clone();
             this.setCompatibilityNetwork(this.champion.getNetwork());
         }
@@ -99,7 +99,7 @@ public class Species {
      * Sets the staleness of this species.
      */
     public void setStaleness(){
-        if(this.organisms.get(0).getFitness() < this.champion.getFitness()){
+        if(!this.organisms.isEmpty() && this.organisms.get(0).getFitness() < this.champion.getFitness()){
             this.staleness++;
         }else{
             this.staleness = 0;

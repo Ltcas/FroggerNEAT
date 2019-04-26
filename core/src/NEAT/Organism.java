@@ -119,6 +119,9 @@ public class Organism implements Cloneable {
         } catch (CloneNotSupportedException cne) {
             organism = new Organism(this.name);
         }
+        //System.out.println("Organism before clone: " + this.getId());
+        organism.orgId = ++id;
+        //System.out.println("Organism after clone : " + organism.getId());
         organism.network = new Network(this.network);
         //System.out.printf("\n***Old Network Mem Address: %s\t New Network Mem Address: %s",
         //        this.getNetwork(), organism.getNetwork());
