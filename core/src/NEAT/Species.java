@@ -169,6 +169,7 @@ public class Species {
                 this.mutate(organism);
             }
         }
+        organism.setGeneration(organism.getGeneration() + 1);
         return organism;
     }
 

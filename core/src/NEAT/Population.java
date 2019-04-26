@@ -115,6 +115,7 @@ public class Population {
         }
 
         this.organisms = organisms;
+        System.out.println("Number of organisms after Natural Selection: " + this.organisms.size());
         this.generation++;
     }
 
@@ -158,19 +159,37 @@ public class Population {
                 }
             }
         }
+        int numOrganisms = 0;
+        for(Species species:this.species){
+            numOrganisms += species.getOrganisms().size();
+        }
+        int speciesCount = 0;
+        for(Species species:this.species){
+            System.out.println("Species " + speciesCount + ":");
+            int orgCount = 0;
+            for(Organism organism:species.getOrganisms()){
+                System.out.println("\tOrganism " + orgCount + " generation: " + organism.getGeneration());
+                orgCount+=1;
+            }
+            speciesCount+=1;
+        }
+        System.out.println("Number of organisms after Speciate: " + numOrganisms);
     }
 
     /**
      * Sorts each of the species by best performing agents.
      */
     private void sortSpecies(){
+        int numOrganisms = 0;
         for(Species species: this.species){
             species.sort();
             species.cullSpecies();
             species.setChampion();
             species.setStaleness();
             species.shareFitness();
+            numOrganisms += species.getOrganisms().size();
         }
+        System.out.println("Number of Organisms after Culling: " + numOrganisms);
     }
 
     /**

@@ -25,6 +25,7 @@ public class Organism implements Cloneable {
 
     private Species species;
 
+    private int orgId;
     /**
      * Constructor for an organism based on the passed in name.
      * @param name The name to be granted to the organism.
@@ -34,6 +35,7 @@ public class Organism implements Cloneable {
         this.generation = 0;
         this.name       = name;
         this.species    = null;
+        this.orgId = id;
         this.network    = new Network(id, 25,5);
         id++;
     }
@@ -52,6 +54,10 @@ public class Organism implements Cloneable {
      */
     public double getFitness(){
         return this.fitness;
+    }
+
+    public int getId(){
+        return this.orgId;
     }
 
     /**
@@ -90,6 +96,17 @@ public class Organism implements Cloneable {
                 + this.generation + "\tFitness: " + this.fitness;
     }
 
+    @Override
+    public boolean equals(Object o){
+        boolean result = false;
+        if(o instanceof Organism){
+            Organism organism = (Organism) o;
+            if(organism.getId() == this.getId()){
+                result = true;
+            }
+        }
+        return  result;
+    }
     /**
      * Clones this organism.
      * @return A clone of this organism.
@@ -106,6 +123,7 @@ public class Organism implements Cloneable {
         //System.out.printf("\n***Old Network Mem Address: %s\t New Network Mem Address: %s",
         //        this.getNetwork(), organism.getNetwork());
         organism.species = this.species;
+        organism.setGeneration(this.getGeneration());
         return organism;
     }
 }
