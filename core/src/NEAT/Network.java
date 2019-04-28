@@ -87,6 +87,10 @@ public class Network {
         this.createNetwork(inCount,outCount);
     }
 
+    /**
+     * Copy constructor that is used to clone a network
+     * @param oldNetwork the network that is being cloned
+     */
     public Network(Network oldNetwork) {
         this.id             = oldNetwork.getId();
         this.inNodes        = new ArrayList<Node>();
@@ -336,7 +340,12 @@ public class Network {
         }
         return true;
     }
-    
+
+    /**
+     * Feeds the input(player vision) through the network and returns the output.
+     * @param playerVision the vision of the player
+     * @return the output from the network
+     */
     public double[] feedForward(int[][] playerVision) {
         double[] result = new double[outNodes.size()];
         int count = 0;

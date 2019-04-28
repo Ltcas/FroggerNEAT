@@ -23,20 +23,31 @@ public class Organism implements Cloneable {
     /** The neural network related to this organism. Used to represent phenotype. */
     private Network network;
 
+    /** The species that this organism is a part of. */
     private Species species;
 
+    /** ID for this organism. */
     private int orgId;
+
+    /** Input size of the network for this organism. */
+    private int inputSize;
+
+    /** Output size of the network for this organism. */
+    private int outputSize;
+
     /**
      * Constructor for an organism based on the passed in name.
      * @param name The name to be granted to the organism.
      */
-    public Organism(String name){
+    public Organism(String name,int inputSize,int outputSize){
         this.fitness    = 0;
+        this.inputSize = inputSize;
+        this.outputSize = outputSize;
         this.generation = 0;
         this.name       = name;
         this.species    = null;
         this.orgId = id;
-        this.network    = new Network(id, 25,5);
+        this.network    = new Network(id, this.inputSize,this.outputSize);
         id++;
     }
 
@@ -56,6 +67,10 @@ public class Organism implements Cloneable {
         return this.fitness;
     }
 
+    /**
+     * Gets the ID of this organism
+     * @return the ID of this organism
+     */
     public int getId(){
         return this.orgId;
     }
@@ -68,23 +83,37 @@ public class Organism implements Cloneable {
         return network;
     }
 
-
+    /**
+     * Gets the generation of this organism
+     * @return the generation of this organism
+     */
     public int getGeneration(){
         return this.generation;
     }
 
+    /**
+     * Sets the generation of this organism
+     * @param generation the new generation for this organism
+     */
     public void setGeneration(int generation){
         this.generation = generation;
     }
 
+    /**
+     * Gets the species that this organism is a part of
+     * @return the species that this organism is a part of
+     */
     public Species getSpecies() {
         return species;
     }
 
+    /**
+     * Sets the species of this organism
+     * @param species the new species for this organism
+     */
     public void setSpecies(Species species) {
         this.species = species;
     }
-
 
     /**
      * Generates a string representation of this organism.
@@ -96,6 +125,11 @@ public class Organism implements Cloneable {
                 + this.generation + "\tFitness: " + this.fitness;
     }
 
+    /**
+     * Checks to see if the object passed in is equal to this organism
+     * @param o the object to compare the equality to
+     * @return true if the object passed in is equal to this organism
+     */
     @Override
     public boolean equals(Object o){
         boolean result = false;
@@ -107,6 +141,7 @@ public class Organism implements Cloneable {
         }
         return  result;
     }
+
     /**
      * Clones this organism.
      * @return A clone of this organism.
@@ -117,7 +152,7 @@ public class Organism implements Cloneable {
         try {
             organism = (Organism) super.clone();
         } catch (CloneNotSupportedException cne) {
-            organism = new Organism(this.name);
+            organism = new Organism(this.name,this.inputSize,this.outputSize);
         }
         //System.out.println("Organism before clone: " + this.getId());
         organism.orgId = ++id;

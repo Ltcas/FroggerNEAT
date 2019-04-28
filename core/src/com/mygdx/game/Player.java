@@ -29,7 +29,11 @@ public class Player extends Sprite{
     /** Constant to represent the number of pixels for the width and height of a tile. */
     private final static int TILE_PIX = 32;
 
+    /** The size of the vision map that the player can see */
     private final int VISION_SIZE = 5;
+
+    /** Determines how frequent the player is allowed to move based on the number of frames. */
+    private final int MOVE_SPEED = 15;
 
     /**The x position of the player*/
     private int x;
@@ -64,11 +68,18 @@ public class Player extends Sprite{
     /**Used to count number of frames to limit movement */
     private int frameCount;
 
+    /** The frame difference between the last time the player increased it's score. */
     private int frameDiff;
 
+    /** The previous best score that the player achieved. */
     private double prevScore;
 
+    /** The array that stores what the player can see */
     private int[][] playerVision;
+
+    /** Used to determine if the players sprite should be rendered to the screen */
+    private boolean shown;
+
     /**
      * Constructor that sets up a player.
      * @param width width of the screen
@@ -93,6 +104,7 @@ public class Player extends Sprite{
         this.frameCount = 0;
         this.frameDiff = 0;
         this.prevScore = 0.0;
+        this.shown = true;
         this.randomGenerator = new Random();
         this.playerVision = new int[VISION_SIZE][VISION_SIZE];
     }
@@ -185,7 +197,7 @@ public class Player extends Sprite{
      * @param direction int that is used to pick the direction the player will move
      */
     public void move(int direction){
-        if(this.isAlive && this.frameCount % 15 == 0){
+        if(this.isAlive && this.frameCount % this.MOVE_SPEED == 0){
             switch (direction){
                 case 0:
                     if(this.y + TILE_PIX < this.height){
@@ -221,21 +233,20 @@ public class Player extends Sprite{
     }
 
     /**
-     *
-     * @return
+     * Gets the player vision
+     * @return the player vision
      */
     public int[][] getPlayerVision(){
         return this.playerVision;
     }
 
     /**
-     *
-     * @return
+     * Gets the frame count for this player
+     * @return the players frame count.
      */
     public int getFrameCount() {
         return this.frameCount;
     }
-
 
     /**
      * Gets the status of the player
@@ -245,6 +256,10 @@ public class Player extends Sprite{
         return this.isAlive;
     }
 
+    /**
+     * Checks to see if the player should die if they have not moved in a certain amount of time.
+     * @return true if the player should be eliminated
+     */
     public boolean shouldDie() {
         boolean result = false;
         if(this.score - this.prevScore < 100) {
@@ -260,7 +275,23 @@ public class Player extends Sprite{
     }
 
     /**
-     *
+     * Sets whether or not the sprite should be shown on the screen.
+     * @param shown true if the sprite should be shown on the screen.
+     */
+    public void setShown(boolean shown){
+        this.shown = shown;
+    }
+
+    /**
+     * Gets the value of shown to be used to determine if this sprite should be shown
+     * @return the value of shown
+     */
+    public boolean isShown(){
+        return this.shown;
+    }
+
+    /**
+     * Kills this player
      */
     public void kill() {
         isAlive = false;

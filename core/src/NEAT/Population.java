@@ -24,18 +24,27 @@ public class Population {
     /** The generation number of this population. */
     private int generation;
 
+    /** The overall best organism that has gotten the highest fitness. */
     private Organism populationChampion;
+
+    /** The input size of the networks for this population's organisms. */
+    private int inputSize;
+
+    /** The out size of the networks for this population's organisms. */
+    private int outputSize;
 
     /**
      * Constructor that initializes the population based off of a population size
      * @param populationSize the number of organisms in the population
      */
-    public Population(int populationSize){
+    public Population(int populationSize,int inputSize,int outputSize){
         this.organisms      = new ArrayList<Organism>();
         this.species        = new ArrayList<Species>();
         this.populationSize = populationSize;
         this.populationChampion = null;
         this.generation     = 0;
+        this.inputSize = inputSize;
+        this.outputSize = outputSize;
         this.initializePopulation();
     }
 
@@ -44,7 +53,7 @@ public class Population {
      */
     private void initializePopulation(){
         for(int i = 0; i < this.populationSize; i++){
-            this.organisms.add(new Organism(String.format("Organism #%d", i)));
+            this.organisms.add(new Organism(String.format("Organism #%d", i),this.inputSize,this.outputSize));
         }
     }
 

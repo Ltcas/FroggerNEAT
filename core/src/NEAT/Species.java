@@ -12,7 +12,6 @@ public class Species {
     /** List of organisms in this species */
     private ArrayList<Organism> organisms;
 
-
     /**Organism in this species that had the best fitness */
     private Organism champion;
 
@@ -91,6 +90,10 @@ public class Species {
         }
     }
 
+    /**
+     * Gets the champion of this species
+     * @return the champion of the species
+     */
     public Organism getChampion() {
         return champion;
     }
@@ -152,6 +155,10 @@ public class Species {
         this.organisms = babies;
     }
 
+    /**
+     * Makes a baby from the old generation and returns it
+     * @return the new baby
+     */
     public Organism addBaby(){
         Organism organism;
         if(this.organisms.size() == 1){
@@ -174,6 +181,11 @@ public class Species {
         return organism;
     }
 
+    /**
+     * Takes two networks and creates a baby that is the clone of the most fit parent and then a combination of the
+     * other parent with the new baby's network
+     * @return the baby organism that is produced
+     */
     public Organism crossOver(){
         //Randomly choose two parents from the species
         Organism parentOne = this.organisms.get(this.randomGen.nextInt(this.organisms.size()));

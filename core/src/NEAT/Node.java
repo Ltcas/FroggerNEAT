@@ -121,6 +121,11 @@ public class Node {
         this.inputSum = 0;
     }
 
+    /**
+     * Checks to see if object passed in is equal to this node.
+     * @param o the object to check equality with
+     * @return true if the object is equal to this object.
+     */
     @Override
     public boolean equals(Object o){
         boolean result = false;

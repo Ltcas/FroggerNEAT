@@ -130,7 +130,7 @@ public class Kittener extends ApplicationAdapter {
 		//this.addPlatforms();
 		this.addCars();
 		this.addPlayers();
-		this.population = new Population(this.numPlayers);
+		this.population = new Population(this.numPlayers,25,5);
 		this.mapRenderer = new OrthoCachedTiledMapRenderer(this.map);
 		this.scoreDisplay = new BitmapFont(Gdx.files.local("core/Fonts/font.fnt"));
 		this.scoreDisplay.getData().setScale(.5f);
@@ -264,44 +264,18 @@ public class Kittener extends ApplicationAdapter {
 			car.draw(this.batch);
 		}
 
-		int deadCount = 0;
 		double maxFitness = 0;
-
-		// Used for debugging.
-		int counter = 0;
 
 		for (int i = 0;i < this.players.size();i++){
 			Player player = this.players.get(i);
 
-			// Debugging to see a single player's vision.
-			/*if(counter == 0 && player.isAlive()) {
-				//this.printMap();
-				int[][] result = player.getPlayerVision();
-				for(int row = 0; row < result.length; row++) {
-					for(int col = 0; col < result[row].length; col++) {
-						System.out.print("\t" + result[row][col]);
-					}
-					System.out.println();
-				}
-				System.out.println("\n##################################\n");
-				counter++;
-//				if(catWontLearn()){
-//					learn();
-//				}
-			}*/
-
 			if(player.isAlive()){
-
 				player.update(Kittener.mapVision);
 				int[][] vision = player.getPlayerVision();
 				double[] output = this.population.getOrganisms().get(i).getNetwork().feedForward(vision);
 
-				// Used for testing to see output.
-				//System.out.println(this.population.getOrganisms().get(i).getNetwork());
-
 				int max = 0;
 				for (int j = 1; j < output.length; j++) {
-					//output[j] = (double)1
 					if (output[j] > output[max]) {
 						max = j;
 					}
@@ -313,8 +287,6 @@ public class Kittener extends ApplicationAdapter {
 					player.kill();
 				}
 
-			}else{
-				deadCount++;
 			}
 			if(player.getScore() > maxFitness){
 				maxFitness = player.getScore();
@@ -322,36 +294,66 @@ public class Kittener extends ApplicationAdapter {
 			if(player.getScore() > this.maxOverAll){
 				this.maxOverAll = player.getScore();
 			}
-			player.draw(this.batch);
+			if(player.getFrameCount() > 2000 && player.isShown()){
+			    this.disableDeadSprites();
+            }
+
+            if(player.isShown()){
+                player.draw(this.batch);
+            }
 		}
 
-		if(deadCount == this.numPlayers){
-			for(int i = 0;i < this.players.size();i++){
-				this.population.setFitness(i,this.players.get(i).getScore());
-			}
-			this.population.naturalSelection();
-			try {
-				// Wait a second to see how all have died.
-				Thread.sleep(1000);
-			} catch(InterruptedException ie) {
-				System.out.println(ie.getMessage());
-			}
-			this.resetPlayers();
-
-			for(Platform platform: this.platforms){
-				platform.reset();
-			}
-
-			for(Car car: this.cars){
-				car.reset();
-			}
-		}
-
+		this.checkDead();
 		this.scoreDisplay.setColor(Color.WHITE);
 		this.scoreDisplay.draw(this.batch, "Generation: " + this.population.getGeneration() + "\nGeneration Max: " +
 				maxFitness + "\nMax Overall: " + this.maxOverAll,0,this.scoreDisplay
 				.getCapHeight() + TILE_PIX + 15);
 	}
+
+    /**
+     * Helper method that checks the dead count and calls natural selection when the all players are dead
+     */
+	private void checkDead(){
+       int deadCount = 0;
+       for(Player player:this.players){
+           if(!player.isAlive()){
+               deadCount++;
+           }
+       }
+
+        if(deadCount == this.numPlayers){
+            for(int i = 0;i < this.players.size();i++){
+                this.population.setFitness(i,this.players.get(i).getScore());
+                this.players.get(i).setShown(true);
+            }
+            this.population.naturalSelection();
+            try {
+                // Wait a second to see how all have died.
+                Thread.sleep(1000);
+            } catch(InterruptedException ie) {
+                System.out.println(ie.getMessage());
+            }
+            this.resetPlayers();
+
+            for(Platform platform: this.platforms){
+                platform.reset();
+            }
+
+            for(Car car: this.cars){
+                car.reset();
+            }
+        }
+    }
+    /**
+     * Helper method that disables the rendering of dead players sprites
+     */
+	private void disableDeadSprites(){
+        for(Player player:this.players){
+            if(!player.isAlive()){
+                player.setShown(false);
+            }
+        }
+    }
 
 	/**
 	 * Helper method that prints out the map vision
@@ -367,9 +369,9 @@ public class Kittener extends ApplicationAdapter {
 	}
 
 	/**
-	 * Resets all of the players
+	 * Helper method that resets all of the players
 	 */
-	public void resetPlayers(){
+	private void resetPlayers(){
 		for(Player player: this.players){
 			player.reset();
 		}

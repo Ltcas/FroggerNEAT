@@ -110,6 +110,11 @@ public class Link {
         this.output = output;
     }
 
+    /**
+     * Checks to see if the object passed in is equal to this link
+     * @param o the object to check the equality of
+     * @return true if the object is equal to this link.
+     */
     @Override
     public boolean equals(Object o) {
         if (o instanceof Link) {
