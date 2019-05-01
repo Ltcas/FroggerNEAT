@@ -3,6 +3,8 @@ package com.mygdx.game;
 import NEAT.Population;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -16,6 +18,8 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import sun.rmi.runtime.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -24,7 +28,7 @@ import java.util.ArrayList;
  * @author Chance Simmons and Brandon Townsend
  * @version 5 March 2019
  */
-public class Kittener extends ApplicationAdapter {
+public class Kittener extends ApplicationAdapter implements InputProcessor{
 
     /** Number of pixels for the height and width of a tile. */
     private final static int TILE_PIX = 32;
@@ -80,6 +84,8 @@ public class Kittener extends ApplicationAdapter {
 	/** Holds the max score that the players have reached */
 	private double maxOverAll;
 
+	private boolean paused;
+
 	/**
 	 * Constructs a new Kittener game object.
 	 * @param width The initial width of the game window.
@@ -94,6 +100,7 @@ public class Kittener extends ApplicationAdapter {
 		this.platforms 		= new ArrayList<Platform>();
 		this.cars 			= new ArrayList<Car>();
 		this.numPlayers 	= 150;
+		this.paused = false;
 		this.initMapVision();
 	}
 
@@ -129,6 +136,7 @@ public class Kittener extends ApplicationAdapter {
 		this.map = loader.load("core/Map/MapNoWater.tmx");
 		//this.addPlatforms();
 		this.addCars();
+		Gdx.input.setInputProcessor(this);
 		this.addPlayers();
 		this.population = new Population(this.numPlayers,25,5);
 		this.mapRenderer = new OrthoCachedTiledMapRenderer(this.map);
@@ -254,13 +262,18 @@ public class Kittener extends ApplicationAdapter {
 	 */
 	private void updateAll(){
 		this.initMapVision();
+
 		for(Platform platform:this.platforms){
-			platform.update(Kittener.mapVision);
+			if(!this.paused){
+				platform.update(Kittener.mapVision);
+			}
 			platform.draw(this.batch);
 		}
 
 		for(Car car:this.cars){
-			car.update(Kittener.mapVision);
+			if(!this.paused){
+				car.update(Kittener.mapVision);
+			}
 			car.draw(this.batch);
 		}
 
@@ -269,7 +282,7 @@ public class Kittener extends ApplicationAdapter {
 		for (int i = 0;i < this.players.size();i++){
 			Player player = this.players.get(i);
 
-			if(player.isAlive()){
+			if(player.isAlive() && !this.paused){
 				player.update(Kittener.mapVision);
 				int[][] vision = player.getPlayerVision();
 				double[] output = this.population.getOrganisms().get(i).getNetwork().feedForward(vision);
@@ -327,12 +340,12 @@ public class Kittener extends ApplicationAdapter {
                 this.players.get(i).setShown(true);
             }
             this.population.naturalSelection();
-            try {
+            //try {
                 // Wait a second to see how all have died.
-                Thread.sleep(1000);
-            } catch(InterruptedException ie) {
-                System.out.println(ie.getMessage());
-            }
+                //Thread.sleep(1000);
+            //} catch(InterruptedException ie) {
+                //System.out.println(ie.getMessage());
+            //}
             this.resetPlayers();
 
             for(Platform platform: this.platforms){
@@ -384,5 +397,72 @@ public class Kittener extends ApplicationAdapter {
 	public void dispose () {
 		this.batch.dispose();
 		this.map.dispose();
+	}
+
+	@Override
+	public boolean keyDown(int keyCode){
+		if(keyCode == Input.Keys.P){
+			this.paused = !this.paused;
+		}else if(keyCode == Input.Keys.LEFT){
+			for(Player player:this.players){
+				player.addSpeed(1);
+			}
+
+			for(Platform platform:this.platforms){
+				platform.addSpeed(-1);
+			}
+
+			for(Car car:this.cars){
+				car.addSpeed(-1);
+			}
+		}else if(keyCode == Input.Keys.RIGHT){
+			for(Player player:this.players){
+				player.addSpeed(-1);
+			}
+
+			for(Platform platform:this.platforms){
+				platform.addSpeed(1);
+			}
+
+			for(Car car:this.cars){
+				car.addSpeed(1);
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean keyTyped(char character){
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keyCode){
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX,int screenY){
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount){
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX,int screenY,int pointer,int button){
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX,int screenY,int pointer){
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX,int screenY,int pointer,int button){
+		return false;
 	}
 }

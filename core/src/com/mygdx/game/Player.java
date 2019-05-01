@@ -33,7 +33,7 @@ public class Player extends Sprite{
     private final int VISION_SIZE = 5;
 
     /** Determines how frequent the player is allowed to move based on the number of frames. */
-    private final int MOVE_SPEED = 15;
+    private int moveSpeed;
 
     /**The x position of the player*/
     private int x;
@@ -95,6 +95,7 @@ public class Player extends Sprite{
         this.height = height;
         this.x = TILE_PIX*8;
         this.y = 0;
+        this.moveSpeed = 10;
         this.isAlive = true;
         this.setPosition(this.x,this.y);
         this.collision = collision;
@@ -115,6 +116,10 @@ public class Player extends Sprite{
     public void testCollision() {
         int tileID = this.collision.getCell(this.x / TILE_PIX, this.y / TILE_PIX).getTile().getId();
         boolean onPlatform = false;
+        if(tileID == 3){
+            this.isAlive = false;
+            this.setTexture(new Texture("core/assets/death.png"));
+        }
         for (Platform platform : this.platforms) {
             if (platform.getBoundingRectangle().overlaps(this.getBoundingRectangle())) {
                 int futureX = this.x + platform.getSpeed() * platform.getDirection();
@@ -197,7 +202,7 @@ public class Player extends Sprite{
      * @param direction int that is used to pick the direction the player will move
      */
     public void move(int direction){
-        if(this.isAlive && this.frameCount % this.MOVE_SPEED == 0){
+        if(this.isAlive && this.frameCount % this.moveSpeed == 0){
             switch (direction){
                 case 0:
                     if(this.y + TILE_PIX < this.height){
@@ -298,4 +303,9 @@ public class Player extends Sprite{
         this.setTexture(new Texture("core/assets/death.png"));
     }
 
+    public void addSpeed(int speed){
+        if(this.moveSpeed + speed != 0){
+            this.moveSpeed += speed;
+        }
+    }
 }

@@ -97,4 +97,8 @@ public class Platform extends Sprite {
     public void reset(){
         this.setPosition(this.startX,this.startY);
     }
+
+    public void addSpeed(int speed){
+        this.speed += speed;
+    }
 }
