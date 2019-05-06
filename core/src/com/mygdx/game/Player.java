@@ -210,6 +210,7 @@ public class Player extends Sprite{
                         this.y += TILE_PIX;
                         this.score += 100;
                     }else{
+                        this.score += 100;
                         this.reset();
                     }
                     break;

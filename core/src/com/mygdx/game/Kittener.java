@@ -167,24 +167,11 @@ public class Kittener extends ApplicationAdapter implements InputProcessor{
 		Sprite yellowCar = new Sprite(new Texture("core/assets/yellow_car.png"));
 		Sprite bus = new Sprite(new Texture("core/assets/bus.png"));
 
-//		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset*-1, DIR_RIGHT, 3));
-//		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset*-3, DIR_RIGHT, 3));
-//		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset*-5, DIR_RIGHT, 3));
-//
-//		this.cars.add(new Car(racecar, 1, initEdgeRight, row*2, offset, DIR_LEFT, 5));
-//
-//		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-1, DIR_RIGHT, 4));
-//		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-3, DIR_RIGHT, 4));
-//		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-5, DIR_RIGHT, 4));
-//
-//		this.cars.add(new Car(bus, 2, initEdgeRight, row*4, offset, DIR_LEFT,2));
-//		this.cars.add(new Car(bus, 2, initEdgeRight, row*5, offset*5, DIR_LEFT,2));
-
 		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*6, offset*-1, DIR_RIGHT, 3));
 		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*6, offset*-3, DIR_RIGHT, 3));
 		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*6, offset*-5, DIR_RIGHT, 3));
 
-		this.cars.add(new Car(racecar, 1, initEdgeRight, row*7, offset, DIR_LEFT, 5));
+		this.cars.add(new Car(racecar, 1, initEdgeRight, row*7, offset, DIR_LEFT, 4));
 
 		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*8, offset*-1, DIR_RIGHT, 4));
 		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*8, offset*-3, DIR_RIGHT, 4));
@@ -311,18 +298,91 @@ public class Kittener extends ApplicationAdapter implements InputProcessor{
 			    this.disableDeadSprites();
             }
 
-            if(player.isShown()){
-                player.draw(this.batch);
-            }
 		}
 
+		this.addCarRow(maxFitness);
+		this.drawPlayers();
 		this.checkDead();
 		this.scoreDisplay.setColor(Color.WHITE);
 		this.scoreDisplay.draw(this.batch, "Generation: " + this.population.getGeneration() + "\nGeneration Max: " +
 				maxFitness + "\nMax Overall: " + this.maxOverAll,0,this.scoreDisplay
-				.getCapHeight() + TILE_PIX + 15);
+				.getCapHeight() + TILE_PIX + 40);
 	}
 
+	public void addCarRow(double score){
+		int initEdgeLeft 	= 0;
+		int initEdgeRight 	= this.width;
+		int offset 			= TILE_PIX;
+		int row 			= TILE_PIX;
+
+		Sprite racecar = new Sprite(new Texture("core/assets/racecar.png"));
+		Sprite yellowCar = new Sprite(new Texture("core/assets/yellow_car.png"));
+		Sprite bus = new Sprite(new Texture("core/assets/bus.png"));
+
+		if(score >= 5000 && this.cars.size() == 12) {
+			this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset * -1, DIR_RIGHT, 3));
+			this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset * -3, DIR_RIGHT, 3));
+			this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset * -5, DIR_RIGHT, 3));
+		}else if(score >= 7500 && this.cars.size() == 15){
+			this.cars.add(new Car(racecar, 1, initEdgeRight, row*2, offset, DIR_LEFT, 5));
+		}else if(score >= 10000 && this.cars.size() == 16){
+			this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-1, DIR_RIGHT, 4));
+			this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-3, DIR_RIGHT, 4));
+			this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-5, DIR_RIGHT, 4));
+		}else if(score >= 12500 && this.cars.size() == 19){
+			this.cars.add(new Car(bus, 2, initEdgeRight, row*4, offset, DIR_LEFT,2));
+			this.cars.add(new Car(bus, 2, initEdgeRight, row*4, offset*5, DIR_LEFT,2));
+		}
+	}
+
+	public void drawPlayers(){
+		Player maxPlayer;
+		double maxScore = 0;
+		int maxIndex = 0;
+		int i = 0;
+		for(Player player:this.players){
+			if(player.getScore() > maxScore && player.isAlive()){
+				maxScore = player.getScore();
+				maxIndex = i;
+			}
+			i++;
+		}
+
+		maxPlayer = this.players.get(maxIndex);
+
+		Player maxDead;
+		maxScore = 0;
+		i = 0;
+		for(Player player:this.players){
+			if(player.getScore() > maxScore && !player.isAlive()){
+				maxScore = player.getScore();
+				maxIndex = i;
+			}
+			i++;
+		}
+
+		maxDead = this.players.get(maxIndex);
+
+		for(Player player: this.players){
+			player.setColor(Color.WHITE);
+		}
+
+		for(Player player: this.players){
+			if(player.isShown() && !player.equals(maxPlayer) && !player.equals(maxDead)){
+				player.draw(this.batch);
+			}
+		}
+
+		if(maxDead.getScore() < maxPlayer.getScore()){
+			maxDead.setColor(Color.CYAN);
+			maxPlayer.setColor(Color.RED);
+		}else{
+			maxDead.setColor(Color.RED);
+			maxPlayer.setColor(Color.CYAN);
+		}
+		maxDead.draw(batch);
+		maxPlayer.draw(batch);
+	}
     /**
      * Helper method that checks the dead count and calls natural selection when the all players are dead
      */
@@ -351,6 +411,10 @@ public class Kittener extends ApplicationAdapter implements InputProcessor{
             for(Platform platform: this.platforms){
                 platform.reset();
             }
+
+            if(this.cars.size() > 12){
+            	this.cars.subList(12,this.cars.size()).clear();
+			}
 
             for(Car car: this.cars){
                 car.reset();
