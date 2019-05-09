@@ -523,6 +523,8 @@ public class Kittener extends ApplicationAdapter implements InputProcessor{
 		return true;
 	}
 
+
+	// Methods below are used, but are here as we implement the interface they are a part of.
 	@Override
 	public boolean keyTyped(char character){
 		return false;

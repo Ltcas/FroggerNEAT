@@ -62,9 +62,6 @@ public class Player extends Sprite{
     /**List of platforms*/
     private ArrayList<Platform> platforms;
 
-    /**Random generator used for movements*/
-    private Random randomGenerator;
-
     /**Used to count number of frames to limit movement */
     private int frameCount;
 
@@ -107,7 +104,6 @@ public class Player extends Sprite{
         this.frameDiff = 0;
         this.prevScore = 0.0;
         this.shown = true;
-        this.randomGenerator = new Random();
         this.playerVision = new int[VISION_SIZE][VISION_SIZE];
     }
 
@@ -185,7 +181,6 @@ public class Player extends Sprite{
                             this.playerVision[i][j] = MapObjects.HAZARD.getValue();
                         }
                     }else{
-                        // TODO: 4/15/2019 Make sure this works. 
                         if(j > yPostion) {
                             this.playerVision[i][j] = mapVision[yPostion + i][xPositon + j] / 2;
                         } else {

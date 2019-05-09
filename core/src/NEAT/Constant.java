@@ -1,7 +1,9 @@
 package NEAT;
 
 /**
- * Created by Chance on 3/29/2019.
+ * Constant enumerations we're using so they're located in one single location.
+ * @author Chance Simmons and Brandon Townsend
+ * @version 9 May 2019
  */
 public enum Constant {
     DISJOINT_COEFF (1),
