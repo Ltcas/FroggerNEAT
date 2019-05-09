@@ -82,7 +82,7 @@ public class Kittener extends ApplicationAdapter implements InputProcessor{
 	private Population population;
 
 	/** Holds the max score that the players have reached */
-	private double maxOverAll;
+	private int maxOverAll;
 
 	private boolean paused;
 
@@ -183,6 +183,19 @@ public class Kittener extends ApplicationAdapter implements InputProcessor{
 		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*10, offset*-1, DIR_RIGHT, 2));
 		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*10, offset*-3, DIR_RIGHT, 2));
 		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*10, offset*-5, DIR_RIGHT, 2));
+
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset * -1, DIR_RIGHT, 0));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset * -3, DIR_RIGHT, 0));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset * -5, DIR_RIGHT, 0));
+
+		this.cars.add(new Car(racecar, 1, initEdgeRight, row*2, offset, DIR_LEFT, 0));
+
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-1, DIR_RIGHT, 0));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-3, DIR_RIGHT, 0));
+		this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-5, DIR_RIGHT, 0));
+
+		this.cars.add(new Car(bus, 2, initEdgeRight, row*4, offset, DIR_LEFT,0));
+		this.cars.add(new Car(bus, 2, initEdgeRight, row*4, offset*5, DIR_LEFT,0));
 	}
 
 	/**
@@ -264,7 +277,7 @@ public class Kittener extends ApplicationAdapter implements InputProcessor{
 			car.draw(this.batch);
 		}
 
-		double maxFitness = 0;
+		int maxFitness = 0;
 
 		for (int i = 0;i < this.players.size();i++){
 			Player player = this.players.get(i);
@@ -289,10 +302,10 @@ public class Kittener extends ApplicationAdapter implements InputProcessor{
 
 			}
 			if(player.getScore() > maxFitness){
-				maxFitness = player.getScore();
+				maxFitness = (int)player.getScore();
 			}
 			if(player.getScore() > this.maxOverAll){
-				this.maxOverAll = player.getScore();
+				this.maxOverAll = (int)player.getScore();
 			}
 			if(player.getFrameCount() > 2000 && player.isShown()){
 			    this.disableDeadSprites();
@@ -310,28 +323,23 @@ public class Kittener extends ApplicationAdapter implements InputProcessor{
 	}
 
 	public void addCarRow(double score){
-		int initEdgeLeft 	= 0;
-		int initEdgeRight 	= this.width;
-		int offset 			= TILE_PIX;
-		int row 			= TILE_PIX;
 
-		Sprite racecar = new Sprite(new Texture("core/assets/racecar.png"));
-		Sprite yellowCar = new Sprite(new Texture("core/assets/yellow_car.png"));
-		Sprite bus = new Sprite(new Texture("core/assets/bus.png"));
-
-		if(score >= 5000 && this.cars.size() == 12) {
-			this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset * -1, DIR_RIGHT, 3));
-			this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset * -3, DIR_RIGHT, 3));
-			this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row, offset * -5, DIR_RIGHT, 3));
-		}else if(score >= 7500 && this.cars.size() == 15){
-			this.cars.add(new Car(racecar, 1, initEdgeRight, row*2, offset, DIR_LEFT, 5));
-		}else if(score >= 10000 && this.cars.size() == 16){
-			this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-1, DIR_RIGHT, 4));
-			this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-3, DIR_RIGHT, 4));
-			this.cars.add(new Car(yellowCar, 1, initEdgeLeft, row*3, offset*-5, DIR_RIGHT, 4));
-		}else if(score >= 12500 && this.cars.size() == 19){
-			this.cars.add(new Car(bus, 2, initEdgeRight, row*4, offset, DIR_LEFT,2));
-			this.cars.add(new Car(bus, 2, initEdgeRight, row*4, offset*5, DIR_LEFT,2));
+		if(score >= 5000) {
+			this.cars.get(12).setSpeed(3);
+			this.cars.get(13).setSpeed(3);
+			this.cars.get(14).setSpeed(3);
+		}
+		if(score >= 7500){
+			this.cars.get(15).setSpeed(4);
+		}
+		if(score >= 10000){
+			this.cars.get(16).setSpeed(2);
+			this.cars.get(17).setSpeed(2);
+			this.cars.get(18).setSpeed(2);
+		}
+		if(score >= 12500){
+			this.cars.get(19).setSpeed(2);
+			this.cars.get(20).setSpeed(2);
 		}
 	}
 
@@ -364,7 +372,7 @@ public class Kittener extends ApplicationAdapter implements InputProcessor{
 		maxDead = this.players.get(maxIndex);
 
 		for(Player player: this.players){
-			player.setColor(Color.WHITE);
+			player.setColor(Color.PURPLE);
 		}
 
 		for(Player player: this.players){
@@ -412,10 +420,15 @@ public class Kittener extends ApplicationAdapter implements InputProcessor{
                 platform.reset();
             }
 
-            if(this.cars.size() > 12){
-            	this.cars.subList(12,this.cars.size()).clear();
-			}
-
+			this.cars.get(12).setSpeed(0);
+			this.cars.get(13).setSpeed(0);
+			this.cars.get(14).setSpeed(0);
+			this.cars.get(15).setSpeed(0);
+			this.cars.get(16).setSpeed(0);
+			this.cars.get(17).setSpeed(0);
+			this.cars.get(18).setSpeed(0);
+			this.cars.get(19).setSpeed(0);
+			this.cars.get(20).setSpeed(0);
             for(Car car: this.cars){
                 car.reset();
             }

@@ -15,16 +15,16 @@ import java.util.Random;
 public class Player extends Sprite{
 
     /**The texture for when the player is moving forward*/
-    private final static Texture BACK = new Texture("core/assets/cat_back.png");
+    private final static Texture BACK = new Texture("core/assets/cat_back_new.png");
 
     /**The texture for when the player is moving down*/
-    private final static Texture FRONT = new Texture("core/assets/cat_front.png");
+    private final static Texture FRONT = new Texture("core/assets/cat_front_new.png");
 
     /**The texture for when the player is moving right*/
-    private final static Texture RIGHT = new Texture("core/assets/cat_right.png");
+    private final static Texture RIGHT = new Texture("core/assets/cat_right_new.png");
 
     /**The texture for when the player is moving left*/
-    private final static Texture LEFT = new Texture("core/assets/cat_left.png");
+    private final static Texture LEFT = new Texture("core/assets/cat_left_new.png");
 
     /** Constant to represent the number of pixels for the width and height of a tile. */
     private final static int TILE_PIX = 32;
@@ -51,7 +51,7 @@ public class Player extends Sprite{
     private boolean isAlive;
 
     /**The score of the player*/
-    private double score;
+    private int score;
 
     /**The collision map*/
     private TiledMapTileLayer collision;
@@ -87,6 +87,7 @@ public class Player extends Sprite{
      * @param collision the collision map for the tiled map
      * @param cars the list of cars
      * @param platforms the list of platforms
+     * @param platforms the list of platforms
      */
     public Player(int width, int height,TiledMapTileLayer collision,ArrayList<Car> cars,ArrayList<Platform> platforms){
         super();
@@ -118,7 +119,7 @@ public class Player extends Sprite{
         boolean onPlatform = false;
         if(tileID == 3){
             this.isAlive = false;
-            this.setTexture(new Texture("core/assets/death.png"));
+            this.setTexture(new Texture("core/assets/death_new.png"));
         }
         for (Platform platform : this.platforms) {
             if (platform.getBoundingRectangle().overlaps(this.getBoundingRectangle())) {
@@ -134,7 +135,7 @@ public class Player extends Sprite{
         for (Car car : this.cars) {
             if ((this.getBoundingRectangle().overlaps(car.getBoundingRectangle()) || tileID == 3) && !onPlatform) {
                 this.isAlive = false;
-                this.setTexture(new Texture("core/assets/death.png"));
+                this.setTexture(new Texture("core/assets/death_new.png"));
             }
         }
     }
@@ -144,7 +145,7 @@ public class Player extends Sprite{
      * @return the score that the player has
      */
     public double getScore(){
-        return (int) Math.round(this.score);
+        return this.score;
     }
 
     /**
@@ -163,7 +164,7 @@ public class Player extends Sprite{
             this.y = 0;
             this.score = 0;
             this.setPosition(this.x,this.y);
-            this.setTexture(new Texture("core/assets/cat_back.png"));
+            this.setTexture(new Texture("core/assets/cat_back_new.png"));
         }
     }
 
@@ -270,7 +271,7 @@ public class Player extends Sprite{
         boolean result = false;
         if(this.score - this.prevScore < 100) {
             this.frameDiff++;
-            if(frameDiff >= 8*60) {
+            if(frameDiff >= 12*60) {
                 result = true;
             }
         } else {
@@ -301,7 +302,7 @@ public class Player extends Sprite{
      */
     public void kill() {
         isAlive = false;
-        this.setTexture(new Texture("core/assets/death.png"));
+        this.setTexture(new Texture("core/assets/death_new.png"));
     }
 
     public void addSpeed(int speed){

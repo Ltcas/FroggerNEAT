@@ -84,4 +84,11 @@ public class Car extends Sprite {
     public void addSpeed(int speed){
         this.speed += speed;
     }
+
+    public void  setSpeed(int speed){
+        this.speed = speed;
+    }
+    public void dispose(){
+        this.getTexture().dispose();
+    }
 }
