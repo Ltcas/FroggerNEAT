@@ -44,6 +44,13 @@ public class Node {
         this.outgoingLinks = new ArrayList<Link>();
     }
 
+    /**
+     * Constructor that takes in id,layer,input sum, and output value
+     * @param id the id of the node
+     * @param layer the layers that this node is a part of
+     * @param inputSum the sum of the input values
+     * @param output the value of the output
+     */
     public Node(int id, NodeLayer layer, double inputSum, double output) {
         this.id = id;
         this.layer = layer;
@@ -68,6 +75,10 @@ public class Node {
         return layer;
     }
 
+    /**
+     * Gets the input sum of this node
+     * @return the input sum of the node
+     */
     public double getInputSum() {
         return this.inputSum;
     }

@@ -15,7 +15,6 @@ public class Platform extends Sprite {
     /** The representation of the starting y position of a platform. */
     private int startY;
 
-
     /** Integer representation of the size of the platform. */
     private int tileSize;
 
@@ -98,6 +97,10 @@ public class Platform extends Sprite {
         this.setPosition(this.startX,this.startY);
     }
 
+    /**
+     * Adds speed to the platform
+     * @param speed the speed to add.
+     */
     public void addSpeed(int speed){
         this.speed += speed;
     }

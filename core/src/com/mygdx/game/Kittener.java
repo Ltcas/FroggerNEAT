@@ -84,6 +84,7 @@ public class Kittener extends ApplicationAdapter implements InputProcessor{
 	/** Holds the max score that the players have reached */
 	private int maxOverAll;
 
+	/** Boolean value used to determine if the game is currently paused. */
 	private boolean paused;
 
 	/**
@@ -322,6 +323,10 @@ public class Kittener extends ApplicationAdapter implements InputProcessor{
 				.getCapHeight() + TILE_PIX + 40);
 	}
 
+	/**
+	 * Adds cars to the bottom road as the players reach certain scores.
+	 * @param score the highest score that the players have reached
+	 */
 	public void addCarRow(double score){
 
 		if(score >= 5000) {
@@ -343,6 +348,9 @@ public class Kittener extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 
+	/**
+	 * Draws the players, with the max and second max being colored differently than the other cats.
+	 */
 	public void drawPlayers(){
 		Player maxPlayer;
 		double maxScore = 0;
@@ -391,6 +399,7 @@ public class Kittener extends ApplicationAdapter implements InputProcessor{
 		maxDead.draw(batch);
 		maxPlayer.draw(batch);
 	}
+
     /**
      * Helper method that checks the dead count and calls natural selection when the all players are dead
      */
@@ -476,6 +485,12 @@ public class Kittener extends ApplicationAdapter implements InputProcessor{
 		this.map.dispose();
 	}
 
+	/**
+	 * Used to detect if a key has been pressed, and performs certain actions based on the key that
+	 * was pressed.
+	 * @param keyCode the keycode of the key that was pressed down
+	 * @return true if a key was pressed
+	 */
 	@Override
 	public boolean keyDown(int keyCode){
 		if(keyCode == Input.Keys.P){

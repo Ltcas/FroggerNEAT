@@ -81,14 +81,19 @@ public class Car extends Sprite {
         this.setPosition(this.startX, this.startY);
     }
 
+    /**
+     * Adds speed to the car
+     * @param speed the amount of speed to add
+     */
     public void addSpeed(int speed){
         this.speed += speed;
     }
 
+    /**
+     * Sets the speed of the car
+     * @param speed the new speed of the car
+     */
     public void  setSpeed(int speed){
         this.speed = speed;
-    }
-    public void dispose(){
-        this.getTexture().dispose();
     }
 }

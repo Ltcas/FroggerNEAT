@@ -8,7 +8,6 @@ import java.util.Random;
  * @version 25 February 2019
  */
 public class Link {
-
     /** The weight of the connection between the input and output nodes. */
     private double weight;
 
@@ -21,7 +20,9 @@ public class Link {
     /**Used to show if the link is enabled or not */
     private boolean enabled;
 
+    /** The innovation number of this link */
     private int innovationNum;
+
     /**
      * Constructor for a Link object. Creates it based on a passed in weight, input, and output
      * node.

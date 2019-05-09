@@ -305,6 +305,10 @@ public class Player extends Sprite{
         this.setTexture(new Texture("core/assets/death_new.png"));
     }
 
+    /**
+     * Adds speed to the player
+     * @param speed the amount of speed to add
+     */
     public void addSpeed(int speed){
         if(this.moveSpeed + speed != 0){
             this.moveSpeed += speed;

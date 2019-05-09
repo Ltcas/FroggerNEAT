@@ -551,15 +551,6 @@ public class Network {
      * Mutation that adds a node to the genome/network.
      */
     public void addNodeMutation(){
-//        System.out.printf("\n\t\t----- Number of Nodes before call to addNodeMutation: %d",
-//                this.getNumNodes());
-//        int count = 0;
-//        for(Link l : this.links) {
-//            if(!l.isEnabled()) {
-//                count++;
-//            }
-//        }
-//        System.out.printf("\n\t\t----- Number of Disabled Links: %d", count);
         Random random = new Random();
 
         ArrayList<Link> inToOut = new ArrayList<Link>();
@@ -576,48 +567,7 @@ public class Network {
         this.addNode(newNode);
         this.addLink(oldIn,newNode);
         this.addLink(newNode,oldOut);
-//        System.out.printf("\n\t\t----- Number of Nodes after call to addNodeMutation: %d",
-//                this.getNumNodes());
-//        count = 0;
-//        for(Link l : this.links) {
-//            if(!l.isEnabled()) {
-//                count++;
-//            }
-//        }
-//        System.out.printf("\n\t\t----- Number of Disabled Links: %d", count);
+
     }
 
-/*    *//**
-     * Returns a string representation of this network.
-     * @return A String representation of this network.
-     *//*
-    @Override
-    public String toString() {
-        StringBuilder str = new StringBuilder();
-        str.append("\nInput Nodes:");
-        int count = 0;
-        for(Node i : inNodes) {
-            str.append(String.format("\n\tNode %d - Bias: %f - Output: %f", count++, i.getOutput()));
-            for(Link l : i.getOutgoingLinks()) {
-                str.append(String.format("\n\t\tLink Weight: %f", l.getWeight()));
-            }
-        }
-        str.append("\nHidden Nodes:");
-        count = 0;
-        for(Node h : hiddenNodes) {
-            str.append(String.format("\n\tNode %d - Bias: %f - Output: %f", count++, h.getOutput()));
-            for(Link l : h.getOutgoingLinks()) {
-                str.append(String.format("\n\t\tLink Weight: %f", l.getWeight()));
-            }
-        }
-        str.append("\nOutput Nodes:");
-        count = 0;
-        for(Node o : outNodes) {
-            str.append(String.format("\n\tNode %d - Bias: %f - Output: %f", count++, o.getOutput()));
-//            for(Link l : o.getOutgoingLinks()) {
-//                str.append(String.format("\n\t\tLink Weight: %f", l.getWeight()));
-//            }
-        }
-        return str.toString();
-    }*/
 }

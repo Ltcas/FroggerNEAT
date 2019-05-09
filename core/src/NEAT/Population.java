@@ -82,6 +82,9 @@ public class Population {
         this.organisms.get(index).setFitness(fitness);
     }
 
+    /**
+     * Sets the population champion for this population
+     */
     private void setPopulationChampion() {
         Organism maxChamp = this.species.get(0).getChampion();
         for(Species species: this.species) {
@@ -233,14 +236,4 @@ public class Population {
         }
         this.species.removeAll(killSpecies);
     }
-
-    /*private Species getMaxSpecies() {
-        Species maxSpecies = this.species.get(0);
-        for(Species species : this.species) {
-            if(species.getAvgFitness() > maxSpecies.getAvgFitness()) {
-                maxSpecies = species;
-            }
-        }
-        return maxSpecies;
-    }*/
 }

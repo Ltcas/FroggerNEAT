@@ -20,12 +20,21 @@ public enum Constant {
     // Chance that a mutation will happen at all.
     MUT_THRESH(.25);
 
+    /** The value of this constant */
     private final double value;
 
+    /**
+     * Constructor for the constant
+     * @param value the value for the constant
+     */
     Constant(double value){
         this.value = value;
     }
 
+    /**
+     * Returns the value of this constant
+     * @return the value of the constant
+     */
     public double getValue(){
         return this.value;
     }

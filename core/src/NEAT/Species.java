@@ -21,6 +21,7 @@ public class Species {
     /** Random number generator used to find probabilities */
     private Random randomGen;
 
+    /** The compatibility network of this species */
     private Network compatibilityNetwork;
 
     /**
@@ -33,10 +34,18 @@ public class Species {
         this.randomGen = new Random();
     }
 
+    /**
+     * Gets the compatibility network of this species
+     * @return the compatibility network of this species
+     */
     public Network getCompatibilityNetwork() {
         return compatibilityNetwork;
     }
 
+    /**
+     * Sets the compatibility network
+     * @param compatibilityNetwork the new compatibility network
+     */
     public void setCompatibilityNetwork(Network compatibilityNetwork) {
         this.compatibilityNetwork = compatibilityNetwork;
     }

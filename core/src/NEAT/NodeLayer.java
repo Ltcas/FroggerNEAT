@@ -6,8 +6,8 @@ package NEAT;
  * @version 25 February 2019
  */
 public enum NodeLayer {
-    HIDDEN,
-    INPUT,
-    OUTPUT,
-    BIAS
+    HIDDEN,    //Value for hidden layers
+    INPUT,     //Value for input layers
+    OUTPUT,    //Value for output layers
+    BIAS       //Value for bias layers
 }
